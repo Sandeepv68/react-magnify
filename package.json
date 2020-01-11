@@ -1,0 +1,41 @@
+{
+  "name": "react-maginify",
+  "version": "0.0.1",
+  "description": "A simple configurable react plugin to perform image magnification",
+  "main": "index.js",
+  "scripts": {
+    "build-dev": "webpack --config=./webpack.config.js --env.development",
+    "build-prod": "webpack --config=./webpack.config.js --env.production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SandeepVattapparambil/react-maginify.git"
+  },
+  "keywords": [
+    "react",
+    "image",
+    "image",
+    "magnification",
+    "magnifier"
+  ],
+  "author": "Sandeep Vattapparambil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SandeepVattapparambil/react-maginify/issues"
+  },
+  "homepage": "https://github.com/SandeepVattapparambil/react-maginify#readme",
+  "devDependencies": {
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.4",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
