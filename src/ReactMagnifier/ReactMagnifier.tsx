@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import * as React from "react";
 import { ReactMagnifierProps, ReactMagnifierDefaultState } from "./ReactMagnifier.Interface";
 

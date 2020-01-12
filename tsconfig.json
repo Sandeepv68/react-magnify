@@ -25,10 +25,13 @@
     "jsx": "react"
   },
   "include": [
+    "src/*.ts",
+    "src/*.tsx",
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
   "exclude": [
+    "src/*.js",
     "src/**/*.js"
   ]
 }
