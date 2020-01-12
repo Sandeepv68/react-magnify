@@ -13,6 +13,13 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       imageAltText: "react-magnifier-image",
       imageWidth: 200,
       imageHeight: 200,
+      magnifierHeight: 100,
+      magnifierWidth: 100,
+      magnifierRadius: 50,
+      magnifierBorderColor: "#000",
+      magnifierBorderStyle: "solid",
+      magnifierBorderWidth: 3,
+      cursor: "none",
       zoomSize: 2
    };
 
@@ -27,7 +34,7 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       if (this.isValidProp(this.props.imageUrl)) {
          return this.magnify();
       } else {
-         this.logError();
+         return this.logError();
       }
    }
 
@@ -59,6 +66,11 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       );
 
       /* Set background properties for the magnifier glass: */
+      glass.style.width = `${this.props.magnifierWidth}px`;
+      glass.style.height = `${this.props.magnifierHeight}px`;
+      glass.style.borderRadius = `${this.props.magnifierRadius}%`;
+      glass.style.border = `${this.props.magnifierBorderWidth}px ${this.props.magnifierBorderStyle} ${this.props.magnifierBorderColor}`;
+
       glass.style.backgroundImage = "url('" + this.magnifiableImage.current.src + "')";
       glass.style.backgroundRepeat = "no-repeat";
       glass.style.backgroundSize =
@@ -135,7 +147,6 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
          `%c ReactMagnifier Error: ${this.imageUrlMissingError}. \n<ReactMagnifier imageUrl={url}/> is required.`,
          "background: #FCEBB6; color: #F07818; font-size: 17px; font-weight: bold;"
       );
-     
    }
 
    render() {
