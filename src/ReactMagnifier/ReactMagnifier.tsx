@@ -70,6 +70,7 @@ export default class ReactMagnifier extends React.Component<
       );
 
       /* Set background properties for the magnifier glass: */
+      // glass.style.display = "none";
       glass.style.width = `${this.props.magnifierWidth}px`;
       glass.style.height = `${this.props.magnifierHeight}px`;
       glass.style.borderRadius = `${this.props.magnifierRadius}%`;
@@ -137,6 +138,22 @@ export default class ReactMagnifier extends React.Component<
          y = y - window.pageYOffset;
          return { x: x, y: y };
       };
+
+      // const showMagnifier = (e: any) => {
+      //    e.preventDefault();
+      //    glass.style.display = "block";
+      // };
+
+      // const hideMagnifier = (e: any) => {
+      //    e.preventDefault();
+      //    glass.style.display = "none";
+      // };
+
+      // glass.addEventListener("mouseenter", moveMagnifier);
+      // this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
+
+      // glass.addEventListener("mouseleave", moveMagnifier);
+      // this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
 
       /* Execute a function when someone moves the magnifier glass over the image: */
       glass.addEventListener("mousemove", moveMagnifier);
