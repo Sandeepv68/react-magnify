@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import './App.css';
+import './style.css';
 
 export interface ReactMagnifierProps { compiler: string; framework: string; }
 export interface ReactMagnifierDefaultState { }

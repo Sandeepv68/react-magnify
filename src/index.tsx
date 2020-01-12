@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { ReactMagnifier } from './App';
+import { ReactMagnifier } from './ReactMagnifier';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<ReactMagnifier />, document.getElementById('root'));
