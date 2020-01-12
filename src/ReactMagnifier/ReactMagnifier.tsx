@@ -2,29 +2,28 @@ import * as React from "react";
 
 import './style.css';
 
-export interface ReactMagnifierProps { compiler: string; framework: string; }
+export interface ReactMagnifierProps { zoomSize: number }
 export interface ReactMagnifierDefaultState { }
 
-export class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifierDefaultState> {
+class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifierDefaultState> {
 
   private magnifiableImage: React.RefObject<HTMLImageElement>;
+
+  static ReactMagnifierProps = {
+    zoomSize: 2
+  }
 
   constructor(props: ReactMagnifierProps) {
     super(props);
     this.magnifiableImage = React.createRef();
   }
 
-  static defaultProps = {
-    compiler: 'Typescript react',
-    framework: 'reactjs'
-  }
-
   componentDidMount() {
-    this.magnify(2);
+    this.magnify(this.props.zoomSize);
   }
 
   componentDidUpdate() {
-    this.magnify(2);
+    this.magnify(this.props.zoomSize);
   }
 
   private magnify(zoom: number) {
@@ -103,3 +102,5 @@ export class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMa
     );
   }
 }
+
+export default ReactMagnifier;
