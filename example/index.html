@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <!-- Dependencies -->
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+
+    <!-- Main -->
+    <script src="../dist/ReactMagnifier.js"></script>
+
+    <script>
+        ReactDOM.render(React.createElement(ReactMagnifier.default, {
+            zoomSize: 3,
+            imageHeight: 400,
+            imageWidth: 600,
+            magnifierHeight: 200,
+            magnifierWidth: 200,
+            magnifierRadius: 50,
+            magnifierBorderColor: "white",
+            magnifierBorderStyle: "solid",
+            magnifierBorderWidth: 2,
+            cursor: "none",
+            imageUrl: "https://images.unsplash.com/photo-1578663248901-198b64da244e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+        }), document.getElementById("root"));
+    </script>
+</body>
+
+</html>

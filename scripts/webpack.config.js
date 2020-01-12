@@ -1,14 +1,17 @@
+//Constants
 const path = require("path");
 const webpack = require("webpack");
 const fs = require("fs");
-const nodeExternals = require("webpack-node-externals");
 
 //Webpack config object
 module.exports = env => {
    return {
       //set webpack build mode
       mode: env && env.production === true ? "production" : "development",
-
+      //Node polyfills
+      node: {
+         process: true
+      },
       //add a banner
       plugins: [
          new webpack.BannerPlugin({
@@ -16,39 +19,29 @@ module.exports = env => {
             raw: true
          })
       ],
-      //exclude node_modules
-      externals: [nodeExternals()],
       //set minification flag
       optimization: {
          minimize: env && env.production === true ? true : false
       },
       //set webpack bundle entry point
-      entry: path.resolve(__dirname, "../src/ReactMagnifier/ReactMagnifier.tsx"),
+      entry: path.resolve(__dirname, "../", "src/ReactMagnifier/ReactMagnifier.js"),
       //set webpack bundle output
       output: {
          //set output target for UMD
-         library: "react-magnifier",
-         libraryTarget: "commonjs2",
+         library: "ReactMagnifier",
+         libraryTarget: "umd",
          path: path.resolve(__dirname, "../", "dist"),
-         filename: env && env.production === true ? "reactMagnifier.min.js" : "reactMagnifier.js"
+         filename: env && env.production === true ? "ReactMagnifier.min.js" : "ReactMagnifier.js",
+         umdNamedDefine: true,
+         globalObject: "typeof self !== 'undefined' ? self : this"
       },
       //set up babel transpiler
       module: {
          rules: [
             {
-               test: /\.ts(x?)$/,
-               exclude: /node_modules/,
-               use: [
-                  {
-                     loader: "ts-loader"
-                  }
-               ]
-            },
-            // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-            {
-               enforce: "pre",
                test: /\.js$/,
-               loader: "source-map-loader"
+               loader: "babel-loader",
+               exclude: /node_modules/
             },
             {
                test: /\.css$/i,
@@ -59,6 +52,8 @@ module.exports = env => {
       //set console logs in color
       stats: {
          colors: true
-      }
+      },
+      //include source-map in builds
+      devtool: "cheap-source-map"
    };
 };

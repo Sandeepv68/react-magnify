@@ -10,7 +10,7 @@
       "es7",
       "es6"
     ],
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -21,10 +21,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "strictNullChecks": false,
-    "noEmit": false,
+    "noEmit": true,
     "jsx": "react"
   },
   "include": [
-    "src"
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "src/**/*.js"
   ]
 }

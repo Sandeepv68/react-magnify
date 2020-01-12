@@ -3,7 +3,10 @@ import { ReactMagnifierProps, ReactMagnifierDefaultState } from "./ReactMagnifie
 
 import "./style.css";
 
-class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifierDefaultState> {
+export default class ReactMagnifier extends React.Component<
+   ReactMagnifierProps,
+   ReactMagnifierDefaultState
+> {
    private magnifiableImage: React.RefObject<HTMLImageElement>;
    private reactMagnifierGlassClass: string;
    private imageUrlMissingError: string;
@@ -164,5 +167,3 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       );
    }
 }
-
-export default ReactMagnifier;
