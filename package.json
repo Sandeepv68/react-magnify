@@ -1,41 +1,39 @@
 {
-  "name": "react-maginify",
-  "version": "0.0.1",
-  "description": "A simple configurable react plugin to perform image magnification",
-  "main": "index.js",
-  "scripts": {
-    "build-dev": "webpack --config=./webpack.config.js --env.development",
-    "build-prod": "webpack --config=./webpack.config.js --env.production",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SandeepVattapparambil/react-maginify.git"
-  },
-  "keywords": [
-    "react",
-    "image",
-    "image",
-    "magnification",
-    "magnifier"
-  ],
-  "author": "Sandeep Vattapparambil",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SandeepVattapparambil/react-maginify/issues"
-  },
-  "homepage": "https://github.com/SandeepVattapparambil/react-maginify#readme",
-  "devDependencies": {
+  "name": "react-magnify",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^24.0.25",
+    "@types/node": "^12.12.24",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
-    "source-map-loader": "^0.2.4",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.7.4",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
-  },
-  "dependencies": {
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.0",
+    "typescript": "^3.7.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
