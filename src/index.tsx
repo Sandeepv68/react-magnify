@@ -9,7 +9,6 @@ ReactDOM.render(
       zoomSize={3}
       imageHeight={400}
       imageWidth={600}
-      imageUrl="https://images.unsplash.com/photo-1578663248901-198b64da244e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
    />,
    document.getElementById("root")
 );

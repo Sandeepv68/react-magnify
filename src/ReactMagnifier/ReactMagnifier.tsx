@@ -1,15 +1,7 @@
 import * as React from "react";
+import { ReactMagnifierProps, ReactMagnifierDefaultState } from "./ReactMagnifier.Interface";
 
 import "./style.css";
-
-export interface ReactMagnifierProps {
-   imageUrl: string;
-   imageAltText: string;
-   imageWidth: number;
-   imageHeight: number;
-   zoomSize: number;
-}
-export interface ReactMagnifierDefaultState {}
 
 class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifierDefaultState> {
    private magnifiableImage: React.RefObject<HTMLImageElement>;
@@ -35,7 +27,7 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       if (this.isValidProp(this.props.imageUrl)) {
          return this.magnify();
       } else {
-         throw Error(this.imageUrlMissingError);
+         this.logError();
       }
    }
 
@@ -136,6 +128,14 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       /*and also for touch screens:*/
       glass.addEventListener("touchmove", moveMagnifier);
       this.magnifiableImage.current.addEventListener("touchmove", moveMagnifier);
+   }
+
+   private logError(): void {
+      console.log(
+         `%c ReactMagnifier Error: ${this.imageUrlMissingError}. \n<ReactMagnifier imageUrl={url}/> is required.`,
+         "background: #FCEBB6; color: #F07818; font-size: 17px; font-weight: bold;"
+      );
+     
    }
 
    render() {
