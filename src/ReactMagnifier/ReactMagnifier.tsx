@@ -70,6 +70,7 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       glass.style.height = `${this.props.magnifierHeight}px`;
       glass.style.borderRadius = `${this.props.magnifierRadius}%`;
       glass.style.border = `${this.props.magnifierBorderWidth}px ${this.props.magnifierBorderStyle} ${this.props.magnifierBorderColor}`;
+      glass.style.cursor = `${this.props.cursor}`;
 
       glass.style.backgroundImage = "url('" + this.magnifiableImage.current.src + "')";
       glass.style.backgroundRepeat = "no-repeat";

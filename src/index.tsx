@@ -11,7 +11,11 @@ ReactDOM.render(
       imageWidth={600}
       magnifierHeight={200}
       magnifierWidth={200}
-      magnifierRadius={10}
+      magnifierRadius={50}
+      magnifierBorderColor={"white"}
+      magnifierBorderStyle={"solid"}
+      magnifierBorderWidth={2}
+      cursor={"none"}
       imageUrl="https://images.unsplash.com/photo-1578663248901-198b64da244e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
    />,
    document.getElementById("root")

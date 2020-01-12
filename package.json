@@ -17,13 +17,17 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.0",
-    "typescript": "^3.7.4"
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.4",
+    "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-dist": "webpack --config=./scripts/webpack.config.js --env.production",
+    "build-dev": "webpack --config=./scripts/webpack.config.js --env.development"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,5 +43,30 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "A simple configurable react plugin to perform image magnification.",
+  "main": "index.js",
+  "devDependencies": {
+    "css-loader": "^3.4.2",
+    "source-map-loader": "^0.2.4",
+    "webpack-cli": "^3.3.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SandeepVattapparambil/react-magnify.git"
+  },
+  "keywords": [
+    "image",
+    "image",
+    "magnifier",
+    "react",
+    "typescript",
+    "plugin"
+  ],
+  "author": "Sandeep Vattapparambil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SandeepVattapparambil/react-magnify/issues"
+  },
+  "homepage": "https://github.com/SandeepVattapparambil/react-magnify#readme"
 }
