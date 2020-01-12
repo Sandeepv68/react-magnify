@@ -1,10 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import ReactMagnifier from './ReactMagnifier/ReactMagnifier';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import ReactMagnifier from "./ReactMagnifier/ReactMagnifier";
+import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<ReactMagnifier zoomSize={2}/>, document.getElementById('root'));
+ReactDOM.render(
+    <ReactMagnifier imageUrl="https://images.unsplash.com/photo-1578663248901-198b64da244e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" />,
+    document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

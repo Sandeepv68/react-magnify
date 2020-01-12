@@ -1,32 +1,60 @@
 import * as React from "react";
 
-import './style.css';
+import "./style.css";
 
-export interface ReactMagnifierProps { zoomSize: number }
+export interface ReactMagnifierProps {
+  imageUrl: string;
+  imageAltText: string;
+  imageWidth: number;
+  imageHeight: number;
+  zoomSize: number;
+}
 export interface ReactMagnifierDefaultState { }
 
-class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifierDefaultState> {
-
+class ReactMagnifier extends React.Component<
+  ReactMagnifierProps,
+  ReactMagnifierDefaultState
+  > {
   private magnifiableImage: React.RefObject<HTMLImageElement>;
+  private reactMagnifierGlassClass: string;
+  private imageUrlMissingError: string;
 
-  static ReactMagnifierProps = {
+  public static defaultProps = {
+    imageUrl: "",
+    imageAltText: "react-magnifier-image",
+    imageWidth: 200,
+    imageHeight: 200,
     zoomSize: 2
-  }
+  };
 
   constructor(props: ReactMagnifierProps) {
     super(props);
     this.magnifiableImage = React.createRef();
+    this.reactMagnifierGlassClass = "react-magnifier-glass";
+    this.imageUrlMissingError = "Image url is missing!";
   }
 
   componentDidMount() {
-    this.magnify(this.props.zoomSize);
+    if (this.isValidProp(this.props.imageUrl)) {
+      return this.magnify(this.props.zoomSize);
+    } else {
+      throw Error(this.imageUrlMissingError);
+    }
   }
 
   componentDidUpdate() {
-    this.magnify(this.props.zoomSize);
+    return this.magnify(this.props.zoomSize);
   }
 
-  private magnify(zoom: number) {
+  private isValidProp(prop: string): boolean {
+    if (prop && prop !== null && prop !== undefined && prop !== "") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private magnify(zoom: number): void {
     let img = this.magnifiableImage.current;
     let w: number;
     let h: number;
@@ -34,7 +62,7 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
 
     /* Create magnifier glass: */
     let glass = document.createElement("DIV") as HTMLDivElement;
-    glass.setAttribute("class", "react-magnifier-glass");
+    glass.setAttribute("class", this.reactMagnifierGlassClass);
 
     /* Insert magnifier glass: */
     img.parentElement.insertBefore(glass, img);
@@ -42,7 +70,7 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
     /* Set background properties for the magnifier glass: */
     glass.style.backgroundImage = "url('" + img.src + "')";
     glass.style.backgroundRepeat = "no-repeat";
-    glass.style.backgroundSize = (img.width * zoom) + "px " + (img.height * zoom) + "px";
+    glass.style.backgroundSize = img.width * zoom + "px " + img.height * zoom + "px";
     bw = 3;
     w = glass.offsetWidth / 2;
     h = glass.offsetHeight / 2;
@@ -58,16 +86,25 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       x = pos.x;
       y = pos.y;
       /* Prevent the magnifier glass from being positioned outside the image: */
-      if (x > img.width - (w / zoom)) { x = img.width - (w / zoom); }
-      if (x < w / zoom) { x = w / zoom; }
-      if (y > img.height - (h / zoom)) { y = img.height - (h / zoom); }
-      if (y < h / zoom) { y = h / zoom; }
+      if (x > img.width - w / zoom) {
+        x = img.width - w / zoom;
+      }
+      if (x < w / zoom) {
+        x = w / zoom;
+      }
+      if (y > img.height - h / zoom) {
+        y = img.height - h / zoom;
+      }
+      if (y < h / zoom) {
+        y = h / zoom;
+      }
       /* Set the position of the magnifier glass: */
-      glass.style.left = (x - w) + "px";
-      glass.style.top = (y - h) + "px";
+      glass.style.left = x - w + "px";
+      glass.style.top = y - h + "px";
       /* Display what the magnifier glass "sees": */
-      glass.style.backgroundPosition = "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px";
-    }
+      glass.style.backgroundPosition =
+        "-" + (x * zoom - w + bw) + "px -" + (y * zoom - h + bw) + "px";
+    };
 
     const getCursorPos = (e: any) => {
       let a;
@@ -83,7 +120,7 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
       x = x - window.pageXOffset;
       y = y - window.pageYOffset;
       return { x: x, y: y };
-    }
+    };
 
     /* Execute a function when someone moves the magnifier glass over the image: */
     glass.addEventListener("mousemove", moveMagnifier);
@@ -97,7 +134,13 @@ class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifier
   render() {
     return (
       <div className="react-magnifier-image-container">
-        <img ref={this.magnifiableImage} src="https://images.pexels.com/photos/462118/pexels-photo-462118.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" width="600" height="400" alt="Girl" />
+        <img
+          ref={this.magnifiableImage}
+          src={this.props.imageUrl}
+          width={this.props.imageWidth}
+          height={this.props.imageHeight}
+          alt={this.props.imageAltText}
+        />
       </div>
     );
   }
