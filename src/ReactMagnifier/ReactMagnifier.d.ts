@@ -3,6 +3,7 @@ import { ReactMagnifierProps, ReactMagnifierDefaultState } from "./ReactMagnifie
 import "./style.css";
 export default class ReactMagnifier extends React.Component<ReactMagnifierProps, ReactMagnifierDefaultState> {
     private magnifiableImage;
+    private imageContainer;
     private reactMagnifierGlassClass;
     private imageUrlMissingError;
     static defaultProps: {
@@ -16,6 +17,7 @@ export default class ReactMagnifier extends React.Component<ReactMagnifierProps,
         magnifierBorderColor: string;
         magnifierBorderStyle: string;
         magnifierBorderWidth: number;
+        magnifierShadow: boolean;
         cursor: string;
         zoomSize: number;
     };

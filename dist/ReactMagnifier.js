@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "* {\n  box-sizing: border-box;\n}\n\n.react-magnifier-image-container {\n  position: relative;\n}\n\n.react-magnifier-glass {\n  position: absolute;\n  border: 3px solid #000;\n  border-radius: 50%;\n  cursor: none;\n  height: 100px;\n  width: 100px;\n}\n", ""]);
+exports.push([module.i, "* {\n  box-sizing: border-box;\n}\n\n.react-magnifier-image-container {\n  display:inline-block;\n  position: relative;\n}\n\n.react-magnifier-glass {\n  position: absolute;\n  border: 3px solid #000;\n  border-radius: 50%;\n  cursor: none;\n  height: 100px;\n  width: 100px;\n  z-index: 999999;\n  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);\n}\n\n", ""]);
 // Exports
 module.exports = exports;
 
@@ -3153,6 +3153,7 @@ function (_super) {
     var _this = _super.call(this, props) || this;
 
     _this.magnifiableImage = react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
+    _this.imageContainer = react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
     _this.reactMagnifierGlassClass = "react-magnifier-glass";
     _this.imageUrlMissingError = "Image url is missing!";
     return _this;
@@ -3192,13 +3193,14 @@ function (_super) {
 
     this.magnifiableImage.current.parentElement.insertBefore(glass, this.magnifiableImage.current);
     /* Set background properties for the magnifier glass: */
-    // glass.style.display = "none";
 
+    glass.style.visibility = "hidden";
     glass.style.width = this.props.magnifierWidth + "px";
     glass.style.height = this.props.magnifierHeight + "px";
     glass.style.borderRadius = this.props.magnifierRadius + "%";
     glass.style.border = this.props.magnifierBorderWidth + "px " + this.props.magnifierBorderStyle + " " + this.props.magnifierBorderColor;
     glass.style.cursor = "" + this.props.cursor;
+    glass.style.boxShadow = this.props.magnifierShadow ? "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);" : "none";
     glass.style.backgroundImage = "url('" + this.magnifiableImage.current.src + "')";
     glass.style.backgroundRepeat = "no-repeat";
     glass.style.backgroundSize = this.magnifiableImage.current.width * this.props.zoomSize + "px " + this.magnifiableImage.current.height * this.props.zoomSize + "px";
@@ -3265,21 +3267,19 @@ function (_super) {
         x: x,
         y: y
       };
-    }; // const showMagnifier = (e: any) => {
-    //    e.preventDefault();
-    //    glass.style.display = "block";
-    // };
-    // const hideMagnifier = (e: any) => {
-    //    e.preventDefault();
-    //    glass.style.display = "none";
-    // };
-    // glass.addEventListener("mouseenter", showMagnifier);
-    // this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
-    // glass.addEventListener("mouseleave", hideMagnifier);
-    // this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
+    };
 
+    var showMagnifier = function (e) {
+      glass.style.visibility = "visible";
+    };
+
+    var hideMagnifier = function (e) {
+      glass.style.visibility = "hidden";
+    };
+
+    this.imageContainer.current.addEventListener("mouseenter", showMagnifier);
+    this.imageContainer.current.addEventListener("mouseleave", hideMagnifier);
     /* Execute a function when someone moves the magnifier glass over the image: */
-
 
     glass.addEventListener("mousemove", moveMagnifier);
     this.magnifiableImage.current.addEventListener("mousemove", moveMagnifier);
@@ -3295,7 +3295,8 @@ function (_super) {
 
   ReactMagnifier.prototype.render = function () {
     return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-      className: "react-magnifier-image-container"
+      className: "react-magnifier-image-container",
+      ref: this.imageContainer
     }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", {
       ref: this.magnifiableImage,
       src: this.props.imageUrl,
@@ -3316,6 +3317,7 @@ function (_super) {
     magnifierBorderColor: "#000",
     magnifierBorderStyle: "solid",
     magnifierBorderWidth: 3,
+    magnifierShadow: true,
     cursor: "none",
     zoomSize: 2
   };

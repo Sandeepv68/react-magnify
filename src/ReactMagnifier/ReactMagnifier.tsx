@@ -24,6 +24,7 @@ export default class ReactMagnifier extends React.Component<
       magnifierBorderColor: "#000",
       magnifierBorderStyle: "solid",
       magnifierBorderWidth: 3,
+      magnifierShadow: true,
       cursor: "none",
       zoomSize: 2
    };
@@ -78,6 +79,9 @@ export default class ReactMagnifier extends React.Component<
       glass.style.borderRadius = `${this.props.magnifierRadius}%`;
       glass.style.border = `${this.props.magnifierBorderWidth}px ${this.props.magnifierBorderStyle} ${this.props.magnifierBorderColor}`;
       glass.style.cursor = `${this.props.cursor}`;
+      glass.style.boxShadow = this.props.magnifierShadow
+         ? "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);"
+         : "none";
 
       glass.style.backgroundImage = "url('" + this.magnifiableImage.current.src + "')";
       glass.style.backgroundRepeat = "no-repeat";

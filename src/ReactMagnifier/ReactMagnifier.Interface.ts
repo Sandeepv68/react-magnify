@@ -9,6 +9,7 @@ export interface ReactMagnifierProps {
    magnifierBorderStyle: string;
    magnifierBorderColor: string;
    magnifierBorderWidth: number;
+   magnifierShadow: boolean;
    cursor: string;
    zoomSize: number;
 }

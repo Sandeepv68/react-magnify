@@ -19,6 +19,7 @@ var ReactMagnifier = /** @class */ (function (_super) {
     function ReactMagnifier(props) {
         var _this = _super.call(this, props) || this;
         _this.magnifiableImage = React.createRef();
+        _this.imageContainer = React.createRef();
         _this.reactMagnifierGlassClass = "react-magnifier-glass";
         _this.imageUrlMissingError = "Image url is missing!";
         return _this;
@@ -53,12 +54,15 @@ var ReactMagnifier = /** @class */ (function (_super) {
         /* Insert magnifier glass: */
         this.magnifiableImage.current.parentElement.insertBefore(glass, this.magnifiableImage.current);
         /* Set background properties for the magnifier glass: */
-        // glass.style.display = "none";
+        glass.style.visibility = "hidden";
         glass.style.width = this.props.magnifierWidth + "px";
         glass.style.height = this.props.magnifierHeight + "px";
         glass.style.borderRadius = this.props.magnifierRadius + "%";
         glass.style.border = this.props.magnifierBorderWidth + "px " + this.props.magnifierBorderStyle + " " + this.props.magnifierBorderColor;
         glass.style.cursor = "" + this.props.cursor;
+        glass.style.boxShadow = this.props.magnifierShadow
+            ? "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);"
+            : "none";
         glass.style.backgroundImage = "url('" + this.magnifiableImage.current.src + "')";
         glass.style.backgroundRepeat = "no-repeat";
         glass.style.backgroundSize =
@@ -118,18 +122,14 @@ var ReactMagnifier = /** @class */ (function (_super) {
             y = y - window.pageYOffset;
             return { x: x, y: y };
         };
-        // const showMagnifier = (e: any) => {
-        //    e.preventDefault();
-        //    glass.style.display = "block";
-        // };
-        // const hideMagnifier = (e: any) => {
-        //    e.preventDefault();
-        //    glass.style.display = "none";
-        // };
-        // glass.addEventListener("mouseenter", showMagnifier);
-        // this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
-        // glass.addEventListener("mouseleave", hideMagnifier);
-        // this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
+        var showMagnifier = function (e) {
+            glass.style.visibility = "visible";
+        };
+        var hideMagnifier = function (e) {
+            glass.style.visibility = "hidden";
+        };
+        this.imageContainer.current.addEventListener("mouseenter", showMagnifier);
+        this.imageContainer.current.addEventListener("mouseleave", hideMagnifier);
         /* Execute a function when someone moves the magnifier glass over the image: */
         glass.addEventListener("mousemove", moveMagnifier);
         this.magnifiableImage.current.addEventListener("mousemove", moveMagnifier);
@@ -141,7 +141,7 @@ var ReactMagnifier = /** @class */ (function (_super) {
         console.log("%c ReactMagnifier Error: " + this.imageUrlMissingError + ". \n<ReactMagnifier imageUrl={url}/> is required.", "background: #FCEBB6; color: #F07818; font-size: 17px; font-weight: bold;");
     };
     ReactMagnifier.prototype.render = function () {
-        return (React.createElement("div", { className: "react-magnifier-image-container" },
+        return (React.createElement("div", { className: "react-magnifier-image-container", ref: this.imageContainer },
             React.createElement("img", { ref: this.magnifiableImage, src: this.props.imageUrl, width: this.props.imageWidth, height: this.props.imageHeight, alt: this.props.imageAltText })));
     };
     ReactMagnifier.defaultProps = {
@@ -155,6 +155,7 @@ var ReactMagnifier = /** @class */ (function (_super) {
         magnifierBorderColor: "#000",
         magnifierBorderStyle: "solid",
         magnifierBorderWidth: 3,
+        magnifierShadow: true,
         cursor: "none",
         zoomSize: 2
     };
