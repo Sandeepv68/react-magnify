@@ -3115,6 +3115,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ "./src/ReactMagnifier/style.css");
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_1__);
+/**
+ * ReactMagnifier v0.0.1
+ * A simple configurable react plugin to perform image magnification
+ * written by: Sandeep Vattapparambil
+ * email: sandeepv68@gmail.com
+ */
+
+/* eslint-disable import/first */
 var __extends = undefined && undefined.__extends || function () {
   var extendStatics = function (d, b) {
     extendStatics = Object.setPrototypeOf || {
@@ -3138,11 +3146,23 @@ var __extends = undefined && undefined.__extends || function () {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-/* eslint-disable import/first */
+/**
+ * Import react library
+ */
 
 
 
+/**
+ * Import component stylesheets
+ */
 
+
+/**
+ * @class ReactMagnifier
+ * @extends React.Component
+ * @typeparam ReactMagnifierProps {Interface} - The input props interface
+ * @typeparam ReactMagnifierDefaultState {Interface} - The default state interface
+ */
 
 var ReactMagnifier =
 /** @class */
@@ -3158,6 +3178,11 @@ function (_super) {
     _this.imageUrlMissingError = "Image url is missing!";
     return _this;
   }
+  /**
+   * Once component is mounted, validate props and render the magnifier
+   * or throw error if props are invalid
+   */
+
 
   ReactMagnifier.prototype.componentDidMount = function () {
     if (this.isValidProp(this.props.imageUrl)) {
@@ -3166,10 +3191,21 @@ function (_super) {
       return this.logError();
     }
   };
+  /**
+   * re-render magnifier upon component updation
+   */
+
 
   ReactMagnifier.prototype.componentDidUpdate = function () {
     return this.magnify();
   };
+  /**
+   * @function isValidProp
+   * A helper function to validate input props
+   * @param prop {String} - The prop to be validated
+   * @returns Returns true or false
+   */
+
 
   ReactMagnifier.prototype.isValidProp = function (prop) {
     if (prop && prop !== null && prop !== undefined && prop !== "") {
@@ -3178,6 +3214,11 @@ function (_super) {
       return false;
     }
   };
+  /**
+   * @function magnify
+   * A helper to render magnified image and magnifier with input props
+   */
+
 
   ReactMagnifier.prototype.magnify = function () {
     var _this = this;
@@ -3305,6 +3346,10 @@ function (_super) {
       alt: this.props.imageAltText
     }));
   };
+  /**
+   * Set default props
+   */
+
 
   ReactMagnifier.defaultProps = {
     imageUrl: "",

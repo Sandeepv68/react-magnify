@@ -1,3 +1,10 @@
+/**
+ * ReactMagnifier v0.0.1
+ * A simple configurable react plugin to perform image magnification
+ * written by: Sandeep Vattapparambil
+ * email: sandeepv68@gmail.com
+ */
+/* eslint-disable import/first */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -11,9 +18,20 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-/* eslint-disable import/first */
+/**
+ * Import react library
+ */
 import * as React from "react";
+/**
+ * Import component stylesheets
+ */
 import "./style.css";
+/**
+ * @class ReactMagnifier
+ * @extends React.Component
+ * @typeparam ReactMagnifierProps {Interface} - The input props interface
+ * @typeparam ReactMagnifierDefaultState {Interface} - The default state interface
+ */
 var ReactMagnifier = /** @class */ (function (_super) {
     __extends(ReactMagnifier, _super);
     function ReactMagnifier(props) {
@@ -24,6 +42,10 @@ var ReactMagnifier = /** @class */ (function (_super) {
         _this.imageUrlMissingError = "Image url is missing!";
         return _this;
     }
+    /**
+     * Once component is mounted, validate props and render the magnifier
+     * or throw error if props are invalid
+     */
     ReactMagnifier.prototype.componentDidMount = function () {
         if (this.isValidProp(this.props.imageUrl)) {
             return this.magnify();
@@ -32,9 +54,18 @@ var ReactMagnifier = /** @class */ (function (_super) {
             return this.logError();
         }
     };
+    /**
+     * re-render magnifier upon component updation
+     */
     ReactMagnifier.prototype.componentDidUpdate = function () {
         return this.magnify();
     };
+    /**
+     * @function isValidProp
+     * A helper function to validate input props
+     * @param prop {String} - The prop to be validated
+     * @returns Returns true or false
+     */
     ReactMagnifier.prototype.isValidProp = function (prop) {
         if (prop && prop !== null && prop !== undefined && prop !== "") {
             return true;
@@ -43,6 +74,10 @@ var ReactMagnifier = /** @class */ (function (_super) {
             return false;
         }
     };
+    /**
+     * @function magnify
+     * A helper to render magnified image and magnifier with input props
+     */
     ReactMagnifier.prototype.magnify = function () {
         var _this = this;
         var w;
@@ -144,6 +179,9 @@ var ReactMagnifier = /** @class */ (function (_super) {
         return (React.createElement("div", { className: "react-magnifier-image-container", ref: this.imageContainer },
             React.createElement("img", { ref: this.magnifiableImage, src: this.props.imageUrl, width: this.props.imageWidth, height: this.props.imageHeight, alt: this.props.imageAltText })));
     };
+    /**
+     * Set default props
+     */
     ReactMagnifier.defaultProps = {
         imageUrl: "",
         imageAltText: "react-magnifier-image",

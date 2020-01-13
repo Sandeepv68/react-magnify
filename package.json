@@ -45,7 +45,7 @@
     ]
   },
   "description": "A simple configurable react plugin to perform image magnification.",
-  "main": "index.js",
+  "main": "dist/ReactMagnifier.min.js",
   "devDependencies": {
     "css-loader": "^3.4.2",
     "source-map-loader": "^0.2.4",
