@@ -53,7 +53,7 @@ var ReactMagnifier = /** @class */ (function (_super) {
         /* Insert magnifier glass: */
         this.magnifiableImage.current.parentElement.insertBefore(glass, this.magnifiableImage.current);
         /* Set background properties for the magnifier glass: */
-        // glass.style.display = "none";
+        glass.style.display = "none";
         glass.style.width = this.props.magnifierWidth + "px";
         glass.style.height = this.props.magnifierHeight + "px";
         glass.style.borderRadius = this.props.magnifierRadius + "%";
@@ -118,18 +118,18 @@ var ReactMagnifier = /** @class */ (function (_super) {
             y = y - window.pageYOffset;
             return { x: x, y: y };
         };
-        // const showMagnifier = (e: any) => {
-        //    e.preventDefault();
-        //    glass.style.display = "block";
-        // };
-        // const hideMagnifier = (e: any) => {
-        //    e.preventDefault();
-        //    glass.style.display = "none";
-        // };
-        // glass.addEventListener("mouseenter", moveMagnifier);
-        // this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
-        // glass.addEventListener("mouseleave", moveMagnifier);
-        // this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
+        var showMagnifier = function (e) {
+            e.preventDefault();
+            glass.style.display = "block";
+        };
+        var hideMagnifier = function (e) {
+            e.preventDefault();
+            glass.style.display = "none";
+        };
+        glass.addEventListener("mouseenter", showMagnifier);
+        this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
+        glass.addEventListener("mouseleave", hideMagnifier);
+        this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
         /* Execute a function when someone moves the magnifier glass over the image: */
         glass.addEventListener("mousemove", moveMagnifier);
         this.magnifiableImage.current.addEventListener("mousemove", moveMagnifier);

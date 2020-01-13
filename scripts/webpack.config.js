@@ -24,7 +24,7 @@ module.exports = env => {
          minimize: env && env.production === true ? true : false
       },
       //set webpack bundle entry point
-      entry: path.resolve(__dirname, "../", "src/ReactMagnifier/ReactMagnifier.js"),
+      entry: path.resolve(__dirname, "../", "src/export.js"),
       //set webpack bundle output
       output: {
          //set output target for UMD

@@ -92,7 +92,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/ReactMagnifier/ReactMagnifier.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/export.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -3138,6 +3138,8 @@ var __extends = undefined && undefined.__extends || function () {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
+/* eslint-disable import/first */
+
 
 
 
@@ -3191,6 +3193,7 @@ function (_super) {
     this.magnifiableImage.current.parentElement.insertBefore(glass, this.magnifiableImage.current);
     /* Set background properties for the magnifier glass: */
 
+    glass.style.display = "none";
     glass.style.width = this.props.magnifierWidth + "px";
     glass.style.height = this.props.magnifierHeight + "px";
     glass.style.borderRadius = this.props.magnifierRadius + "%";
@@ -3263,8 +3266,22 @@ function (_super) {
         y: y
       };
     };
-    /* Execute a function when someone moves the magnifier glass over the image: */
 
+    var showMagnifier = function (e) {
+      e.preventDefault();
+      glass.style.display = "block";
+    };
+
+    var hideMagnifier = function (e) {
+      e.preventDefault();
+      glass.style.display = "none";
+    };
+
+    glass.addEventListener("mouseenter", showMagnifier);
+    this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
+    glass.addEventListener("mouseleave", hideMagnifier);
+    this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
+    /* Execute a function when someone moves the magnifier glass over the image: */
 
     glass.addEventListener("mousemove", moveMagnifier);
     this.magnifiableImage.current.addEventListener("mousemove", moveMagnifier);
@@ -3334,6 +3351,22 @@ var update = __webpack_require__(/*! ../../node_modules/style-loader/dist/runtim
 if (content.locals) {
   module.exports = content.locals;
 }
+
+
+/***/ }),
+
+/***/ "./src/export.js":
+/*!***********************!*\
+  !*** ./src/export.js ***!
+  \***********************/
+/*! exports provided: ReactMagnifier */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ReactMagnifier_ReactMagnifier__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReactMagnifier/ReactMagnifier */ "./src/ReactMagnifier/ReactMagnifier.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ReactMagnifier", function() { return _ReactMagnifier_ReactMagnifier__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
 
 
 /***/ })
