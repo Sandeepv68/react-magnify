@@ -1,18 +1,50 @@
+/**
+ * ReactMagnifier v0.0.1
+ * A simple configurable react plugin to perform image magnification
+ * written by: Sandeep Vattapparambil
+ * email: sandeepv68@gmail.com
+ */
 /* eslint-disable import/first */
+
+/**
+ * Import react library
+ */
 import * as React from "react";
+
+/**
+ * Import ReactMagnifierProps and ReactMagnifierDefaultState interfaces
+ */
 import { ReactMagnifierProps, ReactMagnifierDefaultState } from "./ReactMagnifier.Interface";
 
+/**
+ * Import component stylesheets
+ */
 import "./style.css";
 
+/**
+ * @class ReactMagnifier
+ * @extends React.Component
+ * @typeparam ReactMagnifierProps {Interface} - The input props interface
+ * @typeparam ReactMagnifierDefaultState {Interface} - The default state interface
+ */
 export default class ReactMagnifier extends React.Component<
    ReactMagnifierProps,
    ReactMagnifierDefaultState
 > {
+   /**
+    * @constant magnifiableImage - React element reference for image to be magnified
+    * @constant imageContainer - React element reference for the conatiner of image to be magnified
+    * @constant reactMagnifierGlassClass - CSS class for the magnifier
+    * @constant imageUrlMissingError - Input image prop validation error message
+    */
    private magnifiableImage: React.RefObject<HTMLImageElement>;
    private imageContainer: React.RefObject<HTMLDivElement>;
    private reactMagnifierGlassClass: string;
    private imageUrlMissingError: string;
 
+   /**
+    * Set default props
+    */
    public static defaultProps = {
       imageUrl: "",
       imageAltText: "react-magnifier-image",
@@ -37,6 +69,10 @@ export default class ReactMagnifier extends React.Component<
       this.imageUrlMissingError = "Image url is missing!";
    }
 
+   /**
+    * Once component is mounted, validate props and render the magnifier
+    * or throw error if props are invalid
+    */
    componentDidMount() {
       if (this.isValidProp(this.props.imageUrl)) {
          return this.magnify();
@@ -45,10 +81,19 @@ export default class ReactMagnifier extends React.Component<
       }
    }
 
+   /**
+    * re-render magnifier upon component updation
+    */
    componentDidUpdate() {
       return this.magnify();
    }
 
+   /**
+    * @function isValidProp
+    * A helper function to validate input props
+    * @param prop {String} - The prop to be validated
+    * @returns Returns true or false
+    */
    private isValidProp(prop: string): boolean {
       if (prop && prop !== null && prop !== undefined && prop !== "") {
          return true;
@@ -57,6 +102,10 @@ export default class ReactMagnifier extends React.Component<
       }
    }
 
+   /**
+    * @function magnify
+    * A helper to render magnified image and magnifier with input props
+    */
    private magnify(): void {
       let w: number;
       let h: number;
