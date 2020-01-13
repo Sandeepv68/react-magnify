@@ -235,3 +235,6 @@ export default class ReactMagnifier extends React.Component<
       );
    }
 }
+
+
+// TODO: events
