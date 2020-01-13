@@ -3,6 +3,7 @@
 }
 
 .react-magnifier-image-container {
+  display:inline-block;
   position: relative;
 }
 
@@ -13,4 +14,5 @@
   cursor: none;
   height: 100px;
   width: 100px;
+  z-index: 999999;
 }

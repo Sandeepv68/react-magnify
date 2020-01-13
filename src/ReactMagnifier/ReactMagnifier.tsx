@@ -7,8 +7,9 @@ import "./style.css";
 export default class ReactMagnifier extends React.Component<
    ReactMagnifierProps,
    ReactMagnifierDefaultState
-   > {
+> {
    private magnifiableImage: React.RefObject<HTMLImageElement>;
+   private imageContainer: React.RefObject<HTMLDivElement>;
    private reactMagnifierGlassClass: string;
    private imageUrlMissingError: string;
 
@@ -30,6 +31,7 @@ export default class ReactMagnifier extends React.Component<
    constructor(props: ReactMagnifierProps) {
       super(props);
       this.magnifiableImage = React.createRef();
+      this.imageContainer = React.createRef();
       this.reactMagnifierGlassClass = "react-magnifier-glass";
       this.imageUrlMissingError = "Image url is missing!";
    }
@@ -70,7 +72,7 @@ export default class ReactMagnifier extends React.Component<
       );
 
       /* Set background properties for the magnifier glass: */
-      // glass.style.display = "none";
+      glass.style.visibility = "hidden";
       glass.style.width = `${this.props.magnifierWidth}px`;
       glass.style.height = `${this.props.magnifierHeight}px`;
       glass.style.borderRadius = `${this.props.magnifierRadius}%`;
@@ -95,7 +97,7 @@ export default class ReactMagnifier extends React.Component<
          /* Prevent any other actions that may occur when moving over the image */
          e.preventDefault();
          /* Get the cursor's x and y positions: */
-         pos = getCursorPos(e);         
+         pos = getCursorPos(e);
          x = pos.x;
          y = pos.y;
          /* Prevent the magnifier glass from being positioned outside the image: */
@@ -139,21 +141,16 @@ export default class ReactMagnifier extends React.Component<
          return { x: x, y: y };
       };
 
-      // const showMagnifier = (e: any) => {
-      //    e.preventDefault();
-      //    glass.style.display = "block";
-      // };
+      const showMagnifier = (e: any) => {
+         glass.style.visibility = "visible";
+      };
 
-      // const hideMagnifier = (e: any) => {
-      //    e.preventDefault();
-      //    glass.style.display = "none";
-      // };
+      const hideMagnifier = (e: any) => {
+         glass.style.visibility = "hidden";
+      };
 
-      // glass.addEventListener("mouseenter", showMagnifier);
-      // this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
-
-      // glass.addEventListener("mouseleave", hideMagnifier);
-      // this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
+      this.imageContainer.current.addEventListener("mouseenter", showMagnifier);
+      this.imageContainer.current.addEventListener("mouseleave", hideMagnifier);
 
       /* Execute a function when someone moves the magnifier glass over the image: */
       glass.addEventListener("mousemove", moveMagnifier);
@@ -173,7 +170,7 @@ export default class ReactMagnifier extends React.Component<
 
    render() {
       return (
-         <div className="react-magnifier-image-container">
+         <div className="react-magnifier-image-container" ref={this.imageContainer}>
             <img
                ref={this.magnifiableImage}
                src={this.props.imageUrl}
