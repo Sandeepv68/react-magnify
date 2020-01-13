@@ -4,6 +4,7 @@
 ReactMagnifier is a simple and highly configurable react plugin to perform image magnification. ReactMagnifier is **UMD** module, so it can be used isomorphically.
 
 ## Table of Contents
+
 <!--ts-->
 * [About](#reactmagnifier-v001)
 * [Installation](#installation)
