@@ -7,7 +7,7 @@ import "./style.css";
 export default class ReactMagnifier extends React.Component<
    ReactMagnifierProps,
    ReactMagnifierDefaultState
-> {
+   > {
    private magnifiableImage: React.RefObject<HTMLImageElement>;
    private reactMagnifierGlassClass: string;
    private imageUrlMissingError: string;
@@ -70,7 +70,7 @@ export default class ReactMagnifier extends React.Component<
       );
 
       /* Set background properties for the magnifier glass: */
-      glass.style.display = "none";
+      // glass.style.display = "none";
       glass.style.width = `${this.props.magnifierWidth}px`;
       glass.style.height = `${this.props.magnifierHeight}px`;
       glass.style.borderRadius = `${this.props.magnifierRadius}%`;
@@ -95,7 +95,7 @@ export default class ReactMagnifier extends React.Component<
          /* Prevent any other actions that may occur when moving over the image */
          e.preventDefault();
          /* Get the cursor's x and y positions: */
-         pos = getCursorPos(e);
+         pos = getCursorPos(e);         
          x = pos.x;
          y = pos.y;
          /* Prevent the magnifier glass from being positioned outside the image: */
@@ -139,21 +139,21 @@ export default class ReactMagnifier extends React.Component<
          return { x: x, y: y };
       };
 
-      const showMagnifier = (e: any) => {
-         e.preventDefault();
-         glass.style.display = "block";
-      };
+      // const showMagnifier = (e: any) => {
+      //    e.preventDefault();
+      //    glass.style.display = "block";
+      // };
 
-      const hideMagnifier = (e: any) => {
-         e.preventDefault();
-         glass.style.display = "none";
-      };
+      // const hideMagnifier = (e: any) => {
+      //    e.preventDefault();
+      //    glass.style.display = "none";
+      // };
 
-      glass.addEventListener("mouseenter", showMagnifier);
-      this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
+      // glass.addEventListener("mouseenter", showMagnifier);
+      // this.magnifiableImage.current.addEventListener("mouseenter", showMagnifier);
 
-      glass.addEventListener("mouseleave", hideMagnifier);
-      this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
+      // glass.addEventListener("mouseleave", hideMagnifier);
+      // this.magnifiableImage.current.addEventListener("mouseleave", hideMagnifier);
 
       /* Execute a function when someone moves the magnifier glass over the image: */
       glass.addEventListener("mousemove", moveMagnifier);
