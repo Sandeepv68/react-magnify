@@ -3,10 +3,20 @@
 
 ReactMagnifier is a simple and highly configurable react plugin to perform image magnification. ReactMagnifier is a **UMD** module, so it can be used isomorphically.
 
+## Features
+* Light weight (18 KB minified)
+* Written in Typescript
+* Highly customizable
+* Supports touch screens as well
+* Supports event listeners 
+* Supports all kinds of images and image urls, high resolutions as well
+* Supports custom css styles
+
 ## Table of Contents
 
 <!--ts-->
 * [About](#reactmagnifier-v001)
+* [Features](#features)
 * [Installation](#installation)
 * [Sample Usage](#sample-usage)
 * [Dependency](#dependency)
@@ -23,8 +33,33 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 <!--te-->
 
 ## Installation
-
+Install the package from NPM using:
+```sh
+npm i react-magnifier
+```
 ## Sample Usage
+Add the component to your project using:
+```js
+import ReactMagnifier from "./ReactMagnifier/ReactMagnifier";
+import image from './path/image";
+
+ <ReactMagnifier
+      zoomSize={3}
+      imageHeight={400}
+      imageWidth={600}
+      magnifierHeight={200}
+      magnifierWidth={200}
+      magnifierRadius={50}
+      magnifierBorderColor={"white"}
+      magnifierBorderStyle={"solid"}
+      magnifierBorderWidth={2}
+      cursor={"none"}
+      imageUrl={image}
+      getMagnifier={showEvent}
+      customImgStyles={'myClass'}
+      customContainerStyles={'aClass'}
+   />
+```
 
 ## Dependency
 
