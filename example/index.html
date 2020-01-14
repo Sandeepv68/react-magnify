@@ -3,12 +3,128 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Hello React!</title>
+    <title>React Magnifier v0.0.1</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        .hero-title {
+            color: #0d47a1;
+        }
+
+        .description {
+            background: #e6f2ff;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #b3d9ff;
+        }
+
+        .prop-table {
+            margin: 0 auto;
+        }
+
+        .prop-table thead tr th,
+        .prop-table tbody tr td {
+            border: 1px solid;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="root"></div>
+    <div class="hero-title">
+        <h1>React Magnifier v0.0.1 Examples</h1>
+        <p>This component accepts the following props</p>
+        <table class="prop-table">
+            <thead>
+                <tr>
+                    <th>Pops</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>zoomSize</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>imageHeight</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>imageWidth</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>magnifierHeight</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>magnifierWidth</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>magnifierRadius</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>magnifierBorderColor</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>magnifierBorderStyle</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>magnifierBorderWidth</td>
+                    <td>number</td>
+                </tr>
+                <tr>
+                    <td>cursor</td>
+                    <td>string</td>
+                </tr>
+                <tr>
+                    <td>imageUrl</td>
+                    <td>number</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="example1" class="container"></div>
+    <p><span class="description"><strong>Input Props: </strong>zoomSize: 3,
+            imageHeight: 400,
+            imageWidth: 600,
+            magnifierHeight: 200,
+            magnifierWidth: 200,
+            magnifierRadius: 50,
+            magnifierBorderColor: "white",
+            magnifierBorderStyle: "solid",
+            magnifierBorderWidth: 2,
+            cursor: "none",
+        </span></p>
 
+    <div id="example2" class="container"></div>
+    <p><span class="description"><strong>Input Props: </strong>
+            zoomSize: 6,
+            imageHeight: 600,
+            imageWidth: 400,
+            magnifierHeight: 200,
+            magnifierWidth: 200,
+            magnifierRadius: 10,
+            magnifierBorderColor: "red",
+            magnifierBorderStyle: "solid",
+            magnifierBorderWidth: 5,
+            cursor: "none",
+        </span></p>
     <!-- Dependencies -->
     <script src="../node_modules/react/umd/react.development.js"></script>
     <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
@@ -28,8 +144,23 @@
             magnifierBorderStyle: "solid",
             magnifierBorderWidth: 2,
             cursor: "none",
-            imageUrl: "https://images.unsplash.com/photo-1578663248901-198b64da244e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-        }), document.getElementById("root"));
+            imageUrl: "https://images.unsplash.com/photo-1578972525442-098f3f2c63d3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+        }), document.getElementById("example1"));
+
+        ReactDOM.render(React.createElement(ReactMagnifier.ReactMagnifier, {
+            zoomSize: 6,
+            imageHeight: 600,
+            imageWidth: 400,
+            magnifierHeight: 200,
+            magnifierWidth: 200,
+            magnifierRadius: 10,
+            magnifierBorderColor: "red",
+            magnifierBorderStyle: "solid",
+            magnifierBorderWidth: 5,
+            cursor: "none",
+            imageUrl: "https://images.unsplash.com/photo-1578937014712-863891625b1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+        }), document.getElementById("example2"));
+
     </script>
 </body>
 
