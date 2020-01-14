@@ -1,7 +1,7 @@
 ![reactmagnifier-logo](logo/logo.png)
 # ReactMagnifier v0.0.1
 
-ReactMagnifier is a simple and highly configurable react plugin to perform image magnification. ReactMagnifier is **UMD** module, so it can be used isomorphically.
+ReactMagnifier is a simple and highly configurable react plugin to perform image magnification. ReactMagnifier is a **UMD** module, so it can be used isomorphically.
 
 ## Table of Contents
 
