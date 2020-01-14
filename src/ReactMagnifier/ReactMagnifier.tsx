@@ -176,6 +176,8 @@ export default class ReactMagnifier extends React.Component<
             "px -" +
             (y * this.props.zoomSize - h + bw) +
             "px";
+
+         this.triggerEvent("magnfier-moved", this.imageContainer.current);
       };
 
       const getCursorPos = (e: any) => {
@@ -197,11 +199,13 @@ export default class ReactMagnifier extends React.Component<
       const showMagnifier = (e: any) => {
          glass.classList.remove("hide-magnifier");
          glass.classList.add("show-magnifier");
+         this.triggerEvent("magnfier-visible", this.imageContainer.current);
       };
 
       const hideMagnifier = (e: any) => {
          glass.classList.remove("show-magnifier");
          glass.classList.add("hide-magnifier");
+         this.triggerEvent("magnfier-invisible", this.imageContainer.current);
       };
 
       this.imageContainer.current.addEventListener("mouseenter", showMagnifier);
@@ -214,13 +218,30 @@ export default class ReactMagnifier extends React.Component<
       /*and also for touch screens:*/
       glass.addEventListener("touchmove", moveMagnifier);
       this.magnifiableImage.current.addEventListener("touchmove", moveMagnifier);
+
+      this.triggerEvent("magnfier-initialized", this.imageContainer.current);
    }
 
+   /**
+    * @function logError
+    * A helper function to log custom error messages
+    */
    private logError(): void {
       console.log(
          `%c ReactMagnifier Error: ${this.imageUrlMissingError}. \n<ReactMagnifier imageUrl={url}/> is required.`,
          "background: #FCEBB6; color: #F07818; font-size: 17px; font-weight: bold;"
       );
+   }
+
+   /**
+    * @function triggerEvent
+    * A helper to dispatch custom events
+    * @param eventType {String} - The name/type of event
+    * @param element {HTMLElement} - The DOM element/React component which dispatched the event
+    */
+   private triggerEvent(eventType: string, element: HTMLElement): void {
+      let event = new CustomEvent(eventType);
+      element.dispatchEvent(event);
    }
 
    render() {
