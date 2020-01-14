@@ -4,6 +4,12 @@ import "./index.css";
 import ReactMagnifier from "./ReactMagnifier/ReactMagnifier";
 import * as serviceWorker from "./serviceWorker";
 
+function showEvent(data: any): void {
+   data.addEventListener("magnifier-initialized", (e: any): void => {
+      console.log(e);
+   });
+}
+
 ReactDOM.render(
    <ReactMagnifier
       zoomSize={3}
@@ -17,6 +23,7 @@ ReactDOM.render(
       magnifierBorderWidth={2}
       cursor={"none"}
       imageUrl="https://images.unsplash.com/photo-1578663248901-198b64da244e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+      getMagnifier={showEvent}
    />,
    document.getElementById("root")
 );

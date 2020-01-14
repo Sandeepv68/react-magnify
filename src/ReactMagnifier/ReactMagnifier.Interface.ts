@@ -12,6 +12,7 @@ export interface ReactMagnifierProps {
    magnifierShadow: boolean;
    cursor: string;
    zoomSize: number;
+   getMagnifier: Function;
 }
 
 export interface ReactMagnifierDefaultState {}

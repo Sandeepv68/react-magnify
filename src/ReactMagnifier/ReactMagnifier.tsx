@@ -58,7 +58,8 @@ export default class ReactMagnifier extends React.Component<
       magnifierBorderWidth: 3,
       magnifierShadow: true,
       cursor: "none",
-      zoomSize: 2
+      zoomSize: 2,
+      getMagnifier: () => {}
    };
 
    constructor(props: ReactMagnifierProps) {
@@ -74,6 +75,7 @@ export default class ReactMagnifier extends React.Component<
     * or throw error if props are invalid
     */
    componentDidMount() {
+      this.props.getMagnifier(this.imageContainer.current);
       if (this.isValidProp(this.props.imageUrl)) {
          return this.magnify();
       } else {
@@ -85,6 +87,7 @@ export default class ReactMagnifier extends React.Component<
     * re-render magnifier upon component updation
     */
    componentDidUpdate() {
+      this.props.getMagnifier(this.imageContainer.current);
       return this.magnify();
    }
 
@@ -219,7 +222,7 @@ export default class ReactMagnifier extends React.Component<
       glass.addEventListener("touchmove", moveMagnifier);
       this.magnifiableImage.current.addEventListener("touchmove", moveMagnifier);
 
-      this.triggerEvent("magnfier-initialized", this.imageContainer.current);
+      this.triggerEvent("magnifier-initialized", this.imageContainer.current);
    }
 
    /**
@@ -237,10 +240,10 @@ export default class ReactMagnifier extends React.Component<
     * @function triggerEvent
     * A helper to dispatch custom events
     * @param eventType {String} - The name/type of event
-    * @param element {HTMLElement} - The DOM element/React component which dispatched the event
+    * @param element {any} - The DOM element/React component which dispatched the event
     */
    private triggerEvent(eventType: string, element: HTMLElement): void {
-      let event = new CustomEvent(eventType);
+      let event = new CustomEvent(eventType, { detail: element });
       element.dispatchEvent(event);
    }
 
@@ -258,5 +261,3 @@ export default class ReactMagnifier extends React.Component<
       );
    }
 }
-
-// TODO: events
