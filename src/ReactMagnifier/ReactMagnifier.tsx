@@ -59,7 +59,9 @@ export default class ReactMagnifier extends React.Component<
       magnifierShadow: true,
       cursor: "none",
       zoomSize: 2,
-      getMagnifier: () => {}
+      getMagnifier: () => {},
+      customImgStyles: "",
+      customContainerStyles: ""
    };
 
    constructor(props: ReactMagnifierProps) {
@@ -307,9 +309,13 @@ export default class ReactMagnifier extends React.Component<
 
    render() {
       return (
-         <div className="react-magnifier-image-container" ref={this.imageContainer}>
+         <div
+            className={`react-magnifier-image-container ${this.props.customContainerStyles}`}
+            ref={this.imageContainer}
+         >
             <img
                ref={this.magnifiableImage}
+               className={this.props.customImgStyles}
                src={this.props.imageUrl}
                width={this.props.imageWidth}
                height={this.props.imageHeight}
