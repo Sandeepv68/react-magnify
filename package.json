@@ -25,7 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-tsc": "tsc",
+    "build-tsc": "tsc --p tsconfig_tsc.json",
     "build-dist": "webpack --config=./scripts/webpack.config.js --env.production",
     "build-dev": "webpack --config=./scripts/webpack.config.js --env.development"
   },
