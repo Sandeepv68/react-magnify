@@ -277,6 +277,9 @@ export default class ReactMagnifier extends React.Component<
       glass.addEventListener("touchmove", moveMagnifier);
       this.magnifiableImage.current.addEventListener("touchmove", moveMagnifier);
 
+      /**
+       * trigger "magnfier-initialized" custom event
+       */
       this.triggerEvent("magnifier-initialized", this.imageContainer.current);
    }
 
