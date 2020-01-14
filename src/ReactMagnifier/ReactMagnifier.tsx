@@ -195,12 +195,12 @@ export default class ReactMagnifier extends React.Component<
       };
 
       const showMagnifier = (e: any) => {
-         // glass.style.visibility = "visible";
+         glass.classList.remove("hide-magnifier");
          glass.classList.add("show-magnifier");
       };
 
       const hideMagnifier = (e: any) => {
-         // glass.style.visibility = "hidden";
+         glass.classList.remove("show-magnifier");
          glass.classList.add("hide-magnifier");
       };
 
