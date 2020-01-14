@@ -122,7 +122,7 @@ export default class ReactMagnifier extends React.Component<
       );
 
       /* Set background properties for the magnifier glass: */
-      glass.style.visibility = "hidden";
+      glass.classList.add("hide-magnifier");
       glass.style.width = `${this.props.magnifierWidth}px`;
       glass.style.height = `${this.props.magnifierHeight}px`;
       glass.style.borderRadius = `${this.props.magnifierRadius}%`;
@@ -195,11 +195,13 @@ export default class ReactMagnifier extends React.Component<
       };
 
       const showMagnifier = (e: any) => {
-         glass.style.visibility = "visible";
+         // glass.style.visibility = "visible";
+         glass.classList.add("show-magnifier");
       };
 
       const hideMagnifier = (e: any) => {
-         glass.style.visibility = "hidden";
+         // glass.style.visibility = "hidden";
+         glass.classList.add("hide-magnifier");
       };
 
       this.imageContainer.current.addEventListener("mouseenter", showMagnifier);
@@ -235,6 +237,5 @@ export default class ReactMagnifier extends React.Component<
       );
    }
 }
-
 
 // TODO: events
