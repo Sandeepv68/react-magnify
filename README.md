@@ -33,6 +33,7 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
     * [Events](#events)
 * [Contributing](#contributing)
 * [Tests](#tests)
+* [Technologies Used](#technologies-used)
 * [License](#license)
 * [Acknowledgements](#acknowledgements)
 <!--te-->
@@ -179,6 +180,9 @@ This project includes unit tests written in `Jest` testing library. Tests can be
 ```sh
 npm run test
 ```
+## Technologies Used
+
+![technologies-used](logo/tech_stack.png)
 
 ## License
 
