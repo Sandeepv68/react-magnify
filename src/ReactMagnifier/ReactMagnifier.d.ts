@@ -51,6 +51,8 @@ export default class ReactMagnifier extends React.Component<ReactMagnifierProps,
         cursor: string;
         zoomSize: number;
         getMagnifier: () => void;
+        customImgStyles: string;
+        customContainerStyles: string;
     };
     constructor(props: ReactMagnifierProps);
     /**

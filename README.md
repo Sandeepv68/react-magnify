@@ -56,7 +56,7 @@ Add the component to your project using:
 
 ```js
 import ReactMagnifier from "@sandeepv68/react-magnifier";
-import image from './path/image";
+import image from "./path/image";
 
  <ReactMagnifier
       imageUrl={image}

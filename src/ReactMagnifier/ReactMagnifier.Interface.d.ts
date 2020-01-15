@@ -13,6 +13,8 @@ export interface ReactMagnifierProps {
     cursor: string;
     zoomSize: number;
     getMagnifier: Function;
+    customImgStyles: string;
+    customContainerStyles: string;
 }
 export interface ReactMagnifierDefaultState {
 }

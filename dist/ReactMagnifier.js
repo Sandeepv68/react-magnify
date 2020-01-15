@@ -3421,10 +3421,11 @@ function (_super) {
 
   ReactMagnifier.prototype.render = function () {
     return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-      className: "react-magnifier-image-container",
+      className: "react-magnifier-image-container " + this.props.customContainerStyles,
       ref: this.imageContainer
     }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", {
       ref: this.magnifiableImage,
+      className: this.props.customImgStyles,
       src: this.props.imageUrl,
       width: this.props.imageWidth,
       height: this.props.imageHeight,
@@ -3450,7 +3451,9 @@ function (_super) {
     magnifierShadow: true,
     cursor: "none",
     zoomSize: 2,
-    getMagnifier: function () {}
+    getMagnifier: function () {},
+    customImgStyles: "",
+    customContainerStyles: ""
   };
   return ReactMagnifier;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
