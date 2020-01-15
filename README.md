@@ -129,6 +129,47 @@ These events can be used to trigger custom logic in your app when magnifier is i
 ## Contributing
 All suggestions and pull requests are welcome. Please read the [CODE_OF_CONDUCT](https://github.com/SandeepVattapparambil/react-magnify/blob/master/CODE_OF_CONDUCT.md) and [CONTRIBUTING](https://github.com/SandeepVattapparambil/react-magnify/blob/master/CONTRIBUTING.md) files before contributing.
 
+You can clone the repo from the following url:
+```sh
+git clone https://github.com/SandeepVattapparambil/react-magnify.git
+```
+Then in the repo root, you have the following npm scripts available in order of execution:
+
+* Install all the dependencies for development
+```sh
+npm i
+```
+
+* Run the project
+```sh
+npm start
+```
+
+* Run tests
+```sh
+npm run test
+```
+
+* Create production build for react source
+```sh
+npm run build
+```
+
+* Build typescript files
+```sh
+npm run build-tsc
+```
+
+* Create development build
+```sh
+npm run build-dev
+```
+
+* Create production build
+```sh
+npm run build-prod
+```
+
 ## Tests
 This project includes unit tests written in `Jest` testing library. Tests can be run by the npm script
 ```sh
@@ -136,6 +177,7 @@ npm run test
 ```
 
 ## License
+
 MIT License
 
 Copyright (c) 2020 Sandeep Vattapparambil [http://www.sandeepv.in](http://www.sandeepv.in)
@@ -159,6 +201,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ## Acknowledgements
+
 This project is inspired from [Blowup.js](https://paulkr.github.io/blowup.js/), but not copied or does not include any or part of it in this project.
 
 Made with :heart: by [Sandeep Vattapparambil](https://github.com/SandeepVattapparambil).
