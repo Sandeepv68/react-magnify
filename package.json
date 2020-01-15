@@ -70,6 +70,5 @@
   "homepage": "https://github.com/SandeepVattapparambil/react-magnify#readme",
   "directories": {
     "example": "example"
-  },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+  }
 }
