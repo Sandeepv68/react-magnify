@@ -11,6 +11,7 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 * Supports event listeners 
 * Supports all kinds of images and image urls, high resolutions as well
 * Supports custom css styles
+* Supports client-side react apps as well as server-side rendered react apps
 
 ## Table of Contents
 
@@ -35,12 +36,12 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 ## Installation
 Install the package from NPM using:
 ```sh
-npm i react-magnifier
+npm i @react-ui-lib/react-magnifier
 ```
 ## Sample Usage
 Add the component to your project using:
 ```js
-import ReactMagnifier from "./ReactMagnifier/ReactMagnifier";
+import ReactMagnifier from "@react-ui-lib/react-magnifier";
 import image from './path/image";
 
  <ReactMagnifier
