@@ -31,6 +31,7 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 * [API Documentation](#api-documentation)
     * [Props](#props)
     * [Events](#events)
+* [Contributing](#contributing)
 * [Tests](#tests)
 * [License](#license)
 * [Acknowledgements](#acknowledgements)
