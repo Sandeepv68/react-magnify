@@ -15,6 +15,7 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 * Supports all kinds of images and image urls, high resolutions as well
 * Supports custom css styles
 * Supports client-side react apps as well as server-side rendered react apps
+* No jQuery
 
 ## Table of Contents
 
@@ -169,6 +170,8 @@ npm run build-dev
 ```sh
 npm run build-prod
 ```
+
+You need to have `Nodejs` ,`npm` in your system as development dependency.
 
 ## Tests
 This project includes unit tests written in `Jest` testing library. Tests can be run by the npm script
