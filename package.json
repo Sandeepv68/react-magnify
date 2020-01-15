@@ -1,7 +1,7 @@
 {
-  "name": "react-magnify",
+  "name": "@react-ui-lib/react-magnifier",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -67,5 +67,8 @@
   "bugs": {
     "url": "https://github.com/SandeepVattapparambil/react-magnify/issues"
   },
-  "homepage": "https://github.com/SandeepVattapparambil/react-magnify#readme"
+  "homepage": "https://github.com/SandeepVattapparambil/react-magnify#readme",
+  "directories": {
+    "example": "example"
+  }
 }
