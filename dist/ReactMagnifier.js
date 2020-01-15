@@ -3116,7 +3116,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.css */ "./src/ReactMagnifier/style.css");
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_style_css__WEBPACK_IMPORTED_MODULE_1__);
 /**
- * ReactMagnifier v0.0.3
+ * ReactMagnifier v0.0.4
  * A simple configurable react plugin to perform image magnification
  * written by: Sandeep Vattapparambil
  * email: sandeepv68@gmail.com

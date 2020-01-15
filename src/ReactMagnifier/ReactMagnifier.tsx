@@ -1,5 +1,5 @@
 /**
- * ReactMagnifier v0.0.3
+ * ReactMagnifier v0.0.4
  * A simple configurable react plugin to perform image magnification
  * written by: Sandeep Vattapparambil
  * email: sandeepv68@gmail.com
