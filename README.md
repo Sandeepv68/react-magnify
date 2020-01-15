@@ -28,6 +28,8 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 * [Changelog](#changelog)
     * [v0.0.1](#v001)
 * [API Documentation](#api-documentation)
+    * [Props](#props)
+    * [Events](#events)
 * [Tests](#tests)
 * [License](#license)
 * [Acknowledgements](#acknowledgements)
@@ -106,7 +108,7 @@ The following table gives all the possible input props and its default values an
 | `magnifierBorderStyle` | *String* | no | `solid` | Border style of the magnifier |
 | `magnifierBorderWidth` | *Number* | no | 3 | Border width of the magnifier |
 | `magnifierShadow` | *Boolean* | no | `true` | Box shadow for the magnifier|
-| `cursor` | *String* | no | `none` | Mouse cursor on magnifier |
+| `cursor` | *String* | no | `none` | Type of mouse cursor on magnifier |
 | `zoomSize` | *Number* | no | 2 | Magnification factor |
 | `getMagnifier` | *Function* | no | empty | Get reference to the image under magnification. The function prop returns the html element. It also includes custom events fired inside the component. |
 | `customImgStyles` | *String* | no | empty | White space separated CSS class names in a single string format. It can be used to override the styles of react magnifier, example : `myClass newClass ..` |
