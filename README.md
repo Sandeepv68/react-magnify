@@ -18,6 +18,7 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 <!--ts-->
 * [About](#reactmagnifier-v001)
 * [Features](#features)
+* [Demo](#demo)
 * [Installation](#installation)
 * [Sample Usage](#sample-usage)
 * [Dependency](#dependency)
@@ -32,6 +33,8 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 * [License](#license)
 * [Acknowledgements](#acknowledgements)
 <!--te-->
+## Demo
+![demo-gif](logo/sample.gif)
 
 ## Installation
 Install the package from NPM using:
