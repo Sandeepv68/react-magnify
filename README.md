@@ -1,6 +1,6 @@
 ![reactmagnifier-logo](logo/logo.png)
 
-# ReactMagnifier v0.0.1
+# ReactMagnifier v0.0.3
 
 ReactMagnifier is a simple and highly configurable react plugin to perform image magnification. This is a **UMD** module, so it can be used isomorphically.
 > **Note:** The name of the npm package is @sandeepv68/react-magnifier
@@ -20,14 +20,14 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 ## Table of Contents
 
 <!--ts-->
-* [About](#reactmagnifier-v001)
+* [About](#reactmagnifier-v003)
 * [Features](#features)
 * [Demo](#demo)
 * [Installation](#installation)
 * [Sample Usage](#sample-usage)
 * [Dependency](#dependency)
 * [Changelog](#changelog)
-    * [v0.0.1](#v001)
+    * [v0.0.3](#v003)
 * [API Documentation](#api-documentation)
     * [Props](#props)
     * [Events](#events)
@@ -87,7 +87,7 @@ This component requires the following node modules as its dependency:
 
 ## Changelog
 
-#### v0.0.1
+#### v0.0.3
 
 * Initial stable build
 * Includes all essential features and cuistomizations
@@ -213,3 +213,5 @@ SOFTWARE.
 This project is inspired from [Blowup.js](https://paulkr.github.io/blowup.js/), but not copied or does not include any or part of it in this project.
 
 Made with :heart: by [Sandeep Vattapparambil](https://github.com/SandeepVattapparambil).
+
+All images used in demos and documentations are from [Unsplash.com](https://unsplash.com)
