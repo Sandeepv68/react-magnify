@@ -102,8 +102,8 @@ The following table gives all the possible input props and its default values an
 | :-- | :-- | :-- | :-- | :-- |
 | **`imageUrl`** | *String* | yes | empty | Url string for the image to be displayed and magnified.This is a mandatory prop. If not supplied, the component will throw <br/>`ReactMagnifier Error: Image url is missing!. <ReactMagnifier imageUrl={url}/> is required.` <br/>error in console, but will not break your apps ui.| 
 | `imageAltText` | *String* | no | `react-magnifier-image` | The `alt` text value for the image |
-| `imageHeight` | *Number* | no | 200 | Height of the image |
-| `imageWidth` | *Number* | no | 200 | Width of the image |
+| `imageHeight` | *Number* | no | `auto` | Height of the image. If no value is provided, it preserves auto. |
+| `imageWidth` | *Number* | no | `auto` | Width of the image. If no value is provided, it preserves auto. |
 | `magnifierHeight` | *Number* | no | 100 | Height of the magnifier |
 | `magnifierWidth` | *Number* | no | 100 | Width of the magnifier |
 | `magnifierRadius` | *Number* | no | 50 | Border radius of the magnifier |
