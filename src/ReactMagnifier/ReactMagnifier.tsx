@@ -104,7 +104,7 @@ export default class ReactMagnifier extends React.Component<
    }
 
    /**
-    * Clear the component and remove all event listeners attached
+    * Clear the component and remove all the attached event listeners. 
     */
    componentWillUnmount() {
       this.glass.removeEventListener("mousemove", this.moveMagnifier);
