@@ -3172,6 +3172,100 @@ function (_super) {
   function ReactMagnifier(props) {
     var _this = _super.call(this, props) || this;
     /**
+     * @function moveMagnifier
+     * A helper function to move and position the magnifier when cursor is moved
+     * @param e - The event object
+     */
+
+
+    _this.moveMagnifier = function (e) {
+      var x;
+      var y;
+      var pos;
+      /**
+       * Prevent any other actions that may occur when moving over the image
+       */
+
+      e.preventDefault();
+      /**
+       * Get the cursor's x and y positions:
+       */
+
+      pos = _this.getCursorPos(e);
+      x = pos.x;
+      y = pos.y;
+      /**
+       * Prevent the magnifier glass from being positioned outside the image:
+       */
+
+      if (x > _this.magnifiableImage.current.width - _this.width / _this.props.zoomSize) {
+        x = _this.magnifiableImage.current.width - _this.width / _this.props.zoomSize;
+      }
+
+      if (x < _this.width / _this.props.zoomSize) {
+        x = _this.width / _this.props.zoomSize;
+      }
+
+      if (y > _this.magnifiableImage.current.height - _this.height / _this.props.zoomSize) {
+        y = _this.magnifiableImage.current.height - _this.height / _this.props.zoomSize;
+      }
+
+      if (y < _this.height / _this.props.zoomSize) {
+        y = _this.height / _this.props.zoomSize;
+      }
+      /**
+       * Set the position of the magnifier glass:
+       */
+
+
+      _this.glass.style.left = x - _this.width + "px";
+      _this.glass.style.top = y - _this.height + "px";
+      /**
+       * Display what the magnifier glass "sees":
+       */
+
+      _this.glass.style.backgroundPosition = "-" + (x * _this.props.zoomSize - _this.width + _this.pixelPadding) + "px -" + (y * _this.props.zoomSize - _this.height + _this.pixelPadding) + "px";
+      /**
+       * trigger "magnfier-moved" custom event
+       */
+
+      _this.triggerEvent("magnfier-moved", _this.imageContainer.current);
+    };
+    /**
+     * @function getCursorPos
+     * A helper function to get current position of cursor
+     * @param e - The event object
+     */
+
+
+    _this.getCursorPos = function (e) {
+      var a;
+      var x;
+      var y;
+      e = e || window.event;
+      /**
+       * Get the x and y positions of the image:
+       */
+
+      a = _this.magnifiableImage.current.getBoundingClientRect();
+      /**
+       * Calculate the cursor's x and y coordinates, relative to the image:
+       */
+
+      x = e.pageX - a.left;
+      y = e.pageY - a.top;
+      /**
+       * Consider any page scrolling:
+       */
+
+      x = x - window.pageXOffset;
+      y = y - window.pageYOffset;
+      return {
+        x: x,
+        y: y
+      };
+    };
+    /**
      * @function showMagnifier
      * A helper function to show magnifier and also to trigger a "magnfier-visible" customevent
      */
@@ -3203,6 +3297,9 @@ function (_super) {
     _this.reactMagnifierGlassClass = "react-magnifier-glass";
     _this.imageUrlMissingError = "Image url is missing!";
     _this.glass = null;
+    _this.pixelPadding = 3;
+    _this.width = 0;
+    _this.height = 0;
     return _this;
   }
   /**
@@ -3230,6 +3327,19 @@ function (_super) {
     return this.magnify();
   };
   /**
+   * Clear the component and remove all the attached event listeners.
+   */
+
+
+  ReactMagnifier.prototype.componentWillUnmount = function () {
+    this.glass.removeEventListener("mousemove", this.moveMagnifier);
+    this.glass.removeEventListener("touchmove", this.moveMagnifier);
+    this.imageContainer.current.removeEventListener("mouseenter", this.showMagnifier);
+    this.imageContainer.current.removeEventListener("mouseleave", this.hideMagnifier);
+    this.magnifiableImage.current.removeEventListener("mousemove", this.moveMagnifier);
+    this.magnifiableImage.current.removeEventListener("touchmove", this.moveMagnifier);
+  };
+  /**
    * @function isValidProp
    * A helper function to validate input props
    * @param prop {String} - The prop to be validated
@@ -3251,15 +3361,9 @@ function (_super) {
 
 
   ReactMagnifier.prototype.magnify = function () {
-    var _this = this;
-
-    var w;
-    var h;
-    var bw;
     /**
      * Create magnifier glass:
      */
-
     this.glass = document.createElement("DIV");
     this.glass.setAttribute("class", this.reactMagnifierGlassClass);
     /**
@@ -3281,117 +3385,22 @@ function (_super) {
     this.glass.style.backgroundImage = "url('" + this.magnifiableImage.current.src + "')";
     this.glass.style.backgroundRepeat = "no-repeat";
     this.glass.style.backgroundSize = this.magnifiableImage.current.width * this.props.zoomSize + "px " + this.magnifiableImage.current.height * this.props.zoomSize + "px";
-    bw = 3;
-    w = this.glass.offsetWidth / 2;
-    h = this.glass.offsetHeight / 2;
-    /**
-     * @function moveMagnifier
-     * A helper function to move and position the magnifier when cursor is moved
-     * @param e - The event object
-     */
-
-    var moveMagnifier = function (e) {
-      var x;
-      var y;
-      var pos;
-      /**
-       * Prevent any other actions that may occur when moving over the image
-       */
-
-      e.preventDefault();
-      /**
-       * Get the cursor's x and y positions:
-       */
-
-      pos = getCursorPos(e);
-      x = pos.x;
-      y = pos.y;
-      /**
-       * Prevent the magnifier glass from being positioned outside the image:
-       */
-
-      if (x > _this.magnifiableImage.current.width - w / _this.props.zoomSize) {
-        x = _this.magnifiableImage.current.width - w / _this.props.zoomSize;
-      }
-
-      if (x < w / _this.props.zoomSize) {
-        x = w / _this.props.zoomSize;
-      }
-
-      if (y > _this.magnifiableImage.current.height - h / _this.props.zoomSize) {
-        y = _this.magnifiableImage.current.height - h / _this.props.zoomSize;
-      }
-
-      if (y < h / _this.props.zoomSize) {
-        y = h / _this.props.zoomSize;
-      }
-      /**
-       * Set the position of the magnifier glass:
-       */
-
-
-      _this.glass.style.left = x - w + "px";
-      _this.glass.style.top = y - h + "px";
-      /**
-       * Display what the magnifier glass "sees":
-       */
-
-      _this.glass.style.backgroundPosition = "-" + (x * _this.props.zoomSize - w + bw) + "px -" + (y * _this.props.zoomSize - h + bw) + "px";
-      /**
-       * trigger "magnfier-moved" custom event
-       */
-
-      _this.triggerEvent("magnfier-moved", _this.imageContainer.current);
-    };
-    /**
-     * @function getCursorPos
-     * A helper function to get current position of cursor
-     * @param e - The event object
-     */
-
-
-    var getCursorPos = function (e) {
-      var a;
-      var x;
-      var y;
-      e = e || window.event;
-      /**
-       * Get the x and y positions of the image:
-       */
-
-      a = _this.magnifiableImage.current.getBoundingClientRect();
-      /**
-       * Calculate the cursor's x and y coordinates, relative to the image:
-       */
-
-      x = e.pageX - a.left;
-      y = e.pageY - a.top;
-      /**
-       * Consider any page scrolling:
-       */
-
-      x = x - window.pageXOffset;
-      y = y - window.pageYOffset;
-      return {
-        x: x,
-        y: y
-      };
-    };
-
+    this.width = this.glass.offsetWidth / 2;
+    this.height = this.glass.offsetHeight / 2;
     this.imageContainer.current.addEventListener("mouseenter", this.showMagnifier);
     this.imageContainer.current.addEventListener("mouseleave", this.hideMagnifier);
     /**
      * Execute a function when someone moves the magnifier glass over the image:
      */
 
-    this.glass.addEventListener("mousemove", moveMagnifier);
-    this.magnifiableImage.current.addEventListener("mousemove", moveMagnifier);
+    this.glass.addEventListener("mousemove", this.moveMagnifier);
+    this.magnifiableImage.current.addEventListener("mousemove", this.moveMagnifier);
     /**
      * and also for touch screens:
      */
 
-    this.glass.addEventListener("touchmove", moveMagnifier);
-    this.magnifiableImage.current.addEventListener("touchmove", moveMagnifier);
+    this.glass.addEventListener("touchmove", this.moveMagnifier);
+    this.magnifiableImage.current.addEventListener("touchmove", this.moveMagnifier);
     /**
      * trigger "magnfier-initialized" custom event
      */
