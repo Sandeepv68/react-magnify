@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+/src/**/*.js
+/src/*.js
+
+/src/**/*.ts
+/src/*d.ts
