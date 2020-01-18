@@ -1,4 +1,4 @@
-![reactmagnifier-logo](logo/logo.png)
+![reactmagnifier-logo](https://i.ibb.co/ZWKGhTm/logo.png)
 
 # ReactMagnifier v0.0.4
 
@@ -40,7 +40,7 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 
 ## Demo
 
-![demo-gif](logo/sample.gif)
+![demo-gif](https://i.ibb.co/cQdGjMJ/sample.gif)
 More examples and demos can be found in `example` folder in the root of the repo.
 
 ## Installation
@@ -182,7 +182,7 @@ npm run test
 ```
 ## Technologies Used
 
-![technologies-used](logo/tech_stack.png)
+![technologies-used](https://i.ibb.co/3vf5Td1/tech-stack.png)
 
 ## License
 
