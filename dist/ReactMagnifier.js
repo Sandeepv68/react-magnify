@@ -3440,8 +3440,8 @@ function (_super) {
   ReactMagnifier.defaultProps = {
     imageUrl: "",
     imageAltText: "react-magnifier-image",
-    imageWidth: 200,
-    imageHeight: 200,
+    imageWidth: 'auto',
+    imageHeight: 'auto',
     magnifierHeight: 100,
     magnifierWidth: 100,
     magnifierRadius: 50,

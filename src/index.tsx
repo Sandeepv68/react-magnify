@@ -15,8 +15,8 @@ ReactDOM.render(
       zoomSize={3}
       imageHeight={400}
       imageWidth={600}
-      magnifierHeight={200}
-      magnifierWidth={200}
+      // magnifierHeight={200}
+      // magnifierWidth={200}
       magnifierRadius={50}
       magnifierBorderColor={"white"}
       magnifierBorderStyle={"solid"}

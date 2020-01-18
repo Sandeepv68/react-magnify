@@ -1,8 +1,8 @@
 export interface ReactMagnifierProps {
    imageUrl: string;
    imageAltText: string;
-   imageWidth: number;
-   imageHeight: number;
+   imageWidth: number | string;
+   imageHeight: number | string;
    magnifierHeight: number;
    magnifierWidth: number;
    magnifierRadius: number;
