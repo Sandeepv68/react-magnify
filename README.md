@@ -87,6 +87,12 @@ This component requires the following node modules as its dependency:
 
 ## Changelog
 
+#### v0.0.5
+
+* Optimized code
+* 
+* package size reduced
+
 #### v0.0.4
 
 * Initial stable build
