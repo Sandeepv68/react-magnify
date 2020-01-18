@@ -20,14 +20,15 @@ ReactMagnifier is a simple and highly configurable react plugin to perform image
 ## Table of Contents
 
 <!--ts-->
-* [About](#reactmagnifier-v003)
+* [About](#reactmagnifier-v004)
 * [Features](#features)
 * [Demo](#demo)
 * [Installation](#installation)
 * [Sample Usage](#sample-usage)
 * [Dependency](#dependency)
 * [Changelog](#changelog)
-    * [v0.0.4](#v003)
+    * [v0.0.4](#v004)
+    * [v0.0.3](#v003)
 * [API Documentation](#api-documentation)
     * [Props](#props)
     * [Events](#events)
@@ -87,13 +88,13 @@ This component requires the following node modules as its dependency:
 
 ## Changelog
 
-#### v0.0.5
+#### v0.0.4
 
-* Optimized code
-* 
+* Refactored and optimized code
+* Unbind event listeners on component un-mount 
 * package size reduced
 
-#### v0.0.4
+#### v0.0.3
 
 * Initial stable build
 * Includes all essential features and cuistomizations
@@ -124,6 +125,7 @@ The following table gives all the possible input props and its default values an
 | `customContainerStyles` | *String* | no | empty | White space separated CSS class names in a single string format. It can be used to override the styles of react magnifier, example : `myClass newClass ..` |
 
 ### Events
+
 The following `events` are available on the ReactMagnifier component. These are available on the element returned from `getMagnifier` function prop
 
 | Event | Type | Description | 
@@ -136,6 +138,7 @@ The following `events` are available on the ReactMagnifier component. These are 
 These events can be used to trigger custom logic in your app when magnifier is initialized and used.
 
 ## Contributing
+
 All suggestions and pull requests are welcome. Please read the [CODE_OF_CONDUCT](https://github.com/SandeepVattapparambil/react-magnify/blob/master/CODE_OF_CONDUCT.md) and [CONTRIBUTING](https://github.com/SandeepVattapparambil/react-magnify/blob/master/CONTRIBUTING.md) files before contributing.
 
 You can clone the repo from the following url:
@@ -182,6 +185,7 @@ npm run build-prod
 You need to have `Nodejs` ,`npm` in your system as development dependency.
 
 ## Tests
+
 This project includes unit tests written in `Jest` testing library. Tests can be run by the npm script
 ```sh
 npm run test
