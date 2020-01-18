@@ -4,3 +4,5 @@
 /example
 /scripts
 /src
+
+/dist/*.map.js

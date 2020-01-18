@@ -3171,11 +3171,38 @@ function (_super) {
 
   function ReactMagnifier(props) {
     var _this = _super.call(this, props) || this;
+    /**
+     * @function showMagnifier
+     * A helper function to show magnifier and also to trigger a "magnfier-visible" customevent
+     */
+
+
+    _this.showMagnifier = function () {
+      _this.glass.classList.remove("hide-magnifier");
+
+      _this.glass.classList.add("show-magnifier");
+
+      _this.triggerEvent("magnfier-visible", _this.imageContainer.current);
+    };
+    /**
+     * @function hideMagnifier
+     * A helper function to hide magnifier and also to trigger a "magnfier-invisible" customevent
+     */
+
+
+    _this.hideMagnifier = function () {
+      _this.glass.classList.remove("show-magnifier");
+
+      _this.glass.classList.add("hide-magnifier");
+
+      _this.triggerEvent("magnfier-invisible", _this.imageContainer.current);
+    };
 
     _this.magnifiableImage = react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
     _this.imageContainer = react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
     _this.reactMagnifierGlassClass = "react-magnifier-glass";
     _this.imageUrlMissingError = "Image url is missing!";
+    _this.glass = null;
     return _this;
   }
   /**
@@ -3233,30 +3260,30 @@ function (_super) {
      * Create magnifier glass:
      */
 
-    var glass = document.createElement("DIV");
-    glass.setAttribute("class", this.reactMagnifierGlassClass);
+    this.glass = document.createElement("DIV");
+    this.glass.setAttribute("class", this.reactMagnifierGlassClass);
     /**
      * Insert magnifier glass:
      */
 
-    this.magnifiableImage.current.parentElement.insertBefore(glass, this.magnifiableImage.current);
+    this.magnifiableImage.current.parentElement.insertBefore(this.glass, this.magnifiableImage.current);
     /**
      * Set background properties for the magnifier glass:
      */
 
-    glass.classList.add("hide-magnifier");
-    glass.style.width = this.props.magnifierWidth + "px";
-    glass.style.height = this.props.magnifierHeight + "px";
-    glass.style.borderRadius = this.props.magnifierRadius + "%";
-    glass.style.border = this.props.magnifierBorderWidth + "px " + this.props.magnifierBorderStyle + " " + this.props.magnifierBorderColor;
-    glass.style.cursor = "" + this.props.cursor;
-    glass.style.boxShadow = this.props.magnifierShadow ? "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);" : "none";
-    glass.style.backgroundImage = "url('" + this.magnifiableImage.current.src + "')";
-    glass.style.backgroundRepeat = "no-repeat";
-    glass.style.backgroundSize = this.magnifiableImage.current.width * this.props.zoomSize + "px " + this.magnifiableImage.current.height * this.props.zoomSize + "px";
+    this.glass.classList.add("hide-magnifier");
+    this.glass.style.width = this.props.magnifierWidth + "px";
+    this.glass.style.height = this.props.magnifierHeight + "px";
+    this.glass.style.borderRadius = this.props.magnifierRadius + "%";
+    this.glass.style.border = this.props.magnifierBorderWidth + "px " + this.props.magnifierBorderStyle + " " + this.props.magnifierBorderColor;
+    this.glass.style.cursor = "" + this.props.cursor;
+    this.glass.style.boxShadow = this.props.magnifierShadow ? "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);" : "none";
+    this.glass.style.backgroundImage = "url('" + this.magnifiableImage.current.src + "')";
+    this.glass.style.backgroundRepeat = "no-repeat";
+    this.glass.style.backgroundSize = this.magnifiableImage.current.width * this.props.zoomSize + "px " + this.magnifiableImage.current.height * this.props.zoomSize + "px";
     bw = 3;
-    w = glass.offsetWidth / 2;
-    h = glass.offsetHeight / 2;
+    w = this.glass.offsetWidth / 2;
+    h = this.glass.offsetHeight / 2;
     /**
      * @function moveMagnifier
      * A helper function to move and position the magnifier when cursor is moved
@@ -3303,13 +3330,13 @@ function (_super) {
        */
 
 
-      glass.style.left = x - w + "px";
-      glass.style.top = y - h + "px";
+      _this.glass.style.left = x - w + "px";
+      _this.glass.style.top = y - h + "px";
       /**
        * Display what the magnifier glass "sees":
        */
 
-      glass.style.backgroundPosition = "-" + (x * _this.props.zoomSize - w + bw) + "px -" + (y * _this.props.zoomSize - h + bw) + "px";
+      _this.glass.style.backgroundPosition = "-" + (x * _this.props.zoomSize - w + bw) + "px -" + (y * _this.props.zoomSize - h + bw) + "px";
       /**
        * trigger "magnfier-moved" custom event
        */
@@ -3350,44 +3377,20 @@ function (_super) {
         y: y
       };
     };
-    /**
-     * @function showMagnifier
-     * A helper function to show magnifier and also to trigger a "magnfier-visible" customevent
-     */
 
-
-    var showMagnifier = function () {
-      glass.classList.remove("hide-magnifier");
-      glass.classList.add("show-magnifier");
-
-      _this.triggerEvent("magnfier-visible", _this.imageContainer.current);
-    };
-    /**
-     * @function hideMagnifier
-     * A helper function to hide magnifier and also to trigger a "magnfier-invisible" customevent
-     */
-
-
-    var hideMagnifier = function () {
-      glass.classList.remove("show-magnifier");
-      glass.classList.add("hide-magnifier");
-
-      _this.triggerEvent("magnfier-invisible", _this.imageContainer.current);
-    };
-
-    this.imageContainer.current.addEventListener("mouseenter", showMagnifier);
-    this.imageContainer.current.addEventListener("mouseleave", hideMagnifier);
+    this.imageContainer.current.addEventListener("mouseenter", this.showMagnifier);
+    this.imageContainer.current.addEventListener("mouseleave", this.hideMagnifier);
     /**
      * Execute a function when someone moves the magnifier glass over the image:
      */
 
-    glass.addEventListener("mousemove", moveMagnifier);
+    this.glass.addEventListener("mousemove", moveMagnifier);
     this.magnifiableImage.current.addEventListener("mousemove", moveMagnifier);
     /**
      * and also for touch screens:
      */
 
-    glass.addEventListener("touchmove", moveMagnifier);
+    this.glass.addEventListener("touchmove", moveMagnifier);
     this.magnifiableImage.current.addEventListener("touchmove", moveMagnifier);
     /**
      * trigger "magnfier-initialized" custom event
@@ -3440,8 +3443,8 @@ function (_super) {
   ReactMagnifier.defaultProps = {
     imageUrl: "",
     imageAltText: "react-magnifier-image",
-    imageWidth: 'auto',
-    imageHeight: 'auto',
+    imageWidth: "auto",
+    imageHeight: "auto",
     magnifierHeight: 100,
     magnifierWidth: 100,
     magnifierRadius: 50,
