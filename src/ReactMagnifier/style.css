@@ -3,8 +3,14 @@
 }
 
 .react-magnifier-image-container {
-  display:inline-block;
+  display: inline-block;
   position: relative;
+  outline: none;
+}
+
+.react-magnifier-image-container:focus-visible {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
 }
 
 .react-magnifier-glass {
@@ -15,17 +21,30 @@
   height: 100px;
   width: 100px;
   z-index: 999999;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
-.show-magnifier{
+.show-magnifier {
   visibility: visible;
   opacity: 1;
   transition: visibility 0s linear 0s, opacity 300ms;
 }
 
-.hide-magnifier{
+.hide-magnifier {
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s linear 300ms, opacity 300ms;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

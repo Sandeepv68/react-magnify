@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "target": "es5",
+    "declarationMap": true,
+    "target": "es2015",
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
-      "es2017",
-      "es7",
-      "es6"
+      "es2020"
     ],
     "allowJs": false,
     "skipLibCheck": true,
@@ -17,18 +15,25 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "strictNullChecks": false,
-    "noEmit": true,
-    "jsx": "react"
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noEmit": false,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": ["vitest/globals", "vitest", "node", "@testing-library/jest-dom", "vite/client"]
   },
   "include": [
-    "src/*.ts",
-    "src/*.tsx",
+    "src",
     "src/**/*.ts",
-    "src/**/*.tsx"
+    "src/**/*.tsx",
+    "src/vite-env.d.ts"
   ],
   "exclude": [
     "src/*.js",
