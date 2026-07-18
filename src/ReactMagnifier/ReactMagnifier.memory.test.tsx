@@ -104,12 +104,13 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
         '.react-magnifier-image-container'
       )
       const glass = container.querySelector(
-        '[role="presentation"]'
+        '.react-magnifier-glass'
       )
 
       // All elements should be in DOM before unmount
       expect(image).toBeTruthy()
       expect(imageContainer).toBeTruthy()
+      expect(glass).toBeTruthy()
 
       // Unmount
       unmount()

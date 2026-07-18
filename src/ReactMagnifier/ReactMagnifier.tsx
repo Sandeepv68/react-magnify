@@ -75,6 +75,7 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
   const magnifiableImageRef = useRef<HTMLImageElement>(null);
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const glassRef = useRef<HTMLDivElement | null>(null);
+  const isInitializedRef = useRef(false);
 
   // State
   const [magnifierDimensions, setMagnifierDimensions] = useState({ width: 0, height: 0 });
@@ -226,20 +227,34 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
   /**
    * Initialize magnifier: create glass element and set up event listeners
    */
-  const initializeMagnifier = useCallback(() => {
+  useEffect(() => {
     const image = magnifiableImageRef.current;
     const container = imageContainerRef.current;
 
-    if (!isValidProp(finalProps.imageUrl) || !image || !container) {
-      if (!isValidProp(finalProps.imageUrl)) {
-        logMagnifierError(IMAGE_URL_MISSING_ERROR);
+    // Reset initialization flag when image URL changes
+    if (!isValidProp(finalProps.imageUrl)) {
+      logMagnifierError(IMAGE_URL_MISSING_ERROR);
+      isInitializedRef.current = false;
+      if (glassRef.current) {
+        glassRef.current.remove();
+        glassRef.current = null;
       }
+      return;
+    }
+
+    // Prevent re-initialization on the same image
+    if (isInitializedRef.current && glassRef.current && glassRef.current.isConnected) {
+      return;
+    }
+
+    if (!image || !container) {
       return;
     }
 
     // Clean up existing glass if present
     if (glassRef.current) {
       glassRef.current.remove();
+      glassRef.current = null;
     }
 
     // Create magnifier glass
@@ -260,11 +275,40 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
     }
 
     glassRef.current = glass;
+    isInitializedRef.current = true;
 
     // Calculate magnifier dimensions
     const width = glass.offsetWidth / 2;
     const height = glass.offsetHeight / 2;
     setMagnifierDimensions({ width, height });
+
+    // Call the callback prop
+    finalProps.getMagnifier(container);
+
+    // Dispatch initialized event
+    triggerCustomEvent('magnifier-initialized', container);
+
+    // Cleanup on unmount
+    return () => {
+      if (glassRef.current) {
+        glassRef.current.remove();
+        glassRef.current = null;
+      }
+      isInitializedRef.current = false;
+    };
+  }, [finalProps.imageUrl]);
+
+  /**
+   * Set up event listeners after magnifier is created
+   */
+  useEffect(() => {
+    const glass = glassRef.current;
+    const image = magnifiableImageRef.current;
+    const container = imageContainerRef.current;
+
+    if (!glass || !image || !container) {
+      return;
+    }
 
     // Add mouse/touch event listeners
     glass.addEventListener('mousemove', handleMoveMagnifier);
@@ -281,67 +325,25 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
     // Add keyboard listener for accessibility
     window.addEventListener('keydown', handleKeyDown);
 
-    // Call the callback prop
-    finalProps.getMagnifier(container);
-
-    // Dispatch initialized event
-    triggerCustomEvent('magnifier-initialized', container);
-  }, [
-    finalProps,
-    handleMoveMagnifier,
-    handleShowMagnifier,
-    handleHideMagnifier,
-    handleKeyDown,
-  ]);
-
-  /**
-   * Clean up event listeners on unmount
-   */
-  const cleanupMagnifier = useCallback(() => {
-    const glass = glassRef.current;
-    const image = magnifiableImageRef.current;
-    const container = imageContainerRef.current;
-
-    if (glass) {
-      glass.removeEventListener('mousemove', handleMoveMagnifier);
-      glass.removeEventListener('touchmove', handleMoveMagnifier);
-      glass.remove();
-      glassRef.current = null;
-    }
-
-    if (image) {
-      image.removeEventListener('mousemove', handleMoveMagnifier);
-      image.removeEventListener('touchmove', handleMoveMagnifier);
-    }
-
-    if (container) {
-      container.removeEventListener('mouseenter', handleShowMagnifier);
-      container.removeEventListener('mouseleave', handleHideMagnifier);
-      container.removeEventListener('focusin', handleShowMagnifier);
-      container.removeEventListener('focusout', handleHideMagnifier);
-    }
-
-    window.removeEventListener('keydown', handleKeyDown);
-  }, [handleMoveMagnifier, handleShowMagnifier, handleHideMagnifier, handleKeyDown]);
-
-  /**
-   * Initialize magnifier on mount and when props change
-   */
-  useEffect(() => {
-    initializeMagnifier();
-
-    // Cleanup on unmount
+    // Cleanup
     return () => {
-      cleanupMagnifier();
+      if (glass) {
+        glass.removeEventListener('mousemove', handleMoveMagnifier);
+        glass.removeEventListener('touchmove', handleMoveMagnifier);
+      }
+      if (image) {
+        image.removeEventListener('mousemove', handleMoveMagnifier);
+        image.removeEventListener('touchmove', handleMoveMagnifier);
+      }
+      if (container) {
+        container.removeEventListener('mouseenter', handleShowMagnifier);
+        container.removeEventListener('mouseleave', handleHideMagnifier);
+        container.removeEventListener('focusin', handleShowMagnifier);
+        container.removeEventListener('focusout', handleHideMagnifier);
+      }
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [initializeMagnifier, cleanupMagnifier]);
-
-  /**
-   * Re-initialize when image URL changes
-   */
-  useEffect(() => {
-    initializeMagnifier();
-  }, [finalProps.imageUrl, initializeMagnifier]);
+  }, [handleMoveMagnifier, handleShowMagnifier, handleHideMagnifier, handleKeyDown]);
 
   return (
     <div
