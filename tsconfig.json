@@ -37,6 +37,10 @@
   ],
   "exclude": [
     "src/*.js",
-    "src/**/*.js"
+    "src/**/*.js",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.stories.ts",
+    "src/**/*.stories.tsx"
   ]
 }

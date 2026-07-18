@@ -125,7 +125,9 @@ describe('ReactMagnifier Component', () => {
         />
       );
       await new Promise(resolve => setTimeout(resolve, 150));
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const glass = container.querySelector('.react-magnifier-glass') as HTMLElement;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (glass) {
         expect(glass.style.width).toBe('150px');
         expect(glass.style.height).toBe('150px');
@@ -195,6 +197,7 @@ describe('ReactMagnifier Component', () => {
 
   describe('Error Handling', () => {
     it('should handle missing image URL gracefully', () => {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
       render(<ReactMagnifier imageUrl="" />);
       consoleSpy.mockRestore();

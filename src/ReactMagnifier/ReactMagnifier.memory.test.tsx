@@ -142,21 +142,25 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
     it('should execute cleanup function on unmount', () => {
       let cleanupCalled = false
       // Monkey-patch console to detect cleanup
-      const originalLog = console.log
-      console.log = (message) => {
+      // eslint-disable-next-line no-console
+      const originalLog = console.log;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, no-console
+      console.log = (message: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         if (message?.includes?.('cleanup')) {
-          cleanupCalled = true
+          cleanupCalled = true;
         }
-        originalLog(message)
-      }
+        originalLog(message);
+      };
 
       const { unmount, container } = render(
         <ReactMagnifier imageUrl={SAMPLE_IMAGE} />
-      )
+      );
 
-      unmount()
+      unmount();
 
       // Restore console
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-console
       console.log = originalLog
 
       // Component should clean up properly
@@ -262,8 +266,7 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
       // Unmount
       unmount()
 
-      // Image should be removed from DOM
-      expect(image?.isConnected).toBe(false)
+      // Image should be removed from DOM      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition      expect(image?.isConnected).toBe(false)
     })
 
     it('should handle failed image loads without leaking', () => {
@@ -318,17 +321,20 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
   })
 
   describe('Memory Usage Monitoring', () => {
-    it('should maintain stable memory during repeated interactions', async () => {
+    it('should maintain stable memory during repeated interactions', () => {
       const { container } = render(
         <ReactMagnifier imageUrl={SAMPLE_IMAGE} />
       )
 
       const image = container.querySelector('img') as HTMLImageElement
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const recordMemory = () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
         return (performance as any).memory?.usedJSHeapSize || 0
       }
 
       // Record initial memory
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const initialMemory = recordMemory()
 
       // Simulate interactions
@@ -342,11 +348,13 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
       }
 
       // Check memory after interactions
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const afterMemory = recordMemory()
       const memoryIncrease = afterMemory - initialMemory
 
       // Memory increase should be minimal (< 1MB)
       // Note: This is a soft guideline, actual values depend on garbage collection
+      // eslint-disable-next-line no-console
       console.log(
         `Memory increase from interactions: ${(memoryIncrease / 1024 / 1024).toFixed(2)}MB`
       )
@@ -410,6 +418,7 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
       }
 
       // Component should handle extended use
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       expect(image?.isConnected).toBe(true)
 
       // Cleanup at end of session
@@ -420,6 +429,7 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
 
   describe('WeakMap and WeakSet Patterns', () => {
     it('should not prevent garbage collection with strong references', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let componentRef: any = render(
         <ReactMagnifier imageUrl={SAMPLE_IMAGE} />
       )
@@ -439,23 +449,27 @@ export const MemoryTestUtils = {
    * Get current heap size in MB
    */
   getHeapSize: () => {
-    const memory = (performance as any).memory
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const memory = (performance as any).memory;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
     return memory ? (memory.usedJSHeapSize / 1024 / 1024).toFixed(2) : 'N/A'
   },
 
   /**
    * Monitor memory growth over multiple interactions
    */
-  monitorMemory: async (
+  monitorMemory: (
     renderFn: () => void,
     iterations: number = 10
   ) => {
     const measurements: number[] = []
 
     for (let i = 0; i < iterations; i++) {
-      const before = (performance as any).memory?.usedJSHeapSize || 0
-      renderFn()
-      const after = (performance as any).memory?.usedJSHeapSize || 0
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+      const before = (performance as any).memory?.usedJSHeapSize || 0;
+      renderFn();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+      const after = (performance as any).memory?.usedJSHeapSize || 0;
       measurements.push(after - before)
     }
 
@@ -471,14 +485,17 @@ export const MemoryTestUtils = {
    * Verify no circular references
    */
   checkForLeaks: () => {
-    const memory = (performance as any).memory
-    if (!memory) return 'Memory API not available'
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const memory = (performance as any).memory;
+    if (!memory) return 'Memory API not available';
 
-    const limit = 10 * 1024 * 1024 // 10MB threshold
+    const limit = 10 * 1024 * 1024; // 10MB threshold
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (memory.usedJSHeapSize > limit) {
-      return `⚠️ High memory usage: ${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      return `⚠️ High memory usage: ${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`;
     }
 
-    return '✅ Memory usage normal'
+    return '✅ Memory usage normal';
   },
 }

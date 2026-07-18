@@ -1,4 +1,3 @@
-// @ts-nocheck
 // Storybook stories - optional development artifacts (not included in production bundle)
 import { useRef, useEffect, useState, ReactNode } from 'react'
 import type { ComponentType } from 'react'
@@ -12,7 +11,8 @@ type StoryConfig = React.ComponentProps<typeof ReactMagnifier> & {
 }
 
 // Storybook metadata (for reference)
-const meta = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+const meta: any = {
   title: 'Components/ReactMagnifier',
   component: ReactMagnifier,
   parameters: {
@@ -120,7 +120,6 @@ const meta = {
 } satisfies Meta<typeof ReactMagnifier>
 
 export default meta
-type Story = StoryObj<typeof meta>
 
 // Example image URL (high-resolution product image)
 const SAMPLE_IMAGE =
@@ -510,7 +509,7 @@ export const CustomEventHandling: StoryConfig = {
             }}
           >
             <strong>Try:</strong> Hover over the image to trigger events. Move the magnifier
-            around to see the "Moved" event. Mouse out to trigger the invisible event.
+          around to see the &ldquo;Moved&rdquo; event. Mouse out to trigger the invisible event.
           </div>
         </div>
       )
@@ -600,6 +599,7 @@ export const WithCallback: StoryConfig = {
         <div>
           <div style={{ marginBottom: '20px' }}>
             <ReactMagnifier
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               {...(Story.args as any)}
               getMagnifier={handleMagnifier}
             />

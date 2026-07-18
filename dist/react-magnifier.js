@@ -396,6 +396,7 @@ const defaultProps = {
   magnifierShadow: true,
   cursor: "none",
   zoomSize: 2,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   getMagnifier: () => {
   },
   customImgStyles: "",
@@ -477,35 +478,40 @@ const ReactMagnifier = require$$0.memo(function ReactMagnifier2(props = {}) {
       const step = 10;
       let handled = false;
       switch (event.key) {
-        case "ArrowUp":
+        case "ArrowUp": {
           event.preventDefault();
           const currentTop = parseFloat(glass.style.top) || 0;
           glass.style.top = `${Math.max(0, currentTop - step)}px`;
           handled = true;
           break;
-        case "ArrowDown":
+        }
+        case "ArrowDown": {
           event.preventDefault();
           const currentTopDown = parseFloat(glass.style.top) || 0;
           glass.style.top = `${currentTopDown + step}px`;
           handled = true;
           break;
-        case "ArrowLeft":
+        }
+        case "ArrowLeft": {
           event.preventDefault();
           const currentLeft = parseFloat(glass.style.left) || 0;
           glass.style.left = `${Math.max(0, currentLeft - step)}px`;
           handled = true;
           break;
-        case "ArrowRight":
+        }
+        case "ArrowRight": {
           event.preventDefault();
           const currentLeftRight = parseFloat(glass.style.left) || 0;
           glass.style.left = `${currentLeftRight + step}px`;
           handled = true;
           break;
-        case "Escape":
+        }
+        case "Escape": {
           event.preventDefault();
           handleHideMagnifier();
           handled = true;
           break;
+        }
       }
       if (handled) {
         triggerCustomEvent("magnfier-moved", imageContainerRef.current);

@@ -11,7 +11,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
   const SAMPLE_IMAGE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 
   describe('Initialization Performance', () => {
-    it('should initialize component in < 200ms', async () => {
+    it('should initialize component in < 200ms', () => {
       const startTime = performance.now()
 
       render(
@@ -27,10 +27,11 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
 
       // Should be very fast (200ms is reasonable for test environment)
       expect(duration).toBeLessThan(200)
+      // eslint-disable-next-line no-console
       console.log(`Initialization time: ${duration.toFixed(2)}ms`)
     })
 
-    it('should load and display image within reasonable time', async () => {
+    it('should load and display image within reasonable time', () => {
       const startTime = performance.now()
 
       const { container } = render(
@@ -47,13 +48,14 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       const endTime = performance.now()
       const duration = endTime - startTime
 
+      // eslint-disable-next-line no-console
       console.log(`Image loading time: ${duration.toFixed(2)}ms`)
       expect(duration).toBeLessThan(100)
     })
   })
 
   describe('Event Handler Performance', () => {
-    it('should handle mouse move events efficiently', async () => {
+    it('should handle mouse move events efficiently', () => {
       const { container } = render(
         <ReactMagnifier imageUrl={SAMPLE_IMAGE} />
       )
@@ -76,6 +78,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       const duration = endTime - startTime
       const avgPerEvent = duration / eventCount
 
+      // eslint-disable-next-line no-console
       console.log(
         `Mouse move events (${eventCount}): ${duration.toFixed(2)}ms total, ${avgPerEvent.toFixed(2)}ms per event`
       )
@@ -84,7 +87,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       expect(avgPerEvent).toBeLessThan(1)
     })
 
-    it('should handle keyboard events efficiently', async () => {
+    it('should handle keyboard events efficiently', () => {
       const { container } = render(
         <ReactMagnifier imageUrl={SAMPLE_IMAGE} />
       )
@@ -109,6 +112,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       const duration = endTime - startTime
       const avgPerEvent = duration / eventCount
 
+      // eslint-disable-next-line no-console
       console.log(
         `Keyboard events (${eventCount}): ${duration.toFixed(2)}ms total, ${avgPerEvent.toFixed(2)}ms per event`
       )
@@ -149,6 +153,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       // React.memo should prevent unnecessary re-renders
       // renderCount should not increase significantly
       expect(renderCount).toBeLessThanOrEqual(initialRenderCount + 1)
+      // eslint-disable-next-line no-console
       console.log(`Re-renders after mouse moves: ${renderCount - initialRenderCount}`)
     })
   })
@@ -163,6 +168,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
 
       // Verify cleanup (no memory leaks)
       expect(container.innerHTML).toBe('')
+      // eslint-disable-next-line no-console
       console.log('Event listeners cleaned up on unmount')
     })
 
@@ -179,6 +185,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       // If event listeners were leaking, this would accumulate
       // No exception should be thrown
       expect(true).toBe(true)
+      // eslint-disable-next-line no-console
       console.log(`${iterations} mount/unmount cycles completed without memory leaks`)
     })
   })
@@ -188,9 +195,13 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       // Component should only require React and React DOM (peer dependencies)
       // No other runtime dependencies should be bundled
       expect(true).toBe(true)
+      // eslint-disable-next-line no-console
       console.log('Peer dependencies: react@^19.0.0, react-dom@^19.0.0')
+      // eslint-disable-next-line no-console
       console.log('Runtime dependencies: 0')
+      // eslint-disable-next-line no-console
       console.log('Bundle size (ESM gzipped): 6.29 kB')
+      // eslint-disable-next-line no-console
       console.log('Bundle size (UMD gzipped): 4.61 kB')
     })
   })
@@ -206,6 +217,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       const endTime = performance.now()
       const duration = endTime - startTime
 
+      // eslint-disable-next-line no-console
       console.log(`Component render time (CSS included): ${duration.toFixed(2)}ms`)
       expect(duration).toBeLessThan(100)
     })
@@ -223,6 +235,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       // Glass element should have hide-magnifier class initially
       const glass = container.querySelector('.react-magnifier-glass')
       expect(glass?.className).toContain('hide-magnifier')
+      // eslint-disable-next-line no-console
       console.log('CSS classes applied: react-magnifier-image-container, hide-magnifier')
     })
   })
@@ -254,6 +267,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       const duration = endTime - startTime
       const avgPerEvent = duration / eventCount
 
+      // eslint-disable-next-line no-console
       console.log(
         `Touch events (${eventCount}): ${duration.toFixed(2)}ms total, ${avgPerEvent.toFixed(2)}ms per event`
       )
@@ -284,6 +298,7 @@ describe('ReactMagnifier - Performance Benchmarks', () => {
       const endTime = performance.now()
       const duration = endTime - startTime
 
+      // eslint-disable-next-line no-console
       console.log(`Props update time: ${duration.toFixed(2)}ms`)
       expect(duration).toBeLessThan(50)
     })

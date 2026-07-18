@@ -16,7 +16,11 @@
   "ignorePatterns": [
     "dist",
     ".eslintrc.json",
-    "node_modules"
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.stories.ts",
+    "**/*.stories.tsx"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

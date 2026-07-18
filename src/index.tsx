@@ -1,13 +1,13 @@
 // This is the example demo app entry point
 // In production, the library is built from src/export.tsx
 
-// @ts-ignore - CSS imports are valid in Vite, TypeScript doesn't have built-in support
 import './index.css';
 import ReactMagnifier from './ReactMagnifier/ReactMagnifier';
 
 function showEvent(data: HTMLDivElement | null): void {
   if (data) {
     data.addEventListener('magnifier-initialized', (e): void => {
+      // eslint-disable-next-line no-console
       console.log('Magnifier initialized:', e);
     });
   }

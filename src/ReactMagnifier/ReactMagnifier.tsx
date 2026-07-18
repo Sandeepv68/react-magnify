@@ -14,7 +14,6 @@ import {
   getCursorPos,
   createMagnifierGlass,
 } from './utils';
-// @ts-ignore - CSS imports are valid in Vite, TypeScript doesn't have built-in support
 import './style.css';
 
 /**
@@ -41,6 +40,7 @@ const defaultProps: ReactMagnifierProps = {
   magnifierShadow: true,
   cursor: 'none',
   zoomSize: 2,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   getMagnifier: (): void => {},
   customImgStyles: '',
   customContainerStyles: '',
@@ -184,35 +184,40 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
       let handled = false;
 
       switch (event.key) {
-        case 'ArrowUp':
+        case 'ArrowUp': {
           event.preventDefault();
           const currentTop = parseFloat(glass.style.top) || 0;
           glass.style.top = `${Math.max(0, currentTop - step)}px`;
           handled = true;
           break;
-        case 'ArrowDown':
+        }
+        case 'ArrowDown': {
           event.preventDefault();
           const currentTopDown = parseFloat(glass.style.top) || 0;
           glass.style.top = `${currentTopDown + step}px`;
           handled = true;
           break;
-        case 'ArrowLeft':
+        }
+        case 'ArrowLeft': {
           event.preventDefault();
           const currentLeft = parseFloat(glass.style.left) || 0;
           glass.style.left = `${Math.max(0, currentLeft - step)}px`;
           handled = true;
           break;
-        case 'ArrowRight':
+        }
+        case 'ArrowRight': {
           event.preventDefault();
           const currentLeftRight = parseFloat(glass.style.left) || 0;
           glass.style.left = `${currentLeftRight + step}px`;
           handled = true;
           break;
-        case 'Escape':
+        }
+        case 'Escape': {
           event.preventDefault();
           handleHideMagnifier();
           handled = true;
           break;
+        }
         default:
           break;
       }
@@ -227,6 +232,7 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
   /**
    * Initialize magnifier: create glass element and set up event listeners
    */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const image = magnifiableImageRef.current;
     const container = imageContainerRef.current;
@@ -296,11 +302,13 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
       }
       isInitializedRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finalProps.imageUrl]);
 
   /**
    * Set up event listeners after magnifier is created
    */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const glass = glassRef.current;
     const image = magnifiableImageRef.current;
@@ -327,14 +335,17 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
 
     // Cleanup
     return () => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (glass) {
         glass.removeEventListener('mousemove', handleMoveMagnifier);
         glass.removeEventListener('touchmove', handleMoveMagnifier);
       }
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (image) {
         image.removeEventListener('mousemove', handleMoveMagnifier);
         image.removeEventListener('touchmove', handleMoveMagnifier);
       }
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (container) {
         container.removeEventListener('mouseenter', handleShowMagnifier);
         container.removeEventListener('mouseleave', handleHideMagnifier);
