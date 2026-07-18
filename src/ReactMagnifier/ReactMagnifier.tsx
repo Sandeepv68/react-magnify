@@ -13,7 +13,7 @@ import {
   triggerCustomEvent,
   getCursorPos,
   createMagnifierGlass,
-} from './utils.ts';
+} from './utils';
 import './style.css';
 
 /**
