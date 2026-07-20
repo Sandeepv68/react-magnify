@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>React Magnifier v0.0.1</title>
+    <title>React Magnifier v1.0.0 Examples</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <style>
         * {
@@ -12,10 +12,29 @@
 
         body {
             text-align: center;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
         }
 
         .hero-title {
             color: #0d47a1;
+            margin-bottom: 40px;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .example-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .description {
@@ -23,144 +42,151 @@
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #b3d9ff;
-        }
-
-        .prop-table {
-            margin: 0 auto;
-        }
-
-        .prop-table thead tr th,
-        .prop-table tbody tr td {
-            border: 1px solid;
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 0.9em;
+            text-align: left;
         }
 
         .container {
-            margin-top: 50px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 1.2em;
+            margin-top: 0;
         }
     </style>
 </head>
 
 <body>
     <div class="hero-title">
-        <h1>React Magnifier v0.0.1 Examples</h1>
-        <p>This component accepts the following props</p>
-        <table class="prop-table">
-            <thead>
-                <tr>
-                    <th>Pops</th>
-                    <th>Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>zoomSize</td>
-                    <td>number</td>
-                </tr>
-                <tr>
-                    <td>imageHeight</td>
-                    <td>number</td>
-                </tr>
-                <tr>
-                    <td>imageWidth</td>
-                    <td>number</td>
-                </tr>
-                <tr>
-                    <td>magnifierHeight</td>
-                    <td>number</td>
-                </tr>
-                <tr>
-                    <td>magnifierWidth</td>
-                    <td>number</td>
-                </tr>
-                <tr>
-                    <td>magnifierRadius</td>
-                    <td>number</td>
-                </tr>
-                <tr>
-                    <td>magnifierBorderColor</td>
-                    <td>string</td>
-                </tr>
-                <tr>
-                    <td>magnifierBorderStyle</td>
-                    <td>string</td>
-                </tr>
-                <tr>
-                    <td>magnifierBorderWidth</td>
-                    <td>number</td>
-                </tr>
-                <tr>
-                    <td>cursor</td>
-                    <td>string</td>
-                </tr>
-                <tr>
-                    <td>imageUrl</td>
-                    <td>number</td>
-                </tr>
-            </tbody>
-        </table>
+        <h1>React Magnifier v1.0.0 Showcase</h1>
+        <p>Demonstrating all features of the modern, accessible image magnifier</p>
     </div>
-    <div id="example1" class="container"></div>
-    <p><span class="description"><strong>Input Props: </strong>zoomSize: 3,
-            imageHeight: 400,
-            imageWidth: 600,
-            magnifierHeight: 200,
-            magnifierWidth: 200,
-            magnifierRadius: 50,
-            magnifierBorderColor: "white",
-            magnifierBorderStyle: "solid",
-            magnifierBorderWidth: 2,
-            cursor: "none",
-        </span></p>
+    <div class="example-grid">
+        <!-- 1. Basic -->
+        <div class="example-card">
+            <h2>1. Basic Usage</h2>
+            <div id="example-basic" class="container"></div>
+            <span class="description"><strong>Props:</strong> zoomSize: 2, imageHeight: 300, imageWidth: 400</span>
+        </div>
 
-    <div id="example2" class="container"></div>
-    <p><span class="description"><strong>Input Props: </strong>
-            zoomSize: 6,
-            imageHeight: 600,
-            imageWidth: 400,
-            magnifierHeight: 200,
-            magnifierWidth: 200,
-            magnifierRadius: 10,
-            magnifierBorderColor: "red",
-            magnifierBorderStyle: "solid",
-            magnifierBorderWidth: 5,
-            cursor: "none",
-        </span></p>
-    <!-- Dependencies -->
-    <script src="../node_modules/react/umd/react.development.js"></script>
-    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+        <!-- 2. High Zoom & Circular -->
+        <div class="example-card">
+            <h2>2. High Zoom & Circular</h2>
+            <div id="example-zoom-circle" class="container"></div>
+            <span class="description"><strong>Props:</strong> zoomSize: 5, magnifierRadius: 50, magnifierBorderColor: "#ff5722"</span>
+        </div>
 
-    <!-- Main -->
-    <script src="../dist/ReactMagnifier.js"></script>
+        <!-- 3. Rectangle & Custom Border -->
+        <div class="example-card">
+            <h2>3. Rectangle & Dashed Border</h2>
+            <div id="example-rect-dashed" class="container"></div>
+            <span class="description"><strong>Props:</strong> magnifierWidth: 150, magnifierHeight: 100, magnifierBorderStyle: "dashed"</span>
+        </div>
 
-    <script>
-        ReactDOM.render(React.createElement(ReactMagnifier.ReactMagnifier, {
-            zoomSize: 2,
-            imageHeight: 400,
-            imageWidth: 600,
-            magnifierHeight: 200,
-            magnifierWidth: 200,
-            magnifierRadius: 50,
-            magnifierBorderColor: "white",
-            magnifierBorderStyle: "solid",
-            magnifierBorderWidth: 2,
-            cursor: "none",
-            imageUrl: "https://images.unsplash.com/photo-1578972525442-098f3f2c63d3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
-        }), document.getElementById("example1"));
+        <!-- 4. No Shadow & Custom Cursor -->
+        <div class="example-card">
+            <h2>4. No Shadow & Custom Cursor</h2>
+            <div id="example-no-shadow" class="container"></div>
+            <span class="description"><strong>Props:</strong> magnifierShadow: false, cursor: "crosshair"</span>
+        </div>
 
-        ReactDOM.render(React.createElement(ReactMagnifier.ReactMagnifier, {
-            zoomSize: 6,
-            imageHeight: 600,
-            imageWidth: 400,
-            magnifierHeight: 200,
-            magnifierWidth: 200,
-            magnifierRadius: 10,
-            magnifierBorderColor: "red",
-            magnifierBorderStyle: "solid",
-            magnifierBorderWidth: 5,
-            cursor: "none",
-            imageUrl: "https://images.unsplash.com/photo-1578937014712-863891625b1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-        }), document.getElementById("example2"));
+        <!-- 5. Accessibility & Keyboard -->
+        <div class="example-card">
+            <h2>5. A11y & Keyboard Support</h2>
+            <div id="example-a11y" class="container"></div>
+            <span class="description">Try using <strong>Arrow Keys</strong> to move and <strong>Esc</strong> to hide. Full ARIA support.</span>
+        </div>
 
+        <!-- 6. Custom Styling & Events -->
+        <div class="example-card">
+            <h2>6. Styling & Callbacks</h2>
+            <div id="example-callbacks" class="container"></div>
+            <span class="description">Check console for initialization and move logs. Custom classes applied.</span>
+        </div>
+    </div>
+
+    <script type="module">
+        import React from 'react';
+        import ReactDOM from 'react-dom/client';
+        import { ReactMagnifier } from '../src/export.tsx';
+
+        const imgUrl = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80";
+
+        // 1. Basic
+        ReactDOM.createRoot(document.getElementById("example-basic")).render(
+            React.createElement(ReactMagnifier, {
+                imageUrl: imgUrl,
+                imageHeight: 300,
+                imageWidth: 400
+            })
+        );
+
+        // 2. High Zoom & Circular
+        ReactDOM.createRoot(document.getElementById("example-zoom-circle")).render(
+            React.createElement(ReactMagnifier, {
+                imageUrl: imgUrl,
+                imageHeight: 300,
+                imageWidth: 400,
+                zoomSize: 5,
+                magnifierRadius: 50,
+                magnifierBorderColor: "#ff5722",
+                magnifierBorderWidth: 4
+            })
+        );
+
+        // 3. Rectangle & Dashed
+        ReactDOM.createRoot(document.getElementById("example-rect-dashed")).render(
+            React.createElement(ReactMagnifier, {
+                imageUrl: imgUrl,
+                imageHeight: 300,
+                imageWidth: 400,
+                magnifierWidth: 150,
+                magnifierHeight: 100,
+                magnifierRadius: 10,
+                magnifierBorderStyle: "dashed",
+                magnifierBorderColor: "#4caf50"
+            })
+        );
+
+        // 4. No Shadow & Custom Cursor
+        ReactDOM.createRoot(document.getElementById("example-no-shadow")).render(
+            React.createElement(ReactMagnifier, {
+                imageUrl: imgUrl,
+                imageHeight: 300,
+                imageWidth: 400,
+                magnifierShadow: false,
+                cursor: "crosshair"
+            })
+        );
+
+        // 5. A11y & Keyboard
+        ReactDOM.createRoot(document.getElementById("example-a11y")).render(
+            React.createElement(ReactMagnifier, {
+                imageUrl: imgUrl,
+                imageHeight: 300,
+                imageWidth: 400,
+                imageAltText: "A detailed portrait for accessibility testing"
+            })
+        );
+
+        // 6. Callbacks & Styling
+        ReactDOM.createRoot(document.getElementById("example-callbacks")).render(
+            React.createElement(ReactMagnifier, {
+                imageUrl: imgUrl,
+                imageHeight: 300,
+                imageWidth: 400,
+                getMagnifier: (container) => {
+                    console.log("Magnifier instance initialized:", container);
+                    container.addEventListener('magnifier-moved', () => console.log("Moving..."));
+                }
+            })
+        );
     </script>
 </body>
 
