@@ -136,7 +136,7 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
         }px`;
 
       // Dispatch custom event
-      triggerCustomEvent('magnfier-moved', container);
+      triggerCustomEvent('magnifier-moved', container);
     },
     [magnifierDimensions, finalProps.zoomSize, handleGetCursorPos]
   );
@@ -150,7 +150,7 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
       glass.classList.remove('hide-magnifier');
       glass.classList.add('show-magnifier');
       setIsMagnifierVisible(true);
-      triggerCustomEvent('magnfier-visible', imageContainerRef.current);
+      triggerCustomEvent('magnifier-visible', imageContainerRef.current);
     }
   }, []);
 
@@ -163,7 +163,7 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
       glass.classList.remove('show-magnifier');
       glass.classList.add('hide-magnifier');
       setIsMagnifierVisible(false);
-      triggerCustomEvent('magnfier-invisible', imageContainerRef.current);
+      triggerCustomEvent('magnifier-invisible', imageContainerRef.current);
     }
   }, []);
 
@@ -223,7 +223,7 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
       }
 
       if (handled) {
-        triggerCustomEvent('magnfier-moved', imageContainerRef.current);
+        triggerCustomEvent('magnifier-moved', imageContainerRef.current);
       }
     },
     [isMagnifierVisible, handleHideMagnifier]
