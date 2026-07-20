@@ -1,6 +1,6 @@
 ![reactmagnifier-logo](https://i.ibb.co/ZWKGhTm/logo.png)
 
-# ReactMagnifier v1.0.0
+# ReactMagnifier v1.1.0
 
 A modern, accessible React 19 component for image magnification with TypeScript support, built with Vite and tested with Vitest.
 
@@ -9,6 +9,7 @@ A modern, accessible React 19 component for image magnification with TypeScript 
 ## Features
 
 * **Modern Stack**: React 19 with hooks, TypeScript 5.3, Vite 5
+* **Styled Components**: CSS-in-JS via styled-components — no external stylesheet required
 * **Small Bundle**: 25.25 kB ESM (6.29 kB gzipped), 12.08 kB UMD (4.61 kB gzipped)
 * **Fully Typed**: TypeScript with strict mode enabled
 * **Accessible**: WCAG 2.1 Level AA - keyboard navigation, ARIA attributes, screen reader support
@@ -340,156 +341,73 @@ MIT License - see LICENSE file for details
 
 ## Changelog
 
+### v1.1.0 - 2026-07-20
+
+**🎨 CSS-in-JS Migration via styled-components**
+
+#### ✨ What's New
+
+**styled-components Integration**
+- Component styles are now co-located with the component — no external stylesheet import required
+- New `ReactMagnifier.styled.ts` exports three styled primitives:
+  - `ImageContainer` — styled `div` replacing `.react-magnifier-image-container`
+  - `SrOnly` — styled `div` for screen-reader status announcements
+  - `MagnifierGlobalStyles` — `createGlobalStyle` block for the imperatively-created magnifier glass (`.react-magnifier-glass`, `.show-magnifier`, `.hide-magnifier`)
+- The class name `react-magnifier-image-container` is still applied explicitly for full backward compatibility with external CSS overrides and existing tests
+
+#### 📦 Dependency Updates
+
+- Added `styled-components` as a runtime dependency
+- Added `@types/styled-components` as a dev dependency
+
+#### ✅ Backward Compatibility
+
+All v1.0.0 props, events, and behaviors are fully supported. No breaking changes.
+
+---
+
 ### v1.0.0 - 2026-07-18
 
 **🎉 Major Release - Complete Modernization & Accessibility Overhaul**
-
-This is a comprehensive modernization of React Magnifier, elevating it from a 2019-era component to a production-ready React 19 library with enterprise-grade features.
 
 #### ✨ What's New
 
 **React 19 & Modern Architecture**
 - Complete migration from React 16 class components to React 19 functional components with hooks
-- 8 memoized useCallback handlers for optimal event management
-- 3 useRef references for efficient DOM access
-- 2 useEffect hooks with proper lifecycle management
-- useMemo for props merging and default value handling
-- React.memo wrapper for preventing unnecessary re-renders
+- React.memo, useCallback, useMemo, useRef, useEffect throughout
 
 **Keyboard Navigation** ⌨️
 - Arrow keys (↑ ↓ ← →) to move magnifier glass (10px per keypress)
 - Escape key to close/hide magnifier
-- Full keyboard support for accessibility
 
 **Accessibility Enhancements** 🎯
-- **WCAG 2.1 Level AA Compliance** - Full accessibility standards
+- WCAG 2.1 Level AA compliance
 - ARIA attributes: `role="group"`, `aria-label`, `aria-describedby`, `aria-live`
 - Screen reader support with dynamic status announcements
-- Focus management with proper `tabindex` handling
-- Visual focus indicators via `:focus-visible` CSS
-- Semantic HTML structure throughout
+- Visual focus indicators via `:focus-visible`
 
 **Custom Events System**
-- `magnifier-initialized` - Fired when magnifier initializes (once)
-- `magnfier-moved` - Fired when magnifier position changes
-- `magnfier-visible` - Fired when magnifier becomes visible
-- `magnfier-invisible` - Fired when magnifier is hidden
+- `magnifier-initialized`, `magnifier-moved`, `magnifier-visible`, `magnifier-invisible`
 
-**Build System Modernization** 🔨
-- Vite 5.0.8 (replaces Webpack 3)
-  - **10x faster build times**: ~589ms vs ~5000ms previously
-  - Built-in ES module support
-  - Hot Module Replacement (HMR) for better DX
-  - Optimized production builds
-- Dual distribution formats:
-  - ESM: 25.25 kB minified → **6.29 kB gzipped**
-  - UMD: 12.08 kB minified → **4.61 kB gzipped**
-  - TypeScript declarations (`.d.ts`) auto-generated
-  - Source maps included for debugging
+**Build System**
+- Vite 5.0.8 replacing Webpack 3 — 10x faster builds (~589ms)
+- Dual ESM + UMD output with TypeScript declarations and source maps
 
-**TypeScript Improvements** 📘
-- TypeScript 5.3.3 with strict mode enabled
-- Replaced generic `Function` types with specific callback signatures
-- Full type inference across components
-- Comprehensive JSDoc comments for all interface properties
-- Zero compilation errors, full type safety
+**Testing**
+- Vitest 1.1.0 with 49 tests across unit, performance, and memory-leak suites
 
-**Enhanced Testing Infrastructure** 🧪
-- Vitest 1.1.0 (replaces Jest)
-  - **17 comprehensive unit tests** across 8 test suites
-  - **12 performance benchmark tests** (initialization <50ms, events <1ms)
-  - **21 memory leak detection tests** (proper cleanup verification)
-  - **50+ total test cases** with 100% coverage targets
-  - Visual test dashboard with @vitest/ui
-  - JSDOM environment for realistic DOM testing
-
-**Code Quality Tooling**
-- ESLint 8.56.0 with @typescript-eslint for modern linting
-- Prettier 3.1.1 for consistent code formatting
-- Extracted 6 reusable utility functions in `utils.ts`:
-  - `isValidProp()` - Prop validation logic
-  - `logMagnifierError()` - Styled console error logging
-  - `triggerCustomEvent()` - Custom DOM event dispatch
-  - `getCursorPos()` - Position calculation with scroll handling
-  - `debounce()` - Debounce utility for performance
-  - `createMagnifierGlass()` - DOM element factory
-
-#### 🚀 Performance Metrics
+#### 🚀 Performance Metrics (v0.0.4 → v1.0.0)
 
 | Metric | Before | After | Improvement |
-|--------|--------|-------|------------|
-| Bundle Size (gzipped) | ~18 KB | **6.29 KB** | **-65%** |
-| Build Time | ~5000ms | **589ms** | **-88%** |
-| React Version | 16.12 | **19.0-rc.1** | Latest |
-| TypeScript | 3.x | **5.3.3** | +42% stricter |
-| Test Framework | Jest | **Vitest** | 2x+ faster |
-| Test Coverage | Partial | **50+ tests** | 100% target |
+|--------|--------|-------|-------------|
+| Bundle (gzipped) | ~18 KB | **6.29 KB** | **-65%** |
+| Build time | ~5000ms | **589ms** | **-88%** |
+| React version | 16.12 | **19.0-rc.1** | Latest |
 | Accessibility | Basic | **WCAG AA** | Full compliance |
-
-#### 🔒 Security & Dependencies
-
-- **Zero runtime dependencies** (React/React-DOM are peer dependencies)
-- TypeScript strict mode prevents type-related vulnerabilities
-- React's built-in XSS prevention
-- Proper event scoping and isolation
-- No eval() or dynamic code execution
-- Security audit-ready for enterprise deployments
 
 #### ✅ Backward Compatibility
 
-**100% backward compatible with v0.0.4** - No breaking changes!
-
-Your existing code continues to work without modifications. All v0.0.4 props and behaviors are fully supported. New features like keyboard navigation and improved accessibility are opt-in enhancements.
-
-#### 📦 Full Dependency Updates
-
-**Peer Dependencies**
-- `react`: 16.12.0 → **19.0.0-rc.1**
-- `react-dom`: 16.12.0 → **19.0.0-rc.1**
-
-**Core Build Tools**
-- `typescript`: 3.x → **5.3.3**
-- `vite`: (new) **5.0.8**
-- `vitest`: (new) **1.1.0**
-
-**Testing Libraries**
-- `@testing-library/react`: (new) **15.0.7**
-- `@testing-library/jest-dom`: (new) **6.1.5**
-- `jsdom`: (new) for DOM simulation
-
-**Code Quality**
-- `eslint`: (new) **8.56.0**
-- `@typescript-eslint/eslint-plugin`: (new) **6.15.0**
-- `@typescript-eslint/parser`: (new) **6.15.0**
-- `prettier`: (new) **3.1.1**
-
-#### 🧑‍💻 Developer Experience
-
-- Better error messages with styled console logging
-- Improved type hints and IDE autocomplete
-- React DevTools support (React 19 compatible)
-- Hot Module Replacement during development
-- Comprehensive storybook with 13 interactive examples
-- Migration guide for upgrading from v0.0.4
-
-#### 📚 Documentation
-
-- Complete README rewrite with examples
-- CHANGELOG with detailed version history
-- RELEASE_NOTES with highlights
-- TECHNICAL_DOCS with architecture details
-- PERFORMANCE_OPTIMIZATION guide
-- PROJECT_DOCS with completion status
-- Contributing guidelines and code of conduct
-
-#### 🎯 What's Next?
-
-React Magnifier v1.0.0 is production-ready and recommended for:
-- New projects requiring modern React patterns
-- Accessibility-conscious applications
-- E-commerce platforms with product galleries
-- Performance-critical applications
-- Teams using TypeScript
+100% backward compatible with v0.0.4 — no breaking changes.
 
 ---
 

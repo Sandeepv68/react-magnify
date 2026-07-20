@@ -1,6 +1,6 @@
 {
   "name": "@sandeepv68/react-magnifier",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": false,
   "type": "module",
   "description": "A modern, accessible React component for image magnification with TypeScript support.",
@@ -63,6 +63,7 @@
     "@types/node": "^20.10.5",
     "@types/react": "^19.0.11",
     "@types/react-dom": "^19.0.8",
+    "@types/styled-components": "^5.1.36",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
     "@vitejs/plugin-react": "^4.2.1",
@@ -110,5 +111,8 @@
   },
   "directories": {
     "example": "example"
+  },
+  "dependencies": {
+    "styled-components": "^6.4.4"
   }
 }

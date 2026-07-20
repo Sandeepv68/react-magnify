@@ -1,5 +1,5 @@
 /**
- * ReactMagnifier v1.0.0
+ * ReactMagnifier v1.1.0
  * A modern, accessible React component for image magnification
  * Migrated to React 19 with TypeScript, hooks, and accessibility features
  * Original author: Sandeep Vattapparambil
@@ -14,7 +14,11 @@ import {
   getCursorPos,
   createMagnifierGlass,
 } from './utils';
-import './style.css';
+import {
+  MagnifierGlobalStyles,
+  ImageContainer,
+  SrOnly,
+} from './ReactMagnifier.styled';
 
 /**
  * Constants
@@ -357,34 +361,36 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
   }, [handleMoveMagnifier, handleShowMagnifier, handleHideMagnifier, handleKeyDown]);
 
   return (
-    <div
-      className={`react-magnifier-image-container ${finalProps.customContainerStyles}`}
-      ref={imageContainerRef}
-      role="group"
-      aria-label="Image magnifier"
-      tabIndex={0}
-    >
-      <img
-        ref={magnifiableImageRef}
-        className={finalProps.customImgStyles}
-        src={finalProps.imageUrl}
-        width={finalProps.imageWidth}
-        height={finalProps.imageHeight}
-        alt={finalProps.imageAltText}
-        role="img"
-        aria-describedby="magnifier-help"
-      />
-      {isMagnifierVisible && (
-        <div
-          id="magnifier-help"
-          className="sr-only"
-          role="status"
-          aria-live="polite"
-        >
-          Magnifier active. Use arrow keys to navigate, Escape to close.
-        </div>
-      )}
-    </div>
+    <>
+      <MagnifierGlobalStyles />
+      <ImageContainer
+        className={`react-magnifier-image-container${finalProps.customContainerStyles ? ` ${finalProps.customContainerStyles}` : ''}`}
+        ref={imageContainerRef}
+        role="group"
+        aria-label="Image magnifier"
+        tabIndex={0}
+      >
+        <img
+          ref={magnifiableImageRef}
+          className={finalProps.customImgStyles}
+          src={finalProps.imageUrl}
+          width={finalProps.imageWidth}
+          height={finalProps.imageHeight}
+          alt={finalProps.imageAltText}
+          role="img"
+          aria-describedby="magnifier-help"
+        />
+        {isMagnifierVisible && (
+          <SrOnly
+            id="magnifier-help"
+            role="status"
+            aria-live="polite"
+          >
+            Magnifier active. Use arrow keys to navigate, Escape to close.
+          </SrOnly>
+        )}
+      </ImageContainer>
+    </>
   );
 });
 

@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-07-20
+
+### 🎨 CSS-in-JS Migration
+
+### Added
+- **styled-components** integration — component styles are now co-located with the component via CSS-in-JS, eliminating the need to import a separate stylesheet
+- `ReactMagnifier.styled.ts` — new file exporting `ImageContainer`, `SrOnly`, and `MagnifierGlobalStyles` styled components
+- `MagnifierGlobalStyles` (`createGlobalStyle`) covers the imperatively-created magnifier glass element (`.react-magnifier-glass`, `.show-magnifier`, `.hide-magnifier`) which cannot be a styled component because the glass DOM node is created manually
+
+### Changed
+- `ImageContainer` styled component replaces the plain `<div className="react-magnifier-image-container">` — the class name is still applied explicitly for backward compatibility with external CSS and tests
+- `SrOnly` styled component replaces `<div className="sr-only">` for the screen-reader status announcement
+- Removed `import './style.css'` from `ReactMagnifier.tsx`; `style.css` is retained for Storybook stories
+
+### Dependencies
+- Added `styled-components` as a runtime dependency
+- Added `@types/styled-components` as a dev dependency
+
+---
+
 ## [1.0.0] - 2026-07-18
 
 ### ✨ Major Release - Modernization & Accessibility

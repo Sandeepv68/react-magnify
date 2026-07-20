@@ -1,3 +1,29 @@
+# React Magnifier v1.1.0 - Release Notes
+
+**Release Date**: July 20, 2026  
+**Status**: Stable Production Release  
+**License**: MIT
+
+---
+
+## 🎨 What's New in v1.1.0
+
+### CSS-in-JS via styled-components
+
+Component styles are now co-located with the component using `styled-components`. Consumers no longer need to import a separate stylesheet — styles are injected automatically at runtime.
+
+- `ImageContainer` — styled `div` replacing `.react-magnifier-image-container`
+- `SrOnly` — styled `div` for screen-reader announcements
+- `MagnifierGlobalStyles` — `createGlobalStyle` block for the imperatively-created magnifier glass element
+
+The original class name `react-magnifier-image-container` is still applied explicitly for full backward compatibility with external CSS overrides.
+
+### Dependencies added
+- `styled-components` (runtime)
+- `@types/styled-components` (dev)
+
+---
+
 # React Magnifier v1.0.0 - Release Notes
 
 **Release Date**: July 18, 2026  
