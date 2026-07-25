@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-07-25
+
+### 🐛 Bug Fixes
+
+#### Keyboard Navigation Background Sync
+- Fixed keyboard arrow key handlers (↑ ↓ ← →) to update `backgroundPosition` alongside glass position
+- Previously, moving the magnifier with keyboard would shift the glass but the zoomed content would not follow
+- Added `updateBackgroundPosition()` helper that derives logical coordinates from the glass element's DOM position
+
+#### Event Name Consistency
+- Fixed misspelled custom event names (`magnfier-*` → `magnifier-*`) across all consumer code
+- The component dispatches correctly-spelled events, but stories, tests, and documentation referenced misspelled versions, meaning event listeners would never fire
+- Affected files: `ReactMagnifier.stories.tsx`, `ReactMagnifier.memory.test.tsx`, `README.md`, `CHANGELOG.md`, `RELEASE_NOTES.md`, `TECHNICAL_DOCS.md`
+
+### Changed
+
+#### Code Cleanup
+- Deleted `src/ReactMagnifier/style.css` — redundant since v1.1.0 migrated to styled-components
+- Removed non-existent `index.css` imports from `src/index.tsx` and stories
+
+#### Test Improvements
+- Replaced fragile `await new Promise(resolve => setTimeout(resolve, N))` with `waitFor` from `@testing-library/react` in `ReactMagnifier.test.tsx`
+- Fixed syntax error in `ReactMagnifier.memory.test.tsx:269` (statement, eslint-disable, and expect collapsed onto one line)
+- All **49 tests** passing
+
+#### Documentation Fixes
+- "Zero Dependencies" → "Minimal runtime dependencies (styled-components is the sole runtime dependency)"
+- "17 comprehensive test cases" → "49 comprehensive test cases"
+- Removed references to non-existent npm scripts (`build-tsc`, `build-dev`, `build-prod`)
+- "Jest testing library" → "Vitest testing library"
+- Updated test count from "50+" to accurate "49"
+
+---
+
 ## [1.1.0] - 2026-07-20
 
 ### 🎨 CSS-in-JS Migration
@@ -46,9 +80,9 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 - **Screen Reader Support** - Semantic HTML structure with proper ARIA labels
 - **Custom Events** - Dispatches custom DOM events for magnifier state changes:
   - `magnifier-initialized` - When magnifier initializes
-  - `magnfier-moved` - When magnifier position changes
-  - `magnfier-visible` - When magnifier becomes visible
-  - `magnfier-invisible` - When magnifier becomes hidden
+  - `magnifier-moved` - When magnifier position changes
+  - `magnifier-visible` - When magnifier becomes visible
+  - `magnifier-invisible` - When magnifier becomes hidden
 
 #### Build & Tooling
 - **Vite Migration** - Replaced Webpack 3 with Vite 5.0.8
@@ -62,7 +96,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
   - TypeScript declarations (`.d.ts`) generated
 - **TypeScript Strict Mode** - Full type safety across codebase
 - **Vitest Migration** - Replaced Jest with Vitest 1.1.0
-  - 17 comprehensive test cases
+  - 49 comprehensive test cases
   - 100% code coverage targets
   - JSDOM environment for DOM testing
   - Better performance and faster test execution
@@ -143,7 +177,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 
 ### 🔐 Security Enhancements
 - TypeScript strict mode prevents type-related vulnerabilities
-- No external runtime dependencies
+- Minimal runtime dependencies (styled-components is the sole runtime dependency)
 - React's built-in XSS prevention
 - Proper event scoping
 - No eval() or dynamic code execution
@@ -254,7 +288,7 @@ import '@sandeepv68/react-magnifier/dist/style.css'
 | Metric | Value |
 |--------|-------|
 | TypeScript Errors | 0 |
-| Test Cases | 17 |
+| Test Cases | 49 |
 | Bundle Size (ESM) | 25.25 kB → 6.29 kB gzipped |
 | Bundle Size (UMD) | 12.08 kB → 4.61 kB gzipped |
 | Build Time | ~589 ms |
@@ -291,6 +325,8 @@ Special thanks to the React community and the WCAG standards committee for acces
 
 ## Version History
 
+- **v1.1.1** (2026-07-25) - Bug fixes, documentation cleanup, test improvements
+- **v1.1.0** (2026-07-20) - CSS-in-JS migration via styled-components
 - **v1.0.0** (2026-07-18) - Major modernization to React 19
 - **v0.0.4** (2020) - Original stable release
 - **v0.0.3** - Initial release
@@ -298,4 +334,4 @@ Special thanks to the React community and the WCAG standards committee for acces
 ---
 
 **[Unreleased]**: Changes that will be included in the next release
-**[1.0.0]**: Current stable release
+**[1.1.1]**: Current stable release

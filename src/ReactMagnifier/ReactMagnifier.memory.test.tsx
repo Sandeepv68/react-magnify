@@ -79,7 +79,7 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
 
       // Add listener to custom event
       if (imageContainer) {
-        imageContainer.addEventListener('magnfier-visible', () => {
+        imageContainer.addEventListener('magnifier-visible', () => {
           eventFired = true
         })
       }
@@ -266,7 +266,9 @@ describe('ReactMagnifier - Memory Leak Tests', () => {
       // Unmount
       unmount()
 
-      // Image should be removed from DOM      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition      expect(image?.isConnected).toBe(false)
+      // Image should be removed from DOM
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      expect(image?.isConnected).toBe(false)
     })
 
     it('should handle failed image loads without leaking', () => {

@@ -2,8 +2,6 @@
 import { useRef, useEffect, useState, ReactNode } from 'react'
 import type { ComponentType } from 'react'
 import ReactMagnifier from './ReactMagnifier'
-import '../index.css'
-import './style.css'
 
 type StoryFn = ComponentType<{ children?: ReactNode }>
 type StoryConfig = React.ComponentProps<typeof ReactMagnifier> & {
@@ -345,15 +343,15 @@ export const AccessibilityDemo: StoryConfig = {
         }
 
         container.addEventListener('magnifier-initialized', handleInitialized)
-        container.addEventListener('magnfier-visible', handleVisible)
-        container.addEventListener('magnfier-invisible', handleInvisible)
-        container.addEventListener('magnfier-moved', handleMoved)
+        container.addEventListener('magnifier-visible', handleVisible)
+        container.addEventListener('magnifier-invisible', handleInvisible)
+        container.addEventListener('magnifier-moved', handleMoved)
 
         return () => {
           container.removeEventListener('magnifier-initialized', handleInitialized)
-          container.removeEventListener('magnfier-visible', handleVisible)
-          container.removeEventListener('magnfier-invisible', handleInvisible)
-          container.removeEventListener('magnfier-moved', handleMoved)
+          container.removeEventListener('magnifier-visible', handleVisible)
+          container.removeEventListener('magnifier-invisible', handleInvisible)
+          container.removeEventListener('magnifier-moved', handleMoved)
         }
       }, [])
 
@@ -448,15 +446,15 @@ export const CustomEventHandling: StoryConfig = {
         }
 
         container.addEventListener('magnifier-initialized', handleEvent('Initialized'))
-        container.addEventListener('magnfier-visible', handleEvent('Visible'))
-        container.addEventListener('magnfier-invisible', handleEvent('Invisible'))
-        container.addEventListener('magnfier-moved', handleEvent('Moved'))
+        container.addEventListener('magnifier-visible', handleEvent('Visible'))
+        container.addEventListener('magnifier-invisible', handleEvent('Invisible'))
+        container.addEventListener('magnifier-moved', handleEvent('Moved'))
 
         return () => {
           container.removeEventListener('magnifier-initialized', handleEvent('Initialized'))
-          container.removeEventListener('magnfier-visible', handleEvent('Visible'))
-          container.removeEventListener('magnfier-invisible', handleEvent('Invisible'))
-          container.removeEventListener('magnfier-moved', handleEvent('Moved'))
+          container.removeEventListener('magnifier-visible', handleEvent('Visible'))
+          container.removeEventListener('magnifier-invisible', handleEvent('Invisible'))
+          container.removeEventListener('magnifier-moved', handleEvent('Moved'))
         }
       }, [])
 

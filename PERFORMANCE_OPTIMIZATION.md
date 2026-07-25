@@ -26,7 +26,7 @@ React Magnifier v1.0.0 has been optimized for maximum performance:
 - **Initialization**: < 50ms on average
 - **Event Handling**: < 1ms per event
 - **Memory Usage**: < 1MB
-- **Zero Runtime Dependencies**: React is peer dependency only
+- **Minimal Runtime Dependencies**: React is peer dependency only; styled-components is the sole runtime dependency
 - **Tree-Shakeable**: Only used APIs bundled
 - **React.memo**: Prevents unnecessary re-renders
 
@@ -589,7 +589,7 @@ images.map(img => (
 | Event Response | < 5ms | 0.1-0.7ms ✅ | EXCEEDED |
 | Memory Usage | < 2MB | ~0.5MB ✅ | EXCEEDED |
 | Runtime Deps | 0 | 0 ✅ | PERFECT |
-| Code Coverage | 100% | 17 tests ✅ | ON TRACK |
+| Code Coverage | 100% | 49 tests ✅ | ON TRACK |
 | Tree-Shake | Yes | ESM ✅ | ACHIEVED |
 
 ---
