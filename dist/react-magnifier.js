@@ -1759,6 +1759,19 @@ const ReactMagnifier = t.memo(function ReactMagnifier2(props = {}) {
       triggerCustomEvent("magnifier-invisible", imageContainerRef.current);
     }
   }, []);
+  const updateBackgroundPosition = useCallback(
+    (glass) => {
+      const image = magnifiableImageRef.current;
+      if (!image) return;
+      const { width, height } = magnifierDimensions;
+      const left = parseFloat(glass.style.left) || 0;
+      const top = parseFloat(glass.style.top) || 0;
+      const x2 = left + width;
+      const y2 = top + height;
+      glass.style.backgroundPosition = `-${x2 * finalProps.zoomSize - width + PIXEL_PADDING}px -${y2 * finalProps.zoomSize - height + PIXEL_PADDING}px`;
+    },
+    [magnifierDimensions, finalProps.zoomSize]
+  );
   const handleKeyDown = useCallback(
     (event) => {
       if (!isMagnifierVisible || !glassRef.current || !magnifiableImageRef.current) {
@@ -1803,11 +1816,12 @@ const ReactMagnifier = t.memo(function ReactMagnifier2(props = {}) {
           break;
         }
       }
-      if (handled) {
+      if (handled && event.key !== "Escape") {
+        updateBackgroundPosition(glass);
         triggerCustomEvent("magnifier-moved", imageContainerRef.current);
       }
     },
-    [isMagnifierVisible, handleHideMagnifier]
+    [isMagnifierVisible, handleHideMagnifier, updateBackgroundPosition]
   );
   useEffect(() => {
     const image = magnifiableImageRef.current;

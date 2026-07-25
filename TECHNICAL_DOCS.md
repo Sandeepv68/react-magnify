@@ -1,6 +1,6 @@
-# React Magnifier v1.0.0 - Technical Documentation
+# React Magnifier v1.1.1 - Technical Documentation
 
-**Date**: July 18, 2026 | **Version**: 1.0.0 | **Status**: Complete
+**Date**: July 25, 2026 | **Version**: 1.1.1 | **Status**: Complete
 
 This document consolidates all technical details about React Magnifier v1.0.0, including modernization summary, file structure, and verification results.
 
@@ -16,6 +16,36 @@ This document consolidates all technical details about React Magnifier v1.0.0, i
 
 ---
 
+# v1.1.1 Update Summary (2026-07-25)
+
+## Bug Fixes & Improvements
+
+### Keyboard Navigation Background Sync
+- **Issue**: Arrow key handlers moved the magnifier glass but did not update `backgroundPosition`, causing the zoomed content to desync from the glass position
+- **Fix**: Added `updateBackgroundPosition()` helper that derives logical coordinates from the glass element's DOM position and recalculates the background position
+- **File**: `ReactMagnifier.tsx` — new helper function called after each arrow key press
+
+### Event Name Consistency
+- **Issue**: Custom event names were misspelled in consumer code (`magnfier-*` instead of `magnifier-*`). The component dispatches correctly-spelled events, but stories, tests, and documentation referenced misspelled versions
+- **Fix**: Corrected all event listener names to `magnifier-*` across 7 files
+- **Files**: `ReactMagnifier.stories.tsx`, `ReactMagnifier.memory.test.tsx`, `README.md`, `CHANGELOG.md`, `RELEASE_NOTES.md`, `TECHNICAL_DOCS.md`
+
+### Code Cleanup
+- Deleted `src/ReactMagnifier/style.css` — redundant since v1.1.0 migrated to styled-components
+- Removed non-existent `index.css` imports from `src/index.tsx` and stories
+
+### Test Improvements
+- Replaced fragile `setTimeout` waits with `waitFor` from `@testing-library/react`
+- Fixed syntax error in `ReactMagnifier.memory.test.tsx:269`
+- All **49 tests** passing
+
+### Documentation Fixes
+- Corrected dependency claims ("Zero Dependencies" → "Minimal runtime dependencies")
+- Fixed test count references (17 → 49)
+- Removed non-existent script references (`build-tsc`, `build-dev`, `build-prod`)
+
+---
+
 # PART 1: MODERNIZATION OVERVIEW
 
 ## Executive Summary
@@ -25,7 +55,7 @@ The React Magnifier component has been successfully modernized from a legacy 201
 **Key Metrics:**
 - **Build Size**: ESM 25.25 kB (6.29 kB gzipped), UMD 12.08 kB (4.61 kB gzipped)
 - **TypeScript**: 0 compilation errors
-- **Test Suite**: 17 test cases covering all functionality
+- **Test Suite**: 49 test cases covering all functionality
 - **Distribution**: Dual ESM + UMD with source maps and TypeScript declarations
 - **React Version**: 19.0.0-rc.1
 
@@ -146,7 +176,7 @@ Added comprehensive JSDoc comments for all interface properties.
 ### Testing Infrastructure
 
 #### Test File: `src/ReactMagnifier/ReactMagnifier.test.tsx`
-**17 comprehensive test cases** organized in 8 suites:
+**49 comprehensive test cases** organized in 3 test suites (unit, performance, memory):
 
 1. **Basic Rendering (4 tests)**
 2. **Props Configuration (4 tests)**
@@ -218,16 +248,16 @@ The component dispatches the following custom events:
 element.dispatchEvent(new CustomEvent('magnifier-initialized', { detail: element }))
 
 // Fired when magnifier glass moves
-element.dispatchEvent(new CustomEvent('magnfier-moved', { detail: element }))
+element.dispatchEvent(new CustomEvent('magnifier-moved', { detail: element }))
 
 // Fired when magnifier becomes visible
-element.dispatchEvent(new CustomEvent('magnfier-visible', { detail: element }))
+element.dispatchEvent(new CustomEvent('magnifier-visible', { detail: element }))
 
 // Fired when magnifier becomes hidden
-element.dispatchEvent(new CustomEvent('magnfier-invisible', { detail: element }))
+element.dispatchEvent(new CustomEvent('magnifier-invisible', { detail: element }))
 ```
 
-Note: Events follow original naming (including typo "magnfier" for backward compatibility).
+Note: Events use consistent "magnifier-" prefix naming.
 
 ---
 
@@ -318,7 +348,7 @@ react-magnify/
 | **src/ReactMagnifier/ReactMagnifier.performance.test.tsx** | 500+ | 12 | Performance benchmarks |
 | **src/ReactMagnifier/ReactMagnifier.memory.test.tsx** | 600+ | 21 | Memory leak tests |
 
-**Total Tests**: 50+ test cases
+**Total Tests**: 49 test cases
 
 ### Stories
 | File | Lines | Stories | Purpose |
@@ -466,7 +496,7 @@ dist/
    - ✅ Changelog and release notes
 
 6. **Test Files Created** ✅
-   - ✅ `src/ReactMagnifier/ReactMagnifier.test.tsx` - 17 test cases (unit tests)
+   - ✅ `src/ReactMagnifier/ReactMagnifier.test.tsx` - 17 unit test cases
    - ✅ `src/ReactMagnifier/ReactMagnifier.performance.test.tsx` - 12 performance tests
    - ✅ `src/ReactMagnifier/ReactMagnifier.memory.test.tsx` - 20 memory tests
    - ✅ Total: 49 test cases prepared
@@ -512,7 +542,7 @@ Status: ✅ SUCCESS
 | **CSS Size (gzip)** | 0.37 kB | ✅ Excellent |
 | **ESLint Issues** | 0 | ✅ Clean |
 | **Compilation Errors** | 0 | ✅ Perfect |
-| **Runtime Dependencies** | 0 | ✅ Zero |
+| **Runtime Dependencies** | 1 (styled-components) | Minimal |
 
 ---
 

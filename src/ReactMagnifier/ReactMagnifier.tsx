@@ -176,6 +176,27 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
    * Arrow keys: move magnifier
    * Escape: hide magnifier
    */
+  const updateBackgroundPosition = useCallback(
+    (glass: HTMLDivElement) => {
+      const image = magnifiableImageRef.current;
+      if (!image) return;
+
+      const { width, height } = magnifierDimensions;
+      const left = parseFloat(glass.style.left) || 0;
+      const top = parseFloat(glass.style.top) || 0;
+
+      // Derive logical x/y from glass position (glass is offset by width/height)
+      const x = left + width;
+      const y = top + height;
+
+      glass.style.backgroundPosition =
+        `-${x * finalProps.zoomSize - width + PIXEL_PADDING}px -${
+          y * finalProps.zoomSize - height + PIXEL_PADDING
+        }px`;
+    },
+    [magnifierDimensions, finalProps.zoomSize]
+  );
+
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (!isMagnifierVisible || !glassRef.current || !magnifiableImageRef.current) {
@@ -226,11 +247,12 @@ const ReactMagnifier = React.memo(function ReactMagnifier(
           break;
       }
 
-      if (handled) {
+      if (handled && event.key !== 'Escape') {
+        updateBackgroundPosition(glass);
         triggerCustomEvent('magnifier-moved', imageContainerRef.current);
       }
     },
-    [isMagnifierVisible, handleHideMagnifier]
+    [isMagnifierVisible, handleHideMagnifier, updateBackgroundPosition]
   );
 
   /**

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ReactMagnifier from './ReactMagnifier';
 
 describe('ReactMagnifier Component', () => {
@@ -96,9 +96,9 @@ describe('ReactMagnifier Component', () => {
           getMagnifier={getMagnifier}
         />
       );
-      // Give callback time to execute
-      await new Promise(resolve => setTimeout(resolve, 50));
-      expect(getMagnifier).toHaveBeenCalled();
+      await waitFor(() => {
+        expect(getMagnifier).toHaveBeenCalled();
+      });
     });
   });
 
@@ -107,10 +107,10 @@ describe('ReactMagnifier Component', () => {
       const { container } = render(
         <ReactMagnifier imageUrl={testImageUrl} />
       );
-      // Allow time for initialization
-      await new Promise(resolve => setTimeout(resolve, 150));
-      const glass = container.querySelector('.react-magnifier-glass');
-      expect(glass).toBeDefined();
+      await waitFor(() => {
+        const glass = container.querySelector('.react-magnifier-glass');
+        expect(glass).toBeDefined();
+      });
     });
 
     it('should apply correct styles to magnifier glass', async () => {
@@ -124,16 +124,15 @@ describe('ReactMagnifier Component', () => {
           magnifierBorderColor="#ff0000"
         />
       );
-      await new Promise(resolve => setTimeout(resolve, 150));
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const glass = container.querySelector('.react-magnifier-glass') as HTMLElement;
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (glass) {
-        expect(glass.style.width).toBe('150px');
-        expect(glass.style.height).toBe('150px');
-        expect(glass.style.borderRadius).toBe('75%');
-        expect(glass.style.borderWidth).toBe('2px');
-      }
+      await waitFor(() => {
+        const glass = container.querySelector('.react-magnifier-glass') as HTMLElement;
+        if (glass) {
+          expect(glass.style.width).toBe('150px');
+          expect(glass.style.height).toBe('150px');
+          expect(glass.style.borderRadius).toBe('75%');
+          expect(glass.style.borderWidth).toBe('2px');
+        }
+      });
     });
   });
 
@@ -142,21 +141,25 @@ describe('ReactMagnifier Component', () => {
       const { container } = render(
         <ReactMagnifier imageUrl={testImageUrl} />
       );
-      await new Promise(resolve => setTimeout(resolve, 150));
-      const glass = container.querySelector('.react-magnifier-glass');
-      expect(glass?.classList.contains('hide-magnifier')).toBe(true);
+      await waitFor(() => {
+        const glass = container.querySelector('.react-magnifier-glass');
+        expect(glass?.classList.contains('hide-magnifier')).toBe(true);
+      });
     });
 
     it('should show magnifier on mouse enter', async () => {
       const { container } = render(
         <ReactMagnifier imageUrl={testImageUrl} />
       );
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await waitFor(() => {
+        expect(container.querySelector('.react-magnifier-glass')).toBeDefined();
+      });
       const mainContainer = container.querySelector('.react-magnifier-image-container');
       if (mainContainer) {
         fireEvent.mouseEnter(mainContainer);
-        await new Promise(resolve => setTimeout(resolve, 50));
-        expect(container.querySelector('.react-magnifier-glass')?.classList.contains('show-magnifier')).toBe(true);
+        await waitFor(() => {
+          expect(container.querySelector('.react-magnifier-glass')?.classList.contains('show-magnifier')).toBe(true);
+        });
       }
     });
 
@@ -164,16 +167,20 @@ describe('ReactMagnifier Component', () => {
       const { container } = render(
         <ReactMagnifier imageUrl={testImageUrl} />
       );
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await waitFor(() => {
+        expect(container.querySelector('.react-magnifier-glass')).toBeDefined();
+      });
       const mainContainer = container.querySelector('.react-magnifier-image-container');
       if (mainContainer) {
         fireEvent.mouseEnter(mainContainer);
-        await new Promise(resolve => setTimeout(resolve, 50));
-        expect(container.querySelector('.react-magnifier-glass')?.classList.contains('show-magnifier')).toBe(true);
+        await waitFor(() => {
+          expect(container.querySelector('.react-magnifier-glass')?.classList.contains('show-magnifier')).toBe(true);
+        });
 
         fireEvent.mouseLeave(mainContainer);
-        await new Promise(resolve => setTimeout(resolve, 50));
-        expect(container.querySelector('.react-magnifier-glass')?.classList.contains('hide-magnifier')).toBe(true);
+        await waitFor(() => {
+          expect(container.querySelector('.react-magnifier-glass')?.classList.contains('hide-magnifier')).toBe(true);
+        });
       }
     });
   });
@@ -183,14 +190,19 @@ describe('ReactMagnifier Component', () => {
       const { container } = render(
         <ReactMagnifier imageUrl={testImageUrl} />
       );
-      await new Promise(resolve => setTimeout(resolve, 150));
+      await waitFor(() => {
+        expect(container.querySelector('.react-magnifier-glass')).toBeDefined();
+      });
       const mainContainer = container.querySelector('.react-magnifier-image-container');
       if (mainContainer) {
         fireEvent.mouseEnter(mainContainer);
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await waitFor(() => {
+          expect(container.querySelector('.react-magnifier-glass')?.classList.contains('show-magnifier')).toBe(true);
+        });
         fireEvent.keyDown(window, { key: 'Escape' });
-        await new Promise(resolve => setTimeout(resolve, 50));
-        expect(container.querySelector('.react-magnifier-glass')?.classList.contains('hide-magnifier')).toBe(true);
+        await waitFor(() => {
+          expect(container.querySelector('.react-magnifier-glass')?.classList.contains('hide-magnifier')).toBe(true);
+        });
       }
     });
   });

@@ -1,6 +1,6 @@
 ![reactmagnifier-logo](https://i.ibb.co/ZWKGhTm/logo.png)
 
-# ReactMagnifier v1.1.0
+# ReactMagnifier v1.1.1
 
 A modern, accessible React 19 component for image magnification with TypeScript support, built with Vite and tested with Vitest.
 
@@ -13,13 +13,13 @@ A modern, accessible React 19 component for image magnification with TypeScript 
 * **Small Bundle**: 25.25 kB ESM (6.29 kB gzipped), 12.08 kB UMD (4.61 kB gzipped)
 * **Fully Typed**: TypeScript with strict mode enabled
 * **Accessible**: WCAG 2.1 Level AA - keyboard navigation, ARIA attributes, screen reader support
-* **Zero Dependencies**: React is a peer dependency only
+* **Zero Runtime Dependencies**: React is a peer dependency only; styled-components is the sole runtime dependency
 * **Keyboard Navigation**: Arrow keys to move magnifier, Escape to close
 * **Touch Support**: Works on mobile devices and touch screens
 * **Custom Events**: Listen to magnifier state changes (initialized, moved, visible, invisible)
 * **Customizable Styling**: Full CSS customization support
 * **100% Backward Compatible**: Drop-in replacement for v0.x
-* **Fully Tested**: 17 comprehensive test cases covering all functionality
+* **Fully Tested**: 49 comprehensive test cases covering all functionality
 * **Performance Optimized**: React.memo and useCallback for optimal rendering
 
 ## Table of Contents
@@ -150,24 +150,24 @@ useEffect(() => {
   const handleMagnifierInvisible = () => console.log('Magnifier invisible')
 
   container.addEventListener('magnifier-initialized', handleMagnifierInitialized)
-  container.addEventListener('magnfier-moved', handleMagnifierMoved)
-  container.addEventListener('magnfier-visible', handleMagnifierVisible)
-  container.addEventListener('magnfier-invisible', handleMagnifierInvisible)
+  container.addEventListener('magnifier-moved', handleMagnifierMoved)
+  container.addEventListener('magnifier-visible', handleMagnifierVisible)
+  container.addEventListener('magnifier-invisible', handleMagnifierInvisible)
 
   return () => {
     container.removeEventListener('magnifier-initialized', handleMagnifierInitialized)
-    container.removeEventListener('magnfier-moved', handleMagnifierMoved)
-    container.removeEventListener('magnfier-visible', handleMagnifierVisible)
-    container.removeEventListener('magnfier-invisible', handleMagnifierInvisible)
+    container.removeEventListener('magnifier-moved', handleMagnifierMoved)
+    container.removeEventListener('magnifier-visible', handleMagnifierVisible)
+    container.removeEventListener('magnifier-invisible', handleMagnifierInvisible)
   }
 }, [])
 ```
 
 **Event Names:**
 - `magnifier-initialized` - Fired when magnifier is initialized
-- `magnfier-moved` - Fired when magnifier position changes
-- `magnfier-visible` - Fired when magnifier becomes visible
-- `magnfier-invisible` - Fired when magnifier becomes hidden
+- `magnifier-moved` - Fired when magnifier position changes
+- `magnifier-visible` - Fired when magnifier becomes visible
+- `magnifier-invisible` - Fired when magnifier becomes hidden
 
 ## Examples
 
@@ -227,8 +227,8 @@ export default function ProductImage() {
       console.log('User started magnifying image')
     }
 
-    container.addEventListener('magnfier-visible', handleMagnifierVisible)
-    return () => container.removeEventListener('magnfier-visible', handleMagnifierVisible)
+    container.addEventListener('magnifier-visible', handleMagnifierVisible)
+    return () => container.removeEventListener('magnifier-visible', handleMagnifierVisible)
   }, [])
 
   return (
@@ -244,7 +244,7 @@ export default function ProductImage() {
 
 ## Migration Guide from v0.0.4
 
-ReactMagnifier v1.0.0 is **100% backward compatible** with v0.0.4. No code changes are required, but you can take advantage of new features:
+ReactMagnifier v1.1.1 is **100% backward compatible** with v0.0.4. No code changes are required, but you can take advantage of new features:
 
 ### What's New in v1.0.0
 
@@ -254,7 +254,7 @@ ReactMagnifier v1.0.0 is **100% backward compatible** with v0.0.4. No code chang
 4. **Smaller Bundle** - 6.29 kB gzipped (vs 18 KB previously)
 5. **Better Performance** - React.memo and useCallback optimizations
 6. **Full TypeScript** - Strict mode enabled for type safety
-7. **Improved Testing** - 17 test cases with 100% coverage target
+7. **Improved Testing** - 49 test cases with 100% coverage target
 8. **Modern Build** - Vite instead of Webpack for faster builds
 
 ### Upgrading from v0.0.4
@@ -269,14 +269,14 @@ Your existing code will continue to work without any changes. To enable keyboard
 
 ## Project Summary
 
-ReactMagnifier v1.0.0 is a production-ready modernization that combines:
+ReactMagnifier v1.1.1 is a production-ready modernization that combines:
 
 - React 19 functional component architecture
 - Vite 5 build tooling with dual ESM and UMD bundles
 - TypeScript 5.3 strict typing and declaration generation
 - WCAG 2.1 Level AA accessibility with keyboard and screen reader support
 - Vitest testing with a 100% coverage target
-- Zero runtime dependencies (React and ReactDOM are peer dependencies)
+- Minimal runtime dependencies (React and ReactDOM are peer dependencies; styled-components is the sole runtime dependency)
 
 ### Release Highlights
 
@@ -291,7 +291,7 @@ ReactMagnifier v1.0.0 is a production-ready modernization that combines:
 - ESM bundle: **25.25 kB** minified, **6.29 kB** gzipped
 - UMD bundle: **12.08 kB** minified, **4.61 kB** gzipped
 - Build time: **~589ms** with Vite
-- 100% test coverage target with **50+** test cases
+- 100% test coverage target with **49** test cases
 - No runtime dependencies
 
 ### Publication & Verification
@@ -340,6 +340,43 @@ MIT License - see LICENSE file for details
 - **@testing-library/react**: 15.0.7
 
 ## Changelog
+
+### v1.1.1 - 2026-07-25
+
+**🐛 Bug Fixes & Documentation Cleanup**
+
+#### 🐛 Bug Fixes
+
+**Keyboard Navigation Background Sync**
+- Fixed keyboard arrow key handlers (↑ ↓ ← →) to update `backgroundPosition` alongside glass position
+- Previously, moving the magnifier with keyboard would shift the glass but the zoomed content would not follow
+- Added `updateBackgroundPosition()` helper that derives logical coordinates from the glass element's DOM position
+
+**Event Name Consistency**
+- Fixed misspelled custom event names (`magnfier-*` → `magnifier-*`) across all consumer code
+- The component dispatches correctly-spelled events, but stories, tests, and documentation referenced misspelled versions, meaning event listeners would never fire
+- Fixed in: `ReactMagnifier.styled.ts`, `ReactMagnifier.stories.tsx`, `ReactMagnifier.memory.test.tsx`, `README.md`, `CHANGELOG.md`, `RELEASE_NOTES.md`, `TECHNICAL_DOCS.md`
+
+#### 🧹 Code Cleanup
+
+- Deleted `src/ReactMagnifier/style.css` — redundant since v1.1.0 migrated to styled-components
+- Removed non-existent `index.css` imports from `src/index.tsx` and stories
+
+#### 🧪 Test Improvements
+
+- Replaced fragile `await new Promise(resolve => setTimeout(resolve, N))` with `waitFor` from `@testing-library/react` in `ReactMagnifier.test.tsx`
+- Fixed syntax error in `ReactMagnifier.memory.test.tsx:269` (statement, eslint-disable, and expect were collapsed onto one line)
+- All **49 tests** passing
+
+#### 📝 Documentation Fixes
+
+- "Zero Dependencies" → "Minimal runtime dependencies (styled-components is the sole runtime dependency)"
+- "17 comprehensive test cases" → "49 comprehensive test cases"
+- Removed references to non-existent npm scripts (`build-tsc`, `build-dev`, `build-prod`)
+- "Jest testing library" → "Vitest testing library"
+- Updated test count from "50+" to accurate "49"
+
+---
 
 ### v1.1.0 - 2026-07-20
 
@@ -449,26 +486,21 @@ See [NPM_PUBLICATION_GUIDE.md](./NPM_PUBLICATION_GUIDE.md) for publishing instru
 npm run build
 ```
 
-* Build typescript files
+* Run type checking
 ```sh
-npm run build-tsc
+npm run type-check
 ```
 
-* Create development build
+* Run linting
 ```sh
-npm run build-dev
-```
-
-* Create production build
-```sh
-npm run build-prod
+npm run lint
 ```
 
 You need to have `Nodejs` ,`npm` in your system as development dependency.
 
 ## Tests
 
-This project includes unit tests written in `Jest` testing library. Tests can be run by the npm script
+This project includes unit tests written in `Vitest` testing library. Tests can be run by the npm script
 ```sh
 npm run test
 ```

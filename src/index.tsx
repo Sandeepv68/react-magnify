@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client';
-import './index.css';
 import ReactMagnifier from './ReactMagnifier/ReactMagnifier';
 
 const SAMPLE_IMAGE = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1000&q=80';
