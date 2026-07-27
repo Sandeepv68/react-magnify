@@ -16,8 +16,7 @@ export const isValidProp = (prop: string): boolean => {
  * @param message - The error message to log
  */
 export const logMagnifierError = (message: string): void => {
-  // eslint-disable-next-line no-console
-  console.log(
+  console.warn(
     `%c ReactMagnifier Error: ${message}`,
     'background: #FCEBB6; color: #F07818; font-size: 17px; font-weight: bold;'
   );
@@ -66,25 +65,6 @@ export const getCursorPos = (
   y = y - window.pageYOffset;
 
   return { x, y };
-};
-
-/**
- * Debounce function to limit how often a function can be called
- * @param func - The function to debounce
- * @param delay - The delay in milliseconds
- * @returns A debounced version of the function
- */
-export const debounce = <T extends (...args: Parameters<T>) => ReturnType<T>>(
-  func: T,
-  delay: number
-): ((...args: Parameters<T>) => void) => {
-  let timeoutId: NodeJS.Timeout;
-  return (...args: Parameters<T>): void => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      func(...args);
-    }, delay);
-  };
 };
 
 /**

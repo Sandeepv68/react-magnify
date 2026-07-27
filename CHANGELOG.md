@@ -54,8 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `import './style.css'` from `ReactMagnifier.tsx`; `style.css` is retained for Storybook stories
 
 ### Dependencies
-- Added `styled-components` as a runtime dependency
-- Added `@types/styled-components` as a dev dependency
+- Added `styled-components` as a runtime dependency (moved to peer dependency in v1.2.0)
+- Added `@types/styled-components` as a dev dependency (removed in v1.2.0 — v6 ships own types)
 
 ---
 
@@ -140,11 +140,11 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 - Wrapped component with React.memo for performance optimization
 
 #### Bundle Size Reduction
-- **ESM Bundle**: 25.25 kB minified (6.29 kB gzipped)
-- **UMD Bundle**: 12.08 kB minified (4.61 kB gzipped)
-- **CSS**: 0.71 kB (0.37 kB gzipped)
-- **Previous Size**: ~18 kB minified
-- **Improvement**: ~65% smaller gzipped bundle
+- **ESM Bundle**: 13.92 kB minified (3.49 kB gzipped) — down from 25.25 kB in v1.1.1
+- **UMD Bundle**: 7.51 kB minified (2.74 kB gzipped) — down from 12.08 kB in v1.1.1
+- **CSS**: 0 kB — styles injected at runtime via styled-components
+- **Previous Size**: ~18 kB minified (v0.0.4)
+- **Improvement**: ~81% smaller gzipped bundle from v0.0.4
 
 #### TypeScript Improvements
 - Replaced generic `Function` type with specific callback signature: `(container: HTMLDivElement | null) => void`
@@ -177,7 +177,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 
 ### 🔐 Security Enhancements
 - TypeScript strict mode prevents type-related vulnerabilities
-- Minimal runtime dependencies (styled-components is the sole runtime dependency)
+- Minimal runtime dependencies (React, ReactDOM, and styled-components are peer dependencies — nothing bundled)
 - React's built-in XSS prevention
 - Proper event scoping
 - No eval() or dynamic code execution
@@ -289,9 +289,10 @@ import '@sandeepv68/react-magnifier/dist/style.css'
 |--------|-------|
 | TypeScript Errors | 0 |
 | Test Cases | 49 |
-| Bundle Size (ESM) | 25.25 kB → 6.29 kB gzipped |
-| Bundle Size (UMD) | 12.08 kB → 4.61 kB gzipped |
-| Build Time | ~589 ms |
+| Bundle Size (ESM) | 13.92 kB → 3.49 kB gzipped |
+| Bundle Size (UMD) | 7.51 kB → 2.74 kB gzipped |
+| Type Declarations | Generated via vite-plugin-dts |
+| Build Time | ~4s |
 | Type Check Time | < 1 second |
 | Code Coverage Target | 100% |
 | Accessibility | WCAG 2.1 Level AA ✅ |
@@ -325,6 +326,7 @@ Special thanks to the React community and the WCAG standards committee for acces
 
 ## Version History
 
+- **v1.2.0** (2026-07-27) - Production readiness fixes: bundle externalization, type declarations, dependency cleanup
 - **v1.1.1** (2026-07-25) - Bug fixes, documentation cleanup, test improvements
 - **v1.1.0** (2026-07-20) - CSS-in-JS migration via styled-components
 - **v1.0.0** (2026-07-18) - Major modernization to React 19
@@ -334,4 +336,4 @@ Special thanks to the React community and the WCAG standards committee for acces
 ---
 
 **[Unreleased]**: Changes that will be included in the next release
-**[1.1.1]**: Current stable release
+**[1.2.0]**: Current stable release

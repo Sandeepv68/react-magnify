@@ -1,8 +1,19 @@
+<div align="center">
+
 ![reactmagnifier-logo](https://i.ibb.co/ZWKGhTm/logo.png)
 
-# ReactMagnifier v1.1.1
+# ReactMagnifier v1.2.0
+## A modern, accessible React 19 component for image magnification with TypeScript support, built with Vite and tested with Vitest.
 
-A modern, accessible React 19 component for image magnification with TypeScript support, built with Vite and tested with Vitest.
+[![npm version](https://img.shields.io/npm/v/@sandeepv68/react-magnifier?style=flat-square&logo=npm&logoColor=white&label=version)](https://www.npmjs.com/package/@sandeepv68/react-magnifier)
+[![npm downloads](https://img.shields.io/npm/dm/@sandeepv68/react-magnifier?style=flat-square&logo=npm&logoColor=white&label=downloads&color=%2324852F)](https://www.npmjs.com/package/@sandeepv68/react-magnifier)
+[![license](https://img.shields.io/npm/l/@sandeepv68/react-magnifier?style=flat-square&color=%234a90e2)](LICENSE)
+[![bundle size](https://img.shields.io/bundlejs/size/@sandeepv68/react-magnifier?style=flat-square&label=bundle%20size&color=%23ff6b35)](https://bundlephobia.com/package/@sandeepv68/react-magnifier)
+
+<img src="example/badge.png" alt="react-magnifier-badge" width="200"/>
+
+![demo](example/demo.gif)
+</div>
 
 > **Note:** The npm package is `@sandeepv68/react-magnifier`
 
@@ -10,7 +21,7 @@ A modern, accessible React 19 component for image magnification with TypeScript 
 
 * **Modern Stack**: React 19 with hooks, TypeScript 5.3, Vite 5
 * **Styled Components**: CSS-in-JS via styled-components — no external stylesheet required
-* **Small Bundle**: 25.25 kB ESM (6.29 kB gzipped), 12.08 kB UMD (4.61 kB gzipped)
+* **Small Bundle**: 13.92 kB ESM (3.49 kB gzipped), 7.51 kB UMD (2.74 kB gzipped)
 * **Fully Typed**: TypeScript with strict mode enabled
 * **Accessible**: WCAG 2.1 Level AA - keyboard navigation, ARIA attributes, screen reader support
 * **Zero Runtime Dependencies**: React is a peer dependency only; styled-components is the sole runtime dependency
@@ -56,7 +67,6 @@ yarn add @sandeepv68/react-magnifier
 
 ```jsx
 import ReactMagnifier from '@sandeepv68/react-magnifier'
-import '@sandeepv68/react-magnifier/dist/style.css'
 
 export default function App() {
   return (
@@ -269,14 +279,14 @@ Your existing code will continue to work without any changes. To enable keyboard
 
 ## Project Summary
 
-ReactMagnifier v1.1.1 is a production-ready modernization that combines:
+ReactMagnifier v1.2.0 is a production-ready modernization that combines:
 
 - React 19 functional component architecture
 - Vite 5 build tooling with dual ESM and UMD bundles
-- TypeScript 5.3 strict typing and declaration generation
+- TypeScript 5.3 strict typing and declaration generation (via `vite-plugin-dts`)
 - WCAG 2.1 Level AA accessibility with keyboard and screen reader support
 - Vitest testing with a 100% coverage target
-- Minimal runtime dependencies (React and ReactDOM are peer dependencies; styled-components is the sole runtime dependency)
+- Zero runtime dependencies bundled — React, ReactDOM, and styled-components are all peer dependencies
 
 ### Release Highlights
 
@@ -288,11 +298,11 @@ ReactMagnifier v1.1.1 is a production-ready modernization that combines:
 
 ### Performance Snapshot
 
-- ESM bundle: **25.25 kB** minified, **6.29 kB** gzipped
-- UMD bundle: **12.08 kB** minified, **4.61 kB** gzipped
-- Build time: **~589ms** with Vite
+- ESM bundle: **13.92 kB** minified, **3.49 kB** gzipped
+- UMD bundle: **7.51 kB** minified, **2.74 kB** gzipped
+- Build time: **~4s** with Vite + vite-plugin-dts
 - 100% test coverage target with **49** test cases
-- No runtime dependencies
+- Zero runtime dependencies (React, ReactDOM, styled-components are peer dependencies)
 
 ### Publication & Verification
 
@@ -300,9 +310,9 @@ Recommended pre-publication checks:
 
 ```bash
 npm run build
-npm test -- --run
 npm run type-check
 npm run lint
+npm test -- --run
 ```
 
 Publication steps:
@@ -333,13 +343,56 @@ MIT License - see LICENSE file for details
 
 ## Technologies Used
 
-- **React**: 19.0.0-rc.1
+- **React**: 19.0.0
 - **TypeScript**: 5.3.3
 - **Vite**: 5.0.8
 - **Vitest**: 1.1.0
+- **styled-components**: 6.4.4 (peer dependency)
 - **@testing-library/react**: 15.0.7
 
 ## Changelog
+
+### v1.2.0 - 2026-07-27
+
+**🔒 Production Readiness Fixes**
+
+#### 🐛 Critical Fixes
+
+**Bundle Externalization**
+- Externalized `styled-components` and `react/jsx-runtime` from the Vite build — consumers no longer get duplicate copies
+- ESM bundle reduced from 25.25 kB to 13.92 kB; UMD from 12.08 kB to 7.51 kB
+- UMD bundle no longer ships development-mode JSX runtime
+
+**Type Declarations**
+- Added `vite-plugin-dts` to generate `.d.ts` files in `dist/` during build
+- TypeScript consumers can now import the package without errors
+
+**Console Warning Fix**
+- Changed `console.log` to `console.warn` in `logMagnifierError()` — errors now use proper severity level
+
+#### 🧹 Cleanup & Fixes
+
+- Moved `styled-components` from `dependencies` to `peerDependencies` — consumers control the version
+- Removed `@types/styled-components` (v6 ships its own types)
+- Removed unused `debounce` utility function
+- Scoped global `* { box-sizing: border-box }` reset to `.react-magnifier-glass` only
+- Fixed `.gitignore` and `.npmignore` source map patterns (`*.map.js` → `*.map`)
+- Removed invalid `./dist/style.css` export entry
+- Added `"sideEffects": false` for tree-shaking support
+- Fixed React peer dependency to support `^18.0.0 || ^19.0.0`
+- Fixed dev React dependency to stable `^19.0.0` (was RC)
+
+#### 📦 Dependency Updates
+
+- Added `vite-plugin-dts` as a dev dependency for type declaration generation
+- `styled-components` is now a peer dependency, not a runtime dependency
+
+#### 📝 Documentation
+
+- Added demo GIF to README
+- Updated bundle size stats throughout docs
+
+---
 
 ### v1.1.1 - 2026-07-25
 
@@ -433,14 +486,15 @@ All v1.0.0 props, events, and behaviors are fully supported. No breaking changes
 **Testing**
 - Vitest 1.1.0 with 49 tests across unit, performance, and memory-leak suites
 
-#### 🚀 Performance Metrics (v0.0.4 → v1.0.0)
+#### 🚀 Performance Metrics (v0.0.4 → v1.2.0)
 
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
-| Bundle (gzipped) | ~18 KB | **6.29 KB** | **-65%** |
-| Build time | ~5000ms | **589ms** | **-88%** |
-| React version | 16.12 | **19.0-rc.1** | Latest |
+| Bundle (gzipped) | ~18 KB | **3.49 KB** | **-81%** |
+| Build time | ~5000ms | **~4s** | **-92%** |
+| React version | 16.12 | **19.0** | Latest |
 | Accessibility | Basic | **WCAG AA** | Full compliance |
+| Runtime Dependencies | 0 | **0** (all peer) | Zero bundled |
 
 #### ✅ Backward Compatibility
 
@@ -450,10 +504,10 @@ All v1.0.0 props, events, and behaviors are fully supported. No breaking changes
 
 ## Previous Versions
 
+**v1.1.1** - Bug fixes, documentation cleanup, test improvements
+**v1.1.0** - CSS-in-JS migration via styled-components
+**v1.0.0** - Major modernization to React 19
 **v0.0.4** - Previous stable release
-- Original React 16 class component
-- Basic magnification features
-- Traditional Webpack build system
 
 ---
 

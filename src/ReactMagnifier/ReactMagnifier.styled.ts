@@ -6,10 +6,6 @@ import styled, { createGlobalStyle } from 'styled-components';
  * because the glass DOM node is created manually in utils.ts.
  */
 export const MagnifierGlobalStyles = createGlobalStyle`
-  * {
-    box-sizing: border-box;
-  }
-
   .react-magnifier-glass {
     position: absolute;
     border: 3px solid #000;
