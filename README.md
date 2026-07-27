@@ -1,6 +1,8 @@
-![reactmagnifier-logo](https://i.ibb.co/ZWKGhTm/logo.png)
-
 <div align="center">
+
+# ReactMagnifier v1.2.0
+## A modern, accessible React 19 component for image magnification with TypeScript support, built with Vite and tested with Vitest.
+![reactmagnifier-logo](https://i.ibb.co/ZWKGhTm/logo.png)
 
 [![npm version](https://img.shields.io/npm/v/@sandeepv68/react-magnifier?style=flat-square&logo=npm&logoColor=white&label=version)](https://www.npmjs.com/package/@sandeepv68/react-magnifier)
 [![npm downloads](https://img.shields.io/npm/dm/@sandeepv68/react-magnifier?style=flat-square&logo=npm&logoColor=white&label=downloads&color=%2324852F)](https://www.npmjs.com/package/@sandeepv68/react-magnifier)
@@ -9,13 +11,8 @@
 
 <img src="example/badge.png" alt="react-magnifier-badge" width="200"/>
 
-</div>
-
-# ReactMagnifier v1.2.0
-
-A modern, accessible React 19 component for image magnification with TypeScript support, built with Vite and tested with Vitest.
-
 ![demo](example/demo.gif)
+</div>
 
 > **Note:** The npm package is `@sandeepv68/react-magnifier`
 
