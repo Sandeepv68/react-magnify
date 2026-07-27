@@ -1,6 +1,6 @@
 <div align="center">
 
-![reactmagnifier-logo](https://i.ibb.co/ZWKGhTm/logo.png)
+![reactmagnifier-logo](logo/logo.png)
 
 # ReactMagnifier v1.2.0
 ## A modern, accessible React 19 component for image magnification with TypeScript support, built with Vite and tested with Vitest.
