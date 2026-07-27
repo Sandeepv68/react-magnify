@@ -28,4 +28,4 @@ yarn-error.log*
 /src/**/*.d.ts
 /src/*.d.ts
 
-/dist/*.js.map
+/dist/*.map

@@ -22,9 +22,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "noEmit": false,
-    "rootDir": "./src",
-    "outDir": "./dist",
+    "noEmit": true,
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "types": ["vitest/globals", "vitest", "node", "@testing-library/jest-dom", "vite/client"]

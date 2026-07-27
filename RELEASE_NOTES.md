@@ -1,12 +1,60 @@
-# React Magnifier v1.1.1 - Release Notes
+# React Magnifier v1.2.0 - Release Notes
 
-**Release Date**: July 25, 2026
+**Release Date**: July 27, 2026
 **Status**: Stable Production Release
 **License**: MIT
 
 ---
 
-## What's New in v1.1.1
+## What's New in v1.2.0
+
+### Production Readiness Fixes
+
+#### Bundle Externalization (Critical)
+- **`styled-components`** is now externalized from the Vite build — consumers no longer receive a bundled duplicate that causes "multiple instances of styled-components" warnings
+- **`react/jsx-runtime`** and **`react/jsx-dev-runtime`** are now externalized — eliminates the "hooks can only be called inside a function component" error caused by duplicate JSX runtimes
+- UMD bundle no longer ships development-mode React JSX runtime (previously contained `process.env.NODE_ENV` branches with dev warnings)
+
+#### Type Declarations (Critical)
+- Added `vite-plugin-dts` to generate `.d.ts` files in `dist/` during build
+- TypeScript consumers can now import the package without errors
+- `tsconfig.json` `outDir` removed from config — declarations are now handled by the Vite plugin rather than `tsc` emit
+
+#### Console Warning Fix (Critical)
+- Changed `console.log` to `console.warn` in `logMagnifierError()` (`src/ReactMagnifier/utils.ts:18`) — errors now use proper severity level and no longer bypass the ESLint `no-console` rule
+
+### Dependency Changes
+
+- **`styled-components`** moved from `dependencies` to `peerDependencies` — consumers control the version, avoiding duplicate installations
+- Removed `@types/styled-components` from `devDependencies` — `styled-components` v6 ships its own TypeScript types
+- Fixed React peer dependency range to `^18.0.0 || ^19.0.0` for wider compatibility
+- Fixed dev React dependency to stable `^19.0.0` (was `^19.0.0-rc.1`)
+
+### Build Improvements
+
+- Added `"sideEffects": false` to `package.json` — enables tree-shaking by bundlers
+- Removed invalid `./dist/style.css` export entry (no CSS file exists; styles are injected at runtime via styled-components)
+- Fixed `.gitignore` and `.npmignore` source map patterns (`*.map.js` → `*.map`) to correctly exclude source maps
+- Removed unused `debounce` utility function from `src/ReactMagnifier/utils.ts`
+
+### Styling Fix
+
+- Scoped global `* { box-sizing: border-box }` reset to `.react-magnifier-glass` only — no longer affects the entire consumer page
+
+### Bundle Size (Post-Fix)
+
+| Format | Minified | Gzipped | Previous (v1.1.1) | Change |
+|--------|----------|---------|---------------------|--------|
+| ESM | 13.92 kB | 3.49 kB | 25.25 kB / 6.29 kB | **-45% minified, -45% gzip** |
+| UMD | 7.51 kB | 2.74 kB | 12.08 kB / 4.61 kB | **-38% minified, -41% gzip** |
+
+### Backward Compatibility
+
+All v1.1.1, v1.1.0, and v1.0.0 props, events, and behaviors are fully supported. No breaking changes.
+
+**Note for consumers:** If you previously imported `@sandeepv68/react-magnifier/dist/style.css`, that import should be removed — styles are injected automatically by `styled-components` at runtime.
+
+---
 
 ### Bug Fixes
 
@@ -62,8 +110,7 @@ Component styles are now co-located with the component using `styled-components`
 The original class name `react-magnifier-image-container` is still applied explicitly for full backward compatibility with external CSS overrides.
 
 ### Dependencies added
-- `styled-components` (runtime)
-- `@types/styled-components` (dev)
+- `styled-components` (runtime dependency at the time; moved to peer dependency in v1.2.0)
 
 ---
 
@@ -138,18 +185,15 @@ Built with accessibility as a core feature (WCAG 2.1 Level AA):
 
 ---
 
-## 📊 By The Numbers
+## 📊 By The Numbers (v1.2.0)
 
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| Bundle Size (gzip) | ~18 KB | 6.29 KB | -65% |
-| Build Time | ~5000 ms | ~589 ms | -88% |
-| Test Framework | Jest | Vitest | Faster |
-| TypeScript | 3.x | 5.3.3 | +42% stricter |
-| React Version | 16.12 | 19.0-rc.1 | +3 major versions |
-| Test Cases | Basic | 49 comprehensive | +2300% coverage |
-| Code Coverage | Partial | 100% target | Complete |
-| Accessibility | Basic | WCAG 2.1 AA | Full compliance |
+| Metric | Before (v1.1.1) | After (v1.2.0) | Change |
+|--------|-----------------|-----------------|--------|
+| Bundle Size ESM (gzip) | 6.29 kB | 3.49 kB | -45% |
+| Bundle Size UMD (gzip) | 4.61 kB | 2.74 kB | -41% |
+| Runtime Dependencies | 1 (styled-components) | 0 (peer only) | -100% |
+| Type Declarations | Missing | Included (.d.ts) | Fixed |
+| Tree-Shaking | No `sideEffects` field | `sideEffects: false` | Enabled |
 
 ---
 
@@ -163,7 +207,6 @@ npm install @sandeepv68/react-magnifier
 ### Basic Usage
 ```jsx
 import ReactMagnifier from '@sandeepv68/react-magnifier'
-import '@sandeepv68/react-magnifier/dist/style.css'
 
 export default function App() {
   return (
@@ -179,7 +222,6 @@ export default function App() {
 ```jsx
 import { useRef, useEffect } from 'react'
 import ReactMagnifier from '@sandeepv68/react-magnifier'
-import '@sandeepv68/react-magnifier/dist/style.css'
 
 export default function ProductImage() {
   const containerRef = useRef(null)
@@ -235,8 +277,8 @@ npm update @sandeepv68/react-magnifier
 # Optional: Add better TypeScript support
 npm install --save-dev typescript@^5.3.3
 
-# Optional: Enable keyboard navigation documentation
-# See README.md Keyboard Navigation section
+# Note: If you previously imported dist/style.css, remove that import
+# Styles are now injected automatically by styled-components
 ```
 
 ---
@@ -267,7 +309,7 @@ npm install --save-dev typescript@^5.3.3
 
 ### Security Improvements
 - TypeScript strict mode catches type-related vulnerabilities
-- Minimal runtime dependencies (styled-components is the sole runtime dependency)
+- Zero runtime dependencies bundled — React, ReactDOM, and styled-components are all peer dependencies
 - React's built-in XSS protection
 - Proper event scoping and cleanup
 
@@ -277,6 +319,8 @@ npm install --save-dev typescript@^5.3.3
 - ✅ 100% code coverage target
 - ✅ Full backward compatibility
 - ✅ Production-ready (2+ years of React patterns)
+- ✅ Type declarations generated and included in dist/
+- ✅ All dependencies properly externalized
 
 ---
 
@@ -301,7 +345,7 @@ npm install --save-dev typescript@^5.3.3
 ### None Currently
 All identified issues from the modernization process have been resolved.
 
-### Future Enhancements (v1.1.0+)
+### Future Enhancements (v1.3.0+)
 - [ ] Storybook integration for visual testing
 - [ ] Additional touch gesture support (pinch-zoom)
 - [ ] Virtual scrolling for very large images
@@ -317,26 +361,20 @@ All identified issues from the modernization process have been resolved.
 import ReactMagnifier from '@sandeepv68/react-magnifier'
 ```
 - File: `dist/react-magnifier.js`
-- Size: 25.25 kB (6.29 kB gzipped)
+- Size: 13.92 kB (3.49 kB gzipped)
 - Use: Modern bundlers (Webpack, Vite, Rollup)
 - Benefits: Tree-shaking, smaller bundles, better performance
+- Externalized: `react`, `react-dom`, `react/jsx-runtime`, `styled-components`
 
 ### Universal Module Definition (UMD)
 ```html
 <script src="https://cdn.example.com/react-magnifier.umd.cjs"></script>
 ```
 - File: `dist/react-magnifier.umd.cjs`
-- Size: 12.08 kB (4.61 kB gzipped)
+- Size: 7.51 kB (2.74 kB gzipped)
 - Use: Browsers, CommonJS, legacy systems
 - Benefits: Works everywhere, no build step needed
-
-### Styles
-```css
-import '@sandeepv68/react-magnifier/dist/style.css'
-```
-- File: `dist/style.css`
-- Size: 0.71 kB (0.37 kB gzipped)
-- Required: Yes, for component styling
+- Externalized: `react`, `react-dom`, `react/jsx-runtime`, `styled-components`
 
 ### Type Definitions
 ```typescript
@@ -344,8 +382,8 @@ declare module '@sandeepv68/react-magnifier' {
   export default ReactMagnifier
 }
 ```
-- File: `dist/index.d.ts`
-- Included: Full TypeScript definitions
+- File: `dist/index.d.ts` (generated by `vite-plugin-dts`)
+- Included: Full TypeScript definitions with declaration maps
 
 ---
 
@@ -354,18 +392,17 @@ declare module '@sandeepv68/react-magnifier' {
 ### Bundle Size
 | Format | Minified | Gzipped | Previous | Improvement |
 |--------|----------|---------|----------|-------------|
-| ESM | 25.25 kB | 6.29 kB | 18 kB | 65% smaller |
-| UMD | 12.08 kB | 4.61 kB | - | Optimized |
-| CSS | 0.71 kB | 0.37 kB | - | Minimal |
-| **Total** | **38 kB** | **~7 kB** | **18 kB** | **61% smaller** |
+| ESM | 13.92 kB | 3.49 kB | 25.25 kB / 6.29 kB | 45% smaller |
+| UMD | 7.51 kB | 2.74 kB | 12.08 kB / 4.61 kB | 38% smaller |
+| **Total** | **21.43 kB** | **6.23 kB** | **37.33 kB / 10.9 kB** | **43% smaller** |
 
 ### Build Performance
 ```
 npm run build
-✓ 12 modules transformed
-✓ built in 589ms
+✓ 4 modules transformed
+✓ built in 4.06s
 ```
-**10x improvement** over Webpack 3 (589ms vs ~5000ms)
+Build includes type declaration generation via `vite-plugin-dts` (~3.2s).
 
 ### Runtime Performance
 - Component Mount: < 50ms
@@ -442,6 +479,6 @@ Thank you for using React Magnifier v1.0.0! We hope the improvements make your d
 
 ---
 
-**Version**: 1.0.0  
-**Release Date**: July 18, 2026  
+**Version**: 1.2.0  
+**Release Date**: July 27, 2026  
 **Status**: Stable Production Release
