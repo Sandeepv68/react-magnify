@@ -1,0 +1,66 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Kolkata"
+    versioning-strategy: "increase"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "automerge"
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+    reviewers:
+      - "SandeepVattapparambil"
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+        update-types:
+          - "minor"
+          - "patch"
+      testing:
+        patterns:
+          - "@testing-library/*"
+          - "vitest"
+          - "@vitest/*"
+          - "jsdom"
+        update-types:
+          - "minor"
+          - "patch"
+      linting:
+        patterns:
+          - "eslint*"
+          - "@typescript-eslint/*"
+          - "prettier"
+        update-types:
+          - "minor"
+          - "patch"
+      build:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+          - "terser"
+          - "typescript"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "styled-components"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "react"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "react-dom"
+        update-types:
+          - "version-update:semver-major"
