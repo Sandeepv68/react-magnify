@@ -60,6 +60,15 @@
       "optional": false
     }
   },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^15.0.7",
@@ -92,7 +101,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:lib": "vite build --mode lib",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -100,6 +108,7 @@
     "lint": "eslint src --ext ts,tsx",
     "lint:fix": "eslint src --ext ts,tsx --fix",
     "format": "prettier --write 'src/**/*.{ts,tsx,css}'",
+    "prepare": "husky install",
     "type-check": "tsc --noEmit"
   },
   "browserslist": {

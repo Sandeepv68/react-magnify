@@ -1,1 +1,1 @@
-{"version":3,"file":"ReactMagnifier.d.ts","sourceRoot":"","sources":["../../src/ReactMagnifier/ReactMagnifier.tsx"],"names":[],"mappings":"AAAA;;;;;GAKG;AAEH,OAAO,KAA4D,MAAM,OAAO,CAAC;AACjF,OAAO,EAAE,mBAAmB,EAAE,MAAM,4BAA4B,CAAC;AA4CjE;;;;;;;;;;;;GAYG;AACH,QAAA,MAAM,cAAc,0DA+VlB,CAAC;AAIH,eAAe,cAAc,CAAC"}
+{"version":3,"file":"ReactMagnifier.d.ts","sourceRoot":"","sources":["../../src/ReactMagnifier/ReactMagnifier.tsx"],"names":[],"mappings":"AAAA,OAAO,KAMN,MAAM,OAAO,CAAC;AACf,OAAO,KAAK,EAAE,mBAAmB,EAAE,MAAM,4BAA4B,CAAC;AAoCtE,QAAA,MAAM,cAAc,gGAgWnB,CAAC;AAIF,eAAe,cAAc,CAAC"}

@@ -53,16 +53,12 @@ export const getCursorPos = (
   let y = 0;
 
   if (event instanceof MouseEvent) {
-    x = event.pageX - rect.left;
-    y = event.pageY - rect.top;
+    x = event.clientX - rect.left;
+    y = event.clientY - rect.top;
   } else if (event instanceof TouchEvent && event.touches.length > 0) {
-    x = event.touches[0].pageX - rect.left;
-    y = event.touches[0].pageY - rect.top;
+    x = event.touches[0].clientX - rect.left;
+    y = event.touches[0].clientY - rect.top;
   }
-
-  // Consider any page scrolling
-  x = x - window.pageXOffset;
-  y = y - window.pageYOffset;
 
   return { x, y };
 };
