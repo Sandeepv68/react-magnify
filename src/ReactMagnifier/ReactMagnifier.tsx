@@ -9,9 +9,11 @@ import {
 } from './utils';
 import { MagnifierGlobalStyles, ImageContainer, SrOnly } from './ReactMagnifier.styled';
 
+/** Shown in the console when `imageUrl` is missing or empty. */
 const IMAGE_URL_MISSING_ERROR =
   'Image url is missing! <ReactMagnifier imageUrl={url}/> is required.';
 
+/** Default values used for any prop the consumer does not supply. */
 const defaultProps: Partial<ReactMagnifierProps> = {
   imageAltText: 'react-magnifier-image',
   imageWidth: 'auto',
@@ -31,9 +33,39 @@ const defaultProps: Partial<ReactMagnifierProps> = {
   customContainerClass: '',
 };
 
+/**
+ * ReactMagnifier — an accessible, keyboard-navigable image magnifier.
+ *
+ * Wraps an `<img>` in a container and creates an overlay "magnifier glass" that
+ * follows the cursor (or touch point) and shows a zoomed portion of the image.
+ *
+ * @remarks
+ * The component is wrapped in both `React.memo` (to avoid unnecessary re-renders)
+ * and `React.forwardRef` (so the parent can access the container `HTMLDivElement`).
+ *
+ * @example
+ * ```tsx
+ * import { ReactMagnifier } from '@sandeepv68/react-magnifier';
+ *
+ * function ProductPage() {
+ *   return (
+ *     <ReactMagnifier
+ *       imageUrl="https://example.com/product.jpg"
+ *       zoomSize={3}
+ *       magnifierWidth={200}
+ *       magnifierHeight={200}
+ *     />
+ *   );
+ * }
+ * ```
+ *
+ * @param props - See {@link ReactMagnifierProps} for all available options.
+ * @param ref   - Forwarded ref attached to the container `<div>`.
+ */
 const ReactMagnifier = React.memo(
   React.forwardRef<HTMLDivElement, Partial<ReactMagnifierProps>>(
     function ReactMagnifier(props, ref) {
+      /** Merged props with defaults applied. */
       const finalProps: ReactMagnifierProps = {
         ...defaultProps,
         ...props,
@@ -48,22 +80,37 @@ const ReactMagnifier = React.memo(
           defaultProps.customContainerClass,
       } as ReactMagnifierProps;
 
+      /** Ref to the <img> element. */
       const magnifiableImageRef = useRef<HTMLImageElement>(null);
+      /** Ref to the container <div>. */
       const imageContainerRef = useRef<HTMLDivElement>(null);
+      /** Ref to the imperatively-created magnifier glass <div>. */
       const glassRef = useRef<HTMLDivElement | null>(null);
+      /** Tracks whether the magnifier has been initialised for the current imageUrl. */
       const isInitializedRef = useRef(false);
+      /** Stable, unique ID for the aria-describedby relationship. */
       const magnifierHelpId = useId();
 
+      /** Half the glass offsetWidth/offsetHeight, used for positioning math. */
       const [magnifierDimensions, setMagnifierDimensions] = useState({
         width: 0,
         height: 0,
       });
+      /** Whether the magnifier glass is currently shown. */
       const [isMagnifierVisible, setIsMagnifierVisible] = useState(false);
 
+      /**
+       * Returns the cursor position relative to the image element.
+       * Wraps `getCursorPos` from utils to keep the ref access inside the component.
+       */
       const handleGetCursorPos = useCallback((event: MouseEvent | TouchEvent) => {
         return getCursorPos(event, magnifiableImageRef.current);
       }, []);
 
+      /**
+       * Moves the magnifier glass to follow the cursor and updates the
+       * background-position to produce the zoomed effect.
+       */
       const handleMoveMagnifier = useCallback(
         (event: MouseEvent | TouchEvent) => {
           event.preventDefault();
@@ -81,6 +128,7 @@ const ReactMagnifier = React.memo(
           let y = pos.y;
           const { width, height } = magnifierDimensions;
 
+          // Clamp the glass so it stays within the image bounds
           if (x > image.width - width / finalProps.zoomSize) {
             x = image.width - width / finalProps.zoomSize;
           }
@@ -110,6 +158,7 @@ const ReactMagnifier = React.memo(
         ]
       );
 
+      /** Shows the magnifier glass by swapping CSS classes. */
       const handleShowMagnifier = useCallback(() => {
         const glass = glassRef.current;
         if (glass) {
@@ -120,6 +169,7 @@ const ReactMagnifier = React.memo(
         }
       }, []);
 
+      /** Hides the magnifier glass by swapping CSS classes. */
       const handleHideMagnifier = useCallback(() => {
         const glass = glassRef.current;
         if (glass) {
@@ -130,6 +180,10 @@ const ReactMagnifier = React.memo(
         }
       }, []);
 
+      /**
+       * Recalculates the background-position of the magnifier glass based on
+       * its current CSS `left` / `top` values. Needed after keyboard moves.
+       */
       const updateBackgroundPosition = useCallback(
         (glass: HTMLDivElement) => {
           const image = magnifiableImageRef.current;
@@ -148,6 +202,11 @@ const ReactMagnifier = React.memo(
         [magnifierDimensions, finalProps.zoomSize, finalProps.magnifierBorderWidth]
       );
 
+      /**
+       * Handles keyboard navigation when the magnifier is visible.
+       * Arrow keys move the glass; Escape hides it.
+       * Movement is clamped to the image boundaries.
+       */
       const handleKeyDown = useCallback(
         (event: KeyboardEvent) => {
           if (!isMagnifierVisible || !glassRef.current || !magnifiableImageRef.current) {
@@ -215,6 +274,13 @@ const ReactMagnifier = React.memo(
         ]
       );
 
+      /**
+       * Initialisation effect — runs when `imageUrl` changes.
+       *
+       * Creates the magnifier glass DOM node, attaches it to the container,
+       * calculates the half-dimensions used for positioning, calls the
+       * `getMagnifier` callback, and forwards the container ref.
+       */
       useEffect(() => {
         const image = magnifiableImageRef.current;
         const container = imageContainerRef.current;
@@ -294,6 +360,12 @@ const ReactMagnifier = React.memo(
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [finalProps.imageUrl]);
 
+      /**
+       * Event-listener effect — runs when any of the memoised handlers change.
+       *
+       * Attaches mouse, touch, focus, and keyboard listeners to the
+       * appropriate DOM elements and cleans them up on unmount or re-run.
+       */
       useEffect(() => {
         const glass = glassRef.current;
         const image = magnifiableImageRef.current;

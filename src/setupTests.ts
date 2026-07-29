@@ -1,11 +1,16 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
+/**
+ * Test environment setup for Vitest + @testing-library/react.
+ *
+ * - Imports `@testing-library/jest-dom` matchers (e.g. `toBeInTheDocument`,
+ *   `toHaveClass`, `toHaveTextContent`) so they are available in every test.
+ * - Exports Vitest globals (`expect`, `afterEach`, `beforeEach`, `describe`,
+ *   `it`, `test`, `vi`) onto `globalThis` so they can be used without
+ *   explicit imports in test files when `globals: true` is set in vitest.config.
+ */
+
 import '@testing-library/jest-dom';
 import { expect, afterEach, beforeEach, describe, it, test, vi } from 'vitest';
 
-// Set up global test utilities
 Object.assign(globalThis, {
   expect,
   afterEach,

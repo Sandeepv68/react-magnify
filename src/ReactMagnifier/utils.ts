@@ -1,19 +1,23 @@
 /**
- * Utility functions for ReactMagnifier component
+ * utility functions for ReactMagnifier component
  */
 
 /**
- * Validates if a string prop is valid and not empty
- * @param prop - The property to validate
- * @returns True if the property is a non-empty string
+ * Validates that a string prop is non-empty.
+ *
+ * @param prop - The string to validate.
+ * @returns `true` if the string is truthy and has length > 0.
  */
 export const isValidProp = (prop: string): boolean => {
   return Boolean(prop && prop.length > 0);
 };
 
 /**
- * Logs a styled error message to console
- * @param message - The error message to log
+ * Logs a styled warning message to the browser console.
+ * The message is prefixed with "ReactMagnifier Error:" and rendered with
+ * orange-on-cream styling for visibility.
+ *
+ * @param message - The error description to display.
  */
 export const logMagnifierError = (message: string): void => {
   console.warn(
@@ -23,9 +27,14 @@ export const logMagnifierError = (message: string): void => {
 };
 
 /**
- * Dispatches a custom event on an element
- * @param eventType - The type of custom event to dispatch
- * @param element - The DOM element to dispatch the event on
+ * Dispatches a CustomEvent on the given DOM element.
+ *
+ * The event's `detail` property is set to the element itself, allowing
+ * consumers to listen for lifecycle events such as `magnifier-initialized`,
+ * `magnifier-moved`, `magnifier-visible`, or `magnifier-invisible`.
+ *
+ * @param eventType - The custom event type name.
+ * @param element   - The target element (no-op if null).
  */
 export const triggerCustomEvent = (eventType: string, element: HTMLElement | null): void => {
   if (element) {
@@ -35,10 +44,12 @@ export const triggerCustomEvent = (eventType: string, element: HTMLElement | nul
 };
 
 /**
- * Gets cursor position relative to an image element
- * @param event - The mouse or touch event
- * @param imageElement - The reference image element
- * @returns Object with x and y coordinates
+ * Calculates the cursor position relative to an image element's bounding box.
+ * Supports both MouseEvent and TouchEvent sources.
+ *
+ * @param event        - The mouse or touch event.
+ * @param imageElement - The target image element (returns {0,0} if null).
+ * @returns An object with `x` and `y` coordinates relative to the image.
  */
 export const getCursorPos = (
   event: MouseEvent | TouchEvent,
@@ -64,11 +75,27 @@ export const getCursorPos = (
 };
 
 /**
- * Creates and configures the magnifier glass DOM element
- * @param container - The container to insert the glass into
- * @param imageElement - The image element being magnified
- * @param props - The magnifier configuration properties
- * @returns The created glass element or null if creation failed
+ * Creates and inserts the magnifier glass <div> into the container.
+ *
+ * The glass is configured with the provided dimension, border, cursor, shadow,
+ * and zoom-level styles, then inserted before the image element so it renders as
+ * an overlay. The background-image is set to the same image source but scaled
+ * according to `zoomSize` to produce the magnified effect.
+ *
+ * @param container      - The parent container to insert the glass into.
+ * @param imageElement   - The image being magnified (provides `src` and natural
+ *                         dimensions for `background-size`).
+ * @param props          - Magnifier configuration.
+ * @param props.magnifierWidth   - Glass width in pixels.
+ * @param props.magnifierHeight  - Glass height in pixels.
+ * @param props.magnifierRadius  - Border-radius as a percentage.
+ * @param props.magnifierBorderWidth - Border width in pixels.
+ * @param props.magnifierBorderStyle - CSS border-style value.
+ * @param props.magnifierBorderColor - CSS border-color value.
+ * @param props.magnifierShadow  - Whether to apply a box-shadow.
+ * @param props.cursor           - CSS cursor value.
+ * @param props.zoomSize         - Magnification factor.
+ * @returns The created glass element, or `null` if container or image is missing.
  */
 export const createMagnifierGlass = (
   container: HTMLDivElement | null,
@@ -94,7 +121,6 @@ export const createMagnifierGlass = (
   glass.setAttribute('role', 'img');
   glass.setAttribute('aria-label', 'Image magnifier');
 
-  // Set styles
   glass.classList.add('hide-magnifier');
   glass.style.width = `${props.magnifierWidth}px`;
   glass.style.height = `${props.magnifierHeight}px`;
@@ -110,7 +136,6 @@ export const createMagnifierGlass = (
     imageElement.height * props.zoomSize
   }px`;
 
-  // Insert into container
   container.insertBefore(glass, imageElement);
 
   return glass;

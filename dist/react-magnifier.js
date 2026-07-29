@@ -155,12 +155,9 @@ const ReactMagnifier = React.memo(
         height: 0
       });
       const [isMagnifierVisible, setIsMagnifierVisible] = useState(false);
-      const handleGetCursorPos = useCallback(
-        (event) => {
-          return getCursorPos(event, magnifiableImageRef.current);
-        },
-        []
-      );
+      const handleGetCursorPos = useCallback((event) => {
+        return getCursorPos(event, magnifiableImageRef.current);
+      }, []);
       const handleMoveMagnifier = useCallback(
         (event) => {
           event.preventDefault();
@@ -383,16 +380,8 @@ const ReactMagnifier = React.memo(
           container.removeEventListener("focusout", handleHideMagnifier);
           window.removeEventListener("keydown", handleKeyDown);
         };
-      }, [
-        handleMoveMagnifier,
-        handleShowMagnifier,
-        handleHideMagnifier,
-        handleKeyDown
-      ]);
-      const containerClass = [
-        "react-magnifier-image-container",
-        finalProps.customContainerClass
-      ].filter(Boolean).join(" ");
+      }, [handleMoveMagnifier, handleShowMagnifier, handleHideMagnifier, handleKeyDown]);
+      const containerClass = ["react-magnifier-image-container", finalProps.customContainerClass].filter(Boolean).join(" ");
       return /* @__PURE__ */ jsxs(Fragment, { children: [
         /* @__PURE__ */ jsx(MagnifierGlobalStyles, {}),
         /* @__PURE__ */ jsxs(
