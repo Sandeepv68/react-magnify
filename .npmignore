@@ -2,7 +2,4 @@
 /.github
 /build
 /example
-/scripts
 /src
-
-/dist/*.map

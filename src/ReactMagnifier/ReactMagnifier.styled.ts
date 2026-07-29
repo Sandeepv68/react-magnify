@@ -1,9 +1,13 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
 /**
- * Global styles for the imperatively-created magnifier glass element
- * and the screen-reader utility class. These cannot be styled-components
- * because the glass DOM node is created manually in utils.ts.
+ * Global CSS injected via styled-components' createGlobalStyle.
+ *
+ * Defines styles for the imperatively-created .react-magnifier-glass element
+ * (position, sizing, z-index, shadow) and the visibility/opacity transition
+ * classes (.show-magnifier / .hide-magnifier). A GlobalStyle is required here
+ * because the glass DOM node is created imperatively in utils.ts rather than
+ * rendered as a styled-component.
  */
 export const MagnifierGlobalStyles = createGlobalStyle`
   .react-magnifier-glass {
@@ -31,7 +35,10 @@ export const MagnifierGlobalStyles = createGlobalStyle`
 `;
 
 /**
- * Styled container div that wraps the image and the magnifier glass.
+ * Wrapper <div> that holds the <img> and the magnifier glass overlay.
+ * Uses inline-block layout and relative positioning so the absolutely-positioned
+ * glass stays scoped to the container. A visible focus-ring is applied via
+ * :focus-visible for keyboard accessibility.
  */
 export const ImageContainer = styled.div`
   display: inline-block;
@@ -45,7 +52,9 @@ export const ImageContainer = styled.div`
 `;
 
 /**
- * Visually hidden element for screen-reader announcements.
+ * Screen-reader-only utility element.
+ * Visually hides content while keeping it available to assistive technology.
+ * Used to announce magnifier state changes (visible / hidden / position updates).
  */
 export const SrOnly = styled.div`
   position: absolute;

@@ -1,105 +1,48 @@
-/**
- * ReactMagnifier Component Props Interface
- *
- * @interface ReactMagnifierProps
- * @description Props for configuring the ReactMagnifier component
- */
 export interface ReactMagnifierProps {
-    /**
-     * The URL of the image to magnify
-     * @type {string}
-     * @required
-     */
-    imageUrl: string;
-    /**
-     * Alt text for the image element (accessibility)
-     * @type {string}
-     * @default "react-magnifier-image"
-     */
-    imageAltText: string;
-    /**
-     * Width of the image element (CSS value)
-     * @type {number | string}
-     * @default "auto"
-     */
-    imageWidth: number | string;
-    /**
-     * Height of the image element (CSS value)
-     * @type {number | string}
-     * @default "auto"
-     */
-    imageHeight: number | string;
-    /**
-     * Height of the magnifier glass in pixels
-     * @type {number}
-     * @default 100
-     */
-    magnifierHeight: number;
-    /**
-     * Width of the magnifier glass in pixels
-     * @type {number}
-     * @default 100
-     */
-    magnifierWidth: number;
-    /**
-     * Border radius of the magnifier glass as percentage
-     * @type {number}
-     * @default 50
-     */
-    magnifierRadius: number;
-    /**
-     * CSS border style for the magnifier glass
-     * @type {string}
-     * @default "solid"
-     */
-    magnifierBorderStyle: string;
-    /**
-     * CSS border color for the magnifier glass
-     * @type {string}
-     * @default "#000"
-     */
-    magnifierBorderColor: string;
-    /**
-     * CSS border width for the magnifier glass in pixels
-     * @type {number}
-     * @default 3
-     */
-    magnifierBorderWidth: number;
-    /**
-     * Whether to apply box shadow to the magnifier glass
-     * @type {boolean}
-     * @default true
-     */
-    magnifierShadow: boolean;
-    /**
-     * CSS cursor style for the magnifier glass
-     * @type {string}
-     * @default "none"
-     */
-    cursor: string;
-    /**
-     * Zoom level for the magnified image
-     * @type {number}
-     * @default 2
-     */
-    zoomSize: number;
-    /**
-     * Callback function called when magnifier is initialized
-     * Receives the container element as parameter
-     * @type {(container: HTMLDivElement | null) => void}
-     */
-    getMagnifier: (container: HTMLDivElement | null) => void;
-    /**
-     * Custom CSS class for the image element
-     * @type {string}
-     * @default ""
-     */
-    customImgStyles: string;
-    /**
-     * Custom CSS class for the container element
-     * @type {string}
-     * @default ""
-     */
-    customContainerStyles: string;
+  /** The URL of the image to magnify. */
+  imageUrl: string;
+  /** Alt text for the image element. */
+  imageAltText: string;
+  /** Width of the image element. Accepts any valid CSS width value. */
+  imageWidth: number | string;
+  /** Height of the image element. Accepts any valid CSS height value. */
+  imageHeight: number | string;
+  /** Height of the magnifier glass in pixels. */
+  magnifierHeight: number;
+  /** Width of the magnifier glass in pixels. */
+  magnifierWidth: number;
+  /** Border radius of the magnifier glass as a percentage. */
+  magnifierRadius: number;
+  /** CSS border-style value for the magnifier glass (e.g. "solid", "dashed"). */
+  magnifierBorderStyle: string;
+  /** CSS border-color value for the magnifier glass. */
+  magnifierBorderColor: string;
+  /** Border width of the magnifier glass in pixels. */
+  magnifierBorderWidth: number;
+  /** Whether to apply a drop shadow to the magnifier glass. */
+  magnifierShadow: boolean;
+  /** CSS cursor value applied over the magnifier glass area. */
+  cursor: string;
+  /** Magnification factor (e.g. 2 = 2x zoom). */
+  zoomSize: number;
+  /**
+   * Callback invoked when the magnifier is initialized.
+   * Receives the container HTMLDivElement as its argument.
+   */
+  getMagnifier: (container: HTMLDivElement | null) => void;
+  /**
+   * Custom CSS class name applied to the image element.
+   * @deprecated Use `customImgClass` instead.
+   */
+  customImgStyles?: string;
+  /**
+   * Custom CSS class name applied to the container element.
+   * @deprecated Use `customContainerClass` instead.
+   */
+  customContainerStyles?: string;
+  /** Custom CSS class name applied to the image element. */
+  customImgClass: string;
+  /** Custom CSS class name applied to the container element. */
+  customContainerClass: string;
 }
 //# sourceMappingURL=ReactMagnifier.Interface.d.ts.map

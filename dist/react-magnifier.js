@@ -1,4 +1,6 @@
 var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
 var __getOwnPropSymbols = Object.getOwnPropertySymbols;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __propIsEnum = Object.prototype.propertyIsEnumerable;
@@ -14,8 +16,9 @@ var __spreadValues = (a, b) => {
     }
   return a;
 };
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 import { jsxs, Fragment, jsx } from "react/jsx-runtime";
-import React, { useMemo, useRef, useState, useCallback, useEffect } from "react";
+import React, { useRef, useId, useState, useCallback, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 const isValidProp = (prop) => {
   return Boolean(prop && prop.length > 0);
@@ -40,14 +43,12 @@ const getCursorPos = (event, imageElement) => {
   let x = 0;
   let y = 0;
   if (event instanceof MouseEvent) {
-    x = event.pageX - rect.left;
-    y = event.pageY - rect.top;
+    x = event.clientX - rect.left;
+    y = event.clientY - rect.top;
   } else if (event instanceof TouchEvent && event.touches.length > 0) {
-    x = event.touches[0].pageX - rect.left;
-    y = event.touches[0].pageY - rect.top;
+    x = event.touches[0].clientX - rect.left;
+    y = event.touches[0].clientY - rect.top;
   }
-  x = x - window.pageXOffset;
-  y = y - window.pageYOffset;
   return { x, y };
 };
 const createMagnifierGlass = (container, imageElement, props) => {
@@ -116,10 +117,8 @@ const SrOnly = styled.div`
   white-space: nowrap;
   border-width: 0;
 `;
-const PIXEL_PADDING = 3;
 const IMAGE_URL_MISSING_ERROR = "Image url is missing! <ReactMagnifier imageUrl={url}/> is required.";
 const defaultProps = {
-  imageUrl: "",
   imageAltText: "react-magnifier-image",
   imageWidth: "auto",
   imageHeight: "auto",
@@ -135,263 +134,286 @@ const defaultProps = {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   getMagnifier: () => {
   },
-  customImgStyles: "",
-  customContainerStyles: ""
+  customImgClass: "",
+  customContainerClass: ""
 };
-const ReactMagnifier = React.memo(function ReactMagnifier2(props = {}) {
-  const finalProps = useMemo(
-    () => __spreadValues(__spreadValues({}, defaultProps), props),
-    [props]
-  );
-  const magnifiableImageRef = useRef(null);
-  const imageContainerRef = useRef(null);
-  const glassRef = useRef(null);
-  const isInitializedRef = useRef(false);
-  const [magnifierDimensions, setMagnifierDimensions] = useState({ width: 0, height: 0 });
-  const [isMagnifierVisible, setIsMagnifierVisible] = useState(false);
-  const handleGetCursorPos = useCallback(
-    (event) => {
-      return getCursorPos(event, magnifiableImageRef.current);
-    },
-    []
-  );
-  const handleMoveMagnifier = useCallback(
-    (event) => {
-      event.preventDefault();
-      const glass = glassRef.current;
-      const image = magnifiableImageRef.current;
-      const container = imageContainerRef.current;
-      if (!glass || !image || !container) {
-        return;
-      }
-      const pos = handleGetCursorPos(event);
-      let x = pos.x;
-      let y = pos.y;
-      const { width, height } = magnifierDimensions;
-      if (x > image.width - width / finalProps.zoomSize) {
-        x = image.width - width / finalProps.zoomSize;
-      }
-      if (x < width / finalProps.zoomSize) {
-        x = width / finalProps.zoomSize;
-      }
-      if (y > image.height - height / finalProps.zoomSize) {
-        y = image.height - height / finalProps.zoomSize;
-      }
-      if (y < height / finalProps.zoomSize) {
-        y = height / finalProps.zoomSize;
-      }
-      glass.style.left = `${x - width}px`;
-      glass.style.top = `${y - height}px`;
-      glass.style.backgroundPosition = `-${x * finalProps.zoomSize - width + PIXEL_PADDING}px -${y * finalProps.zoomSize - height + PIXEL_PADDING}px`;
-      triggerCustomEvent("magnifier-moved", container);
-    },
-    [magnifierDimensions, finalProps.zoomSize, handleGetCursorPos]
-  );
-  const handleShowMagnifier = useCallback(() => {
-    const glass = glassRef.current;
-    if (glass) {
-      glass.classList.remove("hide-magnifier");
-      glass.classList.add("show-magnifier");
-      setIsMagnifierVisible(true);
-      triggerCustomEvent("magnifier-visible", imageContainerRef.current);
-    }
-  }, []);
-  const handleHideMagnifier = useCallback(() => {
-    const glass = glassRef.current;
-    if (glass) {
-      glass.classList.remove("show-magnifier");
-      glass.classList.add("hide-magnifier");
-      setIsMagnifierVisible(false);
-      triggerCustomEvent("magnifier-invisible", imageContainerRef.current);
-    }
-  }, []);
-  const updateBackgroundPosition = useCallback(
-    (glass) => {
-      const image = magnifiableImageRef.current;
-      if (!image) return;
-      const { width, height } = magnifierDimensions;
-      const left = parseFloat(glass.style.left) || 0;
-      const top = parseFloat(glass.style.top) || 0;
-      const x = left + width;
-      const y = top + height;
-      glass.style.backgroundPosition = `-${x * finalProps.zoomSize - width + PIXEL_PADDING}px -${y * finalProps.zoomSize - height + PIXEL_PADDING}px`;
-    },
-    [magnifierDimensions, finalProps.zoomSize]
-  );
-  const handleKeyDown = useCallback(
-    (event) => {
-      if (!isMagnifierVisible || !glassRef.current || !magnifiableImageRef.current) {
-        return;
-      }
-      const glass = glassRef.current;
-      const step = 10;
-      let handled = false;
-      switch (event.key) {
-        case "ArrowUp": {
+const ReactMagnifier = React.memo(
+  React.forwardRef(
+    function ReactMagnifier2(props, ref) {
+      const finalProps = __spreadProps(__spreadValues(__spreadValues({}, defaultProps), props), {
+        // Merge deprecated customImgStyles/customContainerStyles into new props
+        customImgClass: props.customImgClass || props.customImgStyles || defaultProps.customImgClass,
+        customContainerClass: props.customContainerClass || props.customContainerStyles || defaultProps.customContainerClass
+      });
+      const magnifiableImageRef = useRef(null);
+      const imageContainerRef = useRef(null);
+      const glassRef = useRef(null);
+      const isInitializedRef = useRef(false);
+      const magnifierHelpId = useId();
+      const [magnifierDimensions, setMagnifierDimensions] = useState({
+        width: 0,
+        height: 0
+      });
+      const [isMagnifierVisible, setIsMagnifierVisible] = useState(false);
+      const handleGetCursorPos = useCallback((event) => {
+        return getCursorPos(event, magnifiableImageRef.current);
+      }, []);
+      const handleMoveMagnifier = useCallback(
+        (event) => {
           event.preventDefault();
-          const currentTop = parseFloat(glass.style.top) || 0;
-          glass.style.top = `${Math.max(0, currentTop - step)}px`;
-          handled = true;
-          break;
-        }
-        case "ArrowDown": {
-          event.preventDefault();
-          const currentTopDown = parseFloat(glass.style.top) || 0;
-          glass.style.top = `${currentTopDown + step}px`;
-          handled = true;
-          break;
-        }
-        case "ArrowLeft": {
-          event.preventDefault();
-          const currentLeft = parseFloat(glass.style.left) || 0;
-          glass.style.left = `${Math.max(0, currentLeft - step)}px`;
-          handled = true;
-          break;
-        }
-        case "ArrowRight": {
-          event.preventDefault();
-          const currentLeftRight = parseFloat(glass.style.left) || 0;
-          glass.style.left = `${currentLeftRight + step}px`;
-          handled = true;
-          break;
-        }
-        case "Escape": {
-          event.preventDefault();
-          handleHideMagnifier();
-          handled = true;
-          break;
-        }
-      }
-      if (handled && event.key !== "Escape") {
-        updateBackgroundPosition(glass);
-        triggerCustomEvent("magnifier-moved", imageContainerRef.current);
-      }
-    },
-    [isMagnifierVisible, handleHideMagnifier, updateBackgroundPosition]
-  );
-  useEffect(() => {
-    const image = magnifiableImageRef.current;
-    const container = imageContainerRef.current;
-    if (!isValidProp(finalProps.imageUrl)) {
-      logMagnifierError(IMAGE_URL_MISSING_ERROR);
-      isInitializedRef.current = false;
-      if (glassRef.current) {
-        glassRef.current.remove();
-        glassRef.current = null;
-      }
-      return;
-    }
-    if (isInitializedRef.current && glassRef.current && glassRef.current.isConnected) {
-      return;
-    }
-    if (!image || !container) {
-      return;
-    }
-    if (glassRef.current) {
-      glassRef.current.remove();
-      glassRef.current = null;
-    }
-    const glass = createMagnifierGlass(container, image, {
-      magnifierWidth: finalProps.magnifierWidth,
-      magnifierHeight: finalProps.magnifierHeight,
-      magnifierRadius: finalProps.magnifierRadius,
-      magnifierBorderWidth: finalProps.magnifierBorderWidth,
-      magnifierBorderStyle: finalProps.magnifierBorderStyle,
-      magnifierBorderColor: finalProps.magnifierBorderColor,
-      magnifierShadow: finalProps.magnifierShadow,
-      cursor: finalProps.cursor,
-      zoomSize: finalProps.zoomSize
-    });
-    if (!glass) {
-      return;
-    }
-    glassRef.current = glass;
-    isInitializedRef.current = true;
-    const width = glass.offsetWidth / 2;
-    const height = glass.offsetHeight / 2;
-    setMagnifierDimensions({ width, height });
-    finalProps.getMagnifier(container);
-    triggerCustomEvent("magnifier-initialized", container);
-    return () => {
-      if (glassRef.current) {
-        glassRef.current.remove();
-        glassRef.current = null;
-      }
-      isInitializedRef.current = false;
-    };
-  }, [finalProps.imageUrl]);
-  useEffect(() => {
-    const glass = glassRef.current;
-    const image = magnifiableImageRef.current;
-    const container = imageContainerRef.current;
-    if (!glass || !image || !container) {
-      return;
-    }
-    glass.addEventListener("mousemove", handleMoveMagnifier);
-    glass.addEventListener("touchmove", handleMoveMagnifier);
-    image.addEventListener("mousemove", handleMoveMagnifier);
-    image.addEventListener("touchmove", handleMoveMagnifier);
-    container.addEventListener("mouseenter", handleShowMagnifier);
-    container.addEventListener("mouseleave", handleHideMagnifier);
-    container.addEventListener("focusin", handleShowMagnifier);
-    container.addEventListener("focusout", handleHideMagnifier);
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      if (glass) {
-        glass.removeEventListener("mousemove", handleMoveMagnifier);
-        glass.removeEventListener("touchmove", handleMoveMagnifier);
-      }
-      if (image) {
-        image.removeEventListener("mousemove", handleMoveMagnifier);
-        image.removeEventListener("touchmove", handleMoveMagnifier);
-      }
-      if (container) {
-        container.removeEventListener("mouseenter", handleShowMagnifier);
-        container.removeEventListener("mouseleave", handleHideMagnifier);
-        container.removeEventListener("focusin", handleShowMagnifier);
-        container.removeEventListener("focusout", handleHideMagnifier);
-      }
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleMoveMagnifier, handleShowMagnifier, handleHideMagnifier, handleKeyDown]);
-  return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsx(MagnifierGlobalStyles, {}),
-    /* @__PURE__ */ jsxs(
-      ImageContainer,
-      {
-        className: `react-magnifier-image-container${finalProps.customContainerStyles ? ` ${finalProps.customContainerStyles}` : ""}`,
-        ref: imageContainerRef,
-        role: "group",
-        "aria-label": "Image magnifier",
-        tabIndex: 0,
-        children: [
-          /* @__PURE__ */ jsx(
-            "img",
-            {
-              ref: magnifiableImageRef,
-              className: finalProps.customImgStyles,
-              src: finalProps.imageUrl,
-              width: finalProps.imageWidth,
-              height: finalProps.imageHeight,
-              alt: finalProps.imageAltText,
-              role: "img",
-              "aria-describedby": "magnifier-help"
-            }
-          ),
-          isMagnifierVisible && /* @__PURE__ */ jsx(
-            SrOnly,
-            {
-              id: "magnifier-help",
-              role: "status",
-              "aria-live": "polite",
-              children: "Magnifier active. Use arrow keys to navigate, Escape to close."
-            }
-          )
+          const glass = glassRef.current;
+          const image = magnifiableImageRef.current;
+          const container = imageContainerRef.current;
+          if (!glass || !image || !container) {
+            return;
+          }
+          const pos = handleGetCursorPos(event);
+          let x = pos.x;
+          let y = pos.y;
+          const { width, height } = magnifierDimensions;
+          if (x > image.width - width / finalProps.zoomSize) {
+            x = image.width - width / finalProps.zoomSize;
+          }
+          if (x < width / finalProps.zoomSize) {
+            x = width / finalProps.zoomSize;
+          }
+          if (y > image.height - height / finalProps.zoomSize) {
+            y = image.height - height / finalProps.zoomSize;
+          }
+          if (y < height / finalProps.zoomSize) {
+            y = height / finalProps.zoomSize;
+          }
+          glass.style.left = `${x - width}px`;
+          glass.style.top = `${y - height}px`;
+          const padding = finalProps.magnifierBorderWidth;
+          glass.style.backgroundPosition = `-${x * finalProps.zoomSize - width + padding}px -${y * finalProps.zoomSize - height + padding}px`;
+          triggerCustomEvent("magnifier-moved", container);
+        },
+        [
+          magnifierDimensions,
+          finalProps.zoomSize,
+          finalProps.magnifierBorderWidth,
+          handleGetCursorPos
         ]
-      }
-    )
-  ] });
-});
+      );
+      const handleShowMagnifier = useCallback(() => {
+        const glass = glassRef.current;
+        if (glass) {
+          glass.classList.remove("hide-magnifier");
+          glass.classList.add("show-magnifier");
+          setIsMagnifierVisible(true);
+          triggerCustomEvent("magnifier-visible", imageContainerRef.current);
+        }
+      }, []);
+      const handleHideMagnifier = useCallback(() => {
+        const glass = glassRef.current;
+        if (glass) {
+          glass.classList.remove("show-magnifier");
+          glass.classList.add("hide-magnifier");
+          setIsMagnifierVisible(false);
+          triggerCustomEvent("magnifier-invisible", imageContainerRef.current);
+        }
+      }, []);
+      const updateBackgroundPosition = useCallback(
+        (glass) => {
+          const image = magnifiableImageRef.current;
+          if (!image) return;
+          const { width, height } = magnifierDimensions;
+          const left = parseFloat(glass.style.left) || 0;
+          const top = parseFloat(glass.style.top) || 0;
+          const x = left + width;
+          const y = top + height;
+          const padding = finalProps.magnifierBorderWidth;
+          glass.style.backgroundPosition = `-${x * finalProps.zoomSize - width + padding}px -${y * finalProps.zoomSize - height + padding}px`;
+        },
+        [magnifierDimensions, finalProps.zoomSize, finalProps.magnifierBorderWidth]
+      );
+      const handleKeyDown = useCallback(
+        (event) => {
+          if (!isMagnifierVisible || !glassRef.current || !magnifiableImageRef.current) {
+            return;
+          }
+          const glass = glassRef.current;
+          const image = magnifiableImageRef.current;
+          const step = 10;
+          const maxLeft = image.width - magnifierDimensions.width / finalProps.zoomSize;
+          const maxTop = image.height - magnifierDimensions.height / finalProps.zoomSize;
+          let handled = false;
+          switch (event.key) {
+            case "ArrowUp": {
+              event.preventDefault();
+              const currentTop = parseFloat(glass.style.top) || 0;
+              glass.style.top = `${Math.max(0, Math.min(maxTop, currentTop - step))}px`;
+              handled = true;
+              break;
+            }
+            case "ArrowDown": {
+              event.preventDefault();
+              const currentTopDown = parseFloat(glass.style.top) || 0;
+              glass.style.top = `${Math.max(0, Math.min(maxTop, currentTopDown + step))}px`;
+              handled = true;
+              break;
+            }
+            case "ArrowLeft": {
+              event.preventDefault();
+              const currentLeft = parseFloat(glass.style.left) || 0;
+              glass.style.left = `${Math.max(0, Math.min(maxLeft, currentLeft - step))}px`;
+              handled = true;
+              break;
+            }
+            case "ArrowRight": {
+              event.preventDefault();
+              const currentLeftRight = parseFloat(glass.style.left) || 0;
+              glass.style.left = `${Math.max(0, Math.min(maxLeft, currentLeftRight + step))}px`;
+              handled = true;
+              break;
+            }
+            case "Escape": {
+              event.preventDefault();
+              handleHideMagnifier();
+              handled = true;
+              break;
+            }
+          }
+          if (handled && event.key !== "Escape") {
+            updateBackgroundPosition(glass);
+            triggerCustomEvent("magnifier-moved", imageContainerRef.current);
+          }
+        },
+        [
+          isMagnifierVisible,
+          handleHideMagnifier,
+          updateBackgroundPosition,
+          magnifierDimensions,
+          finalProps.zoomSize
+        ]
+      );
+      useEffect(() => {
+        const image = magnifiableImageRef.current;
+        const container = imageContainerRef.current;
+        if (!isValidProp(finalProps.imageUrl)) {
+          logMagnifierError(IMAGE_URL_MISSING_ERROR);
+          isInitializedRef.current = false;
+          if (glassRef.current) {
+            glassRef.current.remove();
+            glassRef.current = null;
+          }
+          return;
+        }
+        if (isInitializedRef.current && glassRef.current && glassRef.current.isConnected) {
+          return;
+        }
+        if (!image || !container) {
+          return;
+        }
+        if (glassRef.current) {
+          glassRef.current.remove();
+          glassRef.current = null;
+        }
+        const glass = createMagnifierGlass(container, image, {
+          magnifierWidth: finalProps.magnifierWidth,
+          magnifierHeight: finalProps.magnifierHeight,
+          magnifierRadius: finalProps.magnifierRadius,
+          magnifierBorderWidth: finalProps.magnifierBorderWidth,
+          magnifierBorderStyle: finalProps.magnifierBorderStyle,
+          magnifierBorderColor: finalProps.magnifierBorderColor,
+          magnifierShadow: finalProps.magnifierShadow,
+          cursor: finalProps.cursor,
+          zoomSize: finalProps.zoomSize
+        });
+        if (!glass) {
+          return;
+        }
+        glassRef.current = glass;
+        isInitializedRef.current = true;
+        const width = glass.offsetWidth / 2;
+        const height = glass.offsetHeight / 2;
+        setMagnifierDimensions({ width, height });
+        finalProps.getMagnifier(container);
+        if (ref) {
+          if (typeof ref === "function") {
+            ref(container);
+          } else {
+            ref.current = container;
+          }
+        }
+        triggerCustomEvent("magnifier-initialized", container);
+        return () => {
+          if (glassRef.current) {
+            glassRef.current.remove();
+            glassRef.current = null;
+          }
+          isInitializedRef.current = false;
+          if (ref) {
+            if (typeof ref === "function") {
+              ref(null);
+            } else {
+              ref.current = null;
+            }
+          }
+        };
+      }, [finalProps.imageUrl]);
+      useEffect(() => {
+        const glass = glassRef.current;
+        const image = magnifiableImageRef.current;
+        const container = imageContainerRef.current;
+        if (!glass || !image || !container) {
+          return;
+        }
+        glass.addEventListener("mousemove", handleMoveMagnifier);
+        glass.addEventListener("touchmove", handleMoveMagnifier);
+        image.addEventListener("mousemove", handleMoveMagnifier);
+        image.addEventListener("touchmove", handleMoveMagnifier);
+        container.addEventListener("mouseenter", handleShowMagnifier);
+        container.addEventListener("mouseleave", handleHideMagnifier);
+        container.addEventListener("focusin", handleShowMagnifier);
+        container.addEventListener("focusout", handleHideMagnifier);
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+          glass.removeEventListener("mousemove", handleMoveMagnifier);
+          glass.removeEventListener("touchmove", handleMoveMagnifier);
+          image.removeEventListener("mousemove", handleMoveMagnifier);
+          image.removeEventListener("touchmove", handleMoveMagnifier);
+          container.removeEventListener("mouseenter", handleShowMagnifier);
+          container.removeEventListener("mouseleave", handleHideMagnifier);
+          container.removeEventListener("focusin", handleShowMagnifier);
+          container.removeEventListener("focusout", handleHideMagnifier);
+          window.removeEventListener("keydown", handleKeyDown);
+        };
+      }, [handleMoveMagnifier, handleShowMagnifier, handleHideMagnifier, handleKeyDown]);
+      const containerClass = ["react-magnifier-image-container", finalProps.customContainerClass].filter(Boolean).join(" ");
+      return /* @__PURE__ */ jsxs(Fragment, { children: [
+        /* @__PURE__ */ jsx(MagnifierGlobalStyles, {}),
+        /* @__PURE__ */ jsxs(
+          ImageContainer,
+          {
+            className: containerClass,
+            ref: imageContainerRef,
+            role: "group",
+            "aria-label": "Image magnifier",
+            tabIndex: 0,
+            children: [
+              /* @__PURE__ */ jsx(
+                "img",
+                {
+                  ref: magnifiableImageRef,
+                  className: finalProps.customImgClass || void 0,
+                  src: finalProps.imageUrl,
+                  width: finalProps.imageWidth,
+                  height: finalProps.imageHeight,
+                  alt: finalProps.imageAltText,
+                  role: "img",
+                  "aria-describedby": magnifierHelpId
+                }
+              ),
+              isMagnifierVisible && /* @__PURE__ */ jsx(SrOnly, { id: magnifierHelpId, role: "status", "aria-live": "polite", children: "Magnifier active. Use arrow keys to navigate, Escape to close." })
+            ]
+          }
+        )
+      ] });
+    }
+  )
+);
 ReactMagnifier.displayName = "ReactMagnifier";
 export {
   ReactMagnifier

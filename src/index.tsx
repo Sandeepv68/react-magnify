@@ -11,23 +11,25 @@ const App = () => {
         <p>A modern, accessible image magnification component for React 19</p>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '40px' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+          gap: '40px',
+        }}
+      >
         {/* Basic Example */}
         <section>
           <h3>1. Basic Usage</h3>
           <p>Default settings (2x zoom, 100x100px square glass)</p>
-          <ReactMagnifier 
-            imageUrl={SAMPLE_IMAGE}
-            imageWidth={400}
-            imageHeight={300}
-          />
+          <ReactMagnifier imageUrl={SAMPLE_IMAGE} imageWidth={400} imageHeight={300} />
         </section>
 
         {/* High Zoom & Large Circular Glass */}
         <section>
           <h3>2. High Zoom & Circular Glass</h3>
           <p>5x zoom, 200x200px circular glass with custom border</p>
-          <ReactMagnifier 
+          <ReactMagnifier
             imageUrl={SAMPLE_IMAGE}
             imageWidth={400}
             imageHeight={300}
@@ -44,7 +46,7 @@ const App = () => {
         <section>
           <h3>3. Dashed Border & No Shadow</h3>
           <p>Dashed border, no shadow effect</p>
-          <ReactMagnifier 
+          <ReactMagnifier
             imageUrl={SAMPLE_IMAGE}
             imageWidth={400}
             imageHeight={300}
@@ -58,7 +60,7 @@ const App = () => {
         <section>
           <h3>4. Custom Cursor & Rectangular Shape</h3>
           <p>Crosshair cursor, 150x100px glass with slight radius</p>
-          <ReactMagnifier 
+          <ReactMagnifier
             imageUrl={SAMPLE_IMAGE}
             imageWidth={400}
             imageHeight={300}
@@ -73,12 +75,12 @@ const App = () => {
         <section>
           <h3>5. Custom CSS Classes</h3>
           <p>Applying custom styles via props</p>
-          <ReactMagnifier 
+          <ReactMagnifier
             imageUrl={SAMPLE_IMAGE}
             imageWidth={400}
             imageHeight={300}
-            customContainerStyles="custom-magnifier-container"
-            customImgStyles="custom-magnifier-image"
+            customContainerClass="custom-magnifier-container"
+            customImgClass="custom-magnifier-image"
           />
         </section>
 
@@ -87,16 +89,16 @@ const App = () => {
           <h3>6. Functional Callbacks</h3>
           <p>Logging to console on initialization and interactions</p>
           <div id="callback-example">
-            <ReactMagnifier 
+            <ReactMagnifier
               imageUrl={SAMPLE_IMAGE}
               imageWidth={400}
               imageHeight={300}
               getMagnifier={(container) => {
                 if (container) {
-                   console.log('Magnifier Container Access:', container);
-                   container.addEventListener('magnifier-moved', (e) => {
-                     console.log('Magnifier moving:', e);
-                   });
+                  console.log('Magnifier Container Access:', container);
+                  container.addEventListener('magnifier-moved', (e) => {
+                    console.log('Magnifier moving:', e);
+                  });
                 }
               }}
             />
@@ -142,4 +144,3 @@ const rootElement = document.getElementById('root');
 if (rootElement) {
   createRoot(rootElement).render(<App />);
 }
-
