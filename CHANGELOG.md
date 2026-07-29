@@ -5,16 +5,108 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-07-29
+
+### 🚀 New Features
+
+#### React 19 `useId()` for ARIA ID Generation
+
+- Replaced hardcoded `"magnifier-help"` string with `React.useId()` to generate unique `aria-describedby` IDs
+- Prevents duplicate ID violations when multiple magnifier instances appear on the same page
+- Each magnifier instance now has a guaranteed-unique `id` attribute on its help text element
+
+#### `React.forwardRef` Support
+
+- Component now wraps its container `<div>` ref via `React.forwardRef`
+- Consumers can access the container DOM node directly using a `ref` prop
+- Ref is properly cleaned up on unmount (set to `null`)
+- `ReactMagnifierProps` type is now exported for consumer use
+
+#### Prop Renames: `customImgStyles` → `customImgClass`, `customContainerStyles` → `customContainerClass`
+
+- Renamed `customImgStyles` to `customImgClass` and `customContainerStyles` to `customContainerClass` for semantic clarity (these apply CSS classes, not inline styles)
+- Backward compatibility preserved via fallback merge — `customImgStyles` and `customContainerStyles` are still accepted and merged with the new props
+- Deprecated props are marked with `@deprecated` JSDoc in the interface
+
+### 🐛 Bug Fixes
+
+#### Keyboard Bounds Clamping
+
+- Arrow key movement now clamps to image boundaries (`maxLeft`/`maxTop` derived from image dimensions and zoom ratio)
+- Prevents the magnifier glass from moving outside the visible image area when using keyboard navigation
+
+#### `getCursorPos` Scroll Calculation Fix
+
+- Changed from `pageX`/`pageY` to `clientX`/`clientY` for cursor position
+- Removed double-compensation with `pageXOffset`/`pageYOffset` that caused offset errors in certain scroll positions
+
+#### `PIXEL_PADDING` Replaced with `magnifierBorderWidth`
+
+- Removed hardcoded `PIXEL_PADDING` constant in favor of `finalProps.magnifierBorderWidth`
+- Glass positioning now respects the consumer's configured border width for accurate alignment
+
+### 🧹 Code Cleanup
+
+#### Removed Redundant `useMemo` on Props
+
+- The entire `finalProps` object was wrapped in `useMemo` with `[props]` as dependency
+- When `props` (the entire object reference) changes, `useMemo` must re-run anyway, making the memoization effectively a no-op
+- Replaced with a plain spread — reduces overhead and simplifies the code
+
+#### Removed Empty `scripts/` Directory
+
+- Deleted the empty `scripts/` directory that was left over from earlier refactoring
+
+#### Removed Duplicate `build:lib` Script
+
+- The `build:lib` script was a duplicate of `build` in `package.json`; removed the redundant entry
+
+#### Removed `.npmrc`
+
+- Removed `.npmrc` file containing `legacy-peer-deps=true`
+- This flag suppressed legitimate peer dependency warnings — proper dependency management is preferred
+
+### 📦 Dependency Updates
+
+- Updated `@testing-library/react` from `15.0.7` to `16.3.2` to resolve peer dependency conflict with `@types/react@19.x` (after `.npmrc` removal)
+
+### 🔧 Dev Tooling
+
+- **Husky pre-commit hooks** configured with `lint-staged`
+- Runs linting and formatting on staged `*.{ts,tsx,json,css,md}` files
+- Added `"prepare": "husky install"` script to `package.json`
+
+### 📝 Documentation
+
+- Added comprehensive **TSDoc/JSDoc comments** to all source files:
+  - `ReactMagnifier.tsx` — main component with hook documentation
+  - `ReactMagnifier.Interface.ts` — all props documented with descriptions
+  - `ReactMagnifier.styled.ts` — styled-components purpose docs
+  - `utils.ts` — all utility functions documented
+  - `export.tsx` — entry point docs
+  - `setupTests.ts` — test environment setup docs
+
+### Bundle Sizes (Post-Fix)
+
+| Format | Minified | Gzipped |
+| ------ | -------- | ------- |
+| ESM    | 16.10 kB | 3.74 kB |
+| UMD    | 8.03 kB  | 2.87 kB |
+
+---
+
 ## [1.1.1] - 2026-07-25
 
 ### 🐛 Bug Fixes
 
 #### Keyboard Navigation Background Sync
+
 - Fixed keyboard arrow key handlers (↑ ↓ ← →) to update `backgroundPosition` alongside glass position
 - Previously, moving the magnifier with keyboard would shift the glass but the zoomed content would not follow
 - Added `updateBackgroundPosition()` helper that derives logical coordinates from the glass element's DOM position
 
 #### Event Name Consistency
+
 - Fixed misspelled custom event names (`magnfier-*` → `magnifier-*`) across all consumer code
 - The component dispatches correctly-spelled events, but stories, tests, and documentation referenced misspelled versions, meaning event listeners would never fire
 - Affected files: `ReactMagnifier.stories.tsx`, `ReactMagnifier.memory.test.tsx`, `README.md`, `CHANGELOG.md`, `RELEASE_NOTES.md`, `TECHNICAL_DOCS.md`
@@ -22,15 +114,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 #### Code Cleanup
+
 - Deleted `src/ReactMagnifier/style.css` — redundant since v1.1.0 migrated to styled-components
 - Removed non-existent `index.css` imports from `src/index.tsx` and stories
 
 #### Test Improvements
+
 - Replaced fragile `await new Promise(resolve => setTimeout(resolve, N))` with `waitFor` from `@testing-library/react` in `ReactMagnifier.test.tsx`
 - Fixed syntax error in `ReactMagnifier.memory.test.tsx:269` (statement, eslint-disable, and expect collapsed onto one line)
 - All **49 tests** passing
 
 #### Documentation Fixes
+
 - "Zero Dependencies" → "Minimal runtime dependencies (styled-components is the sole runtime dependency)"
 - "17 comprehensive test cases" → "49 comprehensive test cases"
 - Removed references to non-existent npm scripts (`build-tsc`, `build-dev`, `build-prod`)
@@ -44,16 +139,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 🎨 CSS-in-JS Migration
 
 ### Added
+
 - **styled-components** integration — component styles are now co-located with the component via CSS-in-JS, eliminating the need to import a separate stylesheet
 - `ReactMagnifier.styled.ts` — new file exporting `ImageContainer`, `SrOnly`, and `MagnifierGlobalStyles` styled components
 - `MagnifierGlobalStyles` (`createGlobalStyle`) covers the imperatively-created magnifier glass element (`.react-magnifier-glass`, `.show-magnifier`, `.hide-magnifier`) which cannot be a styled component because the glass DOM node is created manually
 
 ### Changed
+
 - `ImageContainer` styled component replaces the plain `<div className="react-magnifier-image-container">` — the class name is still applied explicitly for backward compatibility with external CSS and tests
 - `SrOnly` styled component replaces `<div className="sr-only">` for the screen-reader status announcement
 - Removed `import './style.css'` from `ReactMagnifier.tsx`; `style.css` is retained for Storybook stories
 
 ### Dependencies
+
 - Added `styled-components` as a runtime dependency (moved to peer dependency in v1.2.0)
 - Added `@types/styled-components` as a dev dependency (removed in v1.2.0 — v6 ships own types)
 
@@ -68,6 +166,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 ### 🎯 Added
 
 #### Core Features
+
 - **React 19 Support** - Migrated from React 16 to React 19.0.0-rc.1 with modern hooks architecture
 - **Keyboard Navigation** - Full keyboard support:
   - Arrow keys (Up/Down/Left/Right) to move magnifier glass (10px per keypress)
@@ -85,6 +184,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
   - `magnifier-invisible` - When magnifier becomes hidden
 
 #### Build & Tooling
+
 - **Vite Migration** - Replaced Webpack 3 with Vite 5.0.8
   - 10x faster build times (~589ms vs previous ~5000ms)
   - Built-in ES module support
@@ -102,6 +202,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
   - Better performance and faster test execution
 
 #### Code Quality
+
 - **ESLint 8.56.0** with `@typescript-eslint` for modern linting rules
 - **Prettier 3.1.1** for consistent code formatting
 - **TypeScript 5.3.3** with strict mode enabled
@@ -114,6 +215,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
   - `createMagnifierGlass()` - DOM element factory
 
 #### Testing Infrastructure
+
 - **17 Test Cases** organized in 8 suites:
   1. **Basic Rendering (4 tests)** - Component mounting, props, attributes
   2. **Props Configuration (4 tests)** - Default props, custom values, callbacks
@@ -132,6 +234,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 ### 🎨 Changed
 
 #### Component Architecture
+
 - Converted from class-based (`React.Component`) to functional component with hooks
 - Implemented 8 memoized useCallback handlers for event management
 - Added 3 useRef references for DOM element access
@@ -140,6 +243,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 - Wrapped component with React.memo for performance optimization
 
 #### Bundle Size Reduction
+
 - **ESM Bundle**: 13.92 kB minified (3.49 kB gzipped) — down from 25.25 kB in v1.1.1
 - **UMD Bundle**: 7.51 kB minified (2.74 kB gzipped) — down from 12.08 kB in v1.1.1
 - **CSS**: 0 kB — styles injected at runtime via styled-components
@@ -147,17 +251,20 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 - **Improvement**: ~81% smaller gzipped bundle from v0.0.4
 
 #### TypeScript Improvements
+
 - Replaced generic `Function` type with specific callback signature: `(container: HTMLDivElement | null) => void`
 - Added comprehensive JSDoc comments for all interface properties
 - Improved type inference across components
 - Added proper generic types for callback functions
 
 #### CSS Enhancements
+
 - Added `.sr-only` utility class for screen reader-only content
 - Added `:focus-visible` styles for keyboard navigation indicators
 - Improved semantic HTML structure
 
 #### Documentation
+
 - Completely rewritten README.md with:
   - Keyboard navigation guide
   - Accessibility features documentation
@@ -167,6 +274,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
   - TypeScript examples
 
 ### 🚀 Performance Improvements
+
 - React.memo prevents unnecessary re-renders
 - useCallback with precise dependencies eliminates stale closures
 - useMemo prevents recalculation of props merging
@@ -176,6 +284,7 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 - Faster test execution with Vitest
 
 ### 🔐 Security Enhancements
+
 - TypeScript strict mode prevents type-related vulnerabilities
 - Minimal runtime dependencies (React, ReactDOM, and styled-components are peer dependencies — nothing bundled)
 - React's built-in XSS prevention
@@ -185,11 +294,13 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 ### 📦 Dependencies
 
 #### Updated
+
 - `react`: 16.12.0 → 19.0.0-rc.1 (peer dependency)
 - `react-dom`: 16.12.0 → 19.0.0-rc.1 (peer dependency)
 - `typescript`: 3.x → 5.3.3
 
 #### New Dev Dependencies
+
 - `vite`: 5.0.8 (build tool)
 - `vitest`: 1.1.0 (test framework)
 - `@typescript-eslint/eslint-plugin`: 6.15.0
@@ -208,12 +319,14 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 - `terser`: 5.49.0 (minification)
 
 #### Removed
+
 - `webpack`: 3.x (replaced with Vite)
 - `jest`: (replaced with Vitest)
 - `webpack-cli`: (replaced with Vite)
 - `babel-*`: (Vite/TypeScript handles transpilation)
 
 ### 🐛 Bug Fixes
+
 - Fixed null reference errors with defensive programming
 - Improved event handler cleanup to prevent memory leaks
 - Better error handling for missing or invalid image URLs
@@ -222,42 +335,50 @@ This is a major overhaul modernizing ReactMagnifier from a legacy 2019-era compo
 ### ⚙️ Tooling Changes
 
 #### Build System
+
 - Migrated from Webpack 3 to Vite 5.0.8
 - ESM + UMD dual output configuration
 - Source map generation for debugging
 - CSS minification included
 
 #### Testing
+
 - Migrated from Jest to Vitest 1.1.0
 - JSDOM environment for DOM testing
 - 100% code coverage thresholds configured
 - Test UI dashboard available
 
 #### Linting & Formatting
+
 - ESLint with TypeScript-aware rules
 - Prettier for code formatting
 - Husky pre-commit hooks
 - lint-staged for selective file linting
 
 #### Package Management
+
 - NPM scripts for all common tasks
 - Legacy peer dependency support enabled
 - Proper entry point configuration
 
 ### 🔄 Breaking Changes
+
 **None** - Fully backward compatible with v0.0.4
 
 All existing props and events continue to work exactly as before. New features are opt-in enhancements.
 
 ### ⚠️ Deprecated
+
 Nothing deprecated in this release
 
 ### 🚧 Known Limitations
+
 - None identified
 
 ### 📖 Migration Guide
 
 #### From v0.0.4
+
 No code changes required! Simply update:
 
 ```bash
@@ -265,48 +386,53 @@ npm update @sandeepv68/react-magnifier
 ```
 
 To use new features:
+
 - Keyboard navigation works automatically (arrow keys, Escape)
 - ARIA attributes are automatically included
 - TypeScript support improved with stricter types
 
 #### Recommended Changes for New Projects
+
 ```jsx
 // Modern import with CSS
-import ReactMagnifier from '@sandeepv68/react-magnifier'
-import '@sandeepv68/react-magnifier/dist/style.css'
+import ReactMagnifier from '@sandeepv68/react-magnifier';
+import '@sandeepv68/react-magnifier/dist/style.css';
 
 // Leverage keyboard navigation and accessibility
 <ReactMagnifier
   imageUrl="image.jpg"
   imageAltText="Descriptive text for screen readers"
   zoomSize={2.5}
-/>
+/>;
 ```
 
 ### 📊 Project Statistics
 
-| Metric | Value |
-|--------|-------|
-| TypeScript Errors | 0 |
-| Test Cases | 49 |
-| Bundle Size (ESM) | 13.92 kB → 3.49 kB gzipped |
-| Bundle Size (UMD) | 7.51 kB → 2.74 kB gzipped |
-| Type Declarations | Generated via vite-plugin-dts |
-| Build Time | ~4s |
-| Type Check Time | < 1 second |
-| Code Coverage Target | 100% |
-| Accessibility | WCAG 2.1 Level AA ✅ |
+| Metric               | Value                         |
+| -------------------- | ----------------------------- |
+| TypeScript Errors    | 0                             |
+| Test Cases           | 49                            |
+| Bundle Size (ESM)    | 13.92 kB → 3.49 kB gzipped    |
+| Bundle Size (UMD)    | 7.51 kB → 2.74 kB gzipped     |
+| Type Declarations    | Generated via vite-plugin-dts |
+| Build Time           | ~4s                           |
+| Type Check Time      | < 1 second                    |
+| Code Coverage Target | 100%                          |
+| Accessibility        | WCAG 2.1 Level AA ✅          |
 
 ### 🎓 Documentation
+
 - [README.md](./README.md) - Complete usage guide
 - [MODERNIZATION_SUMMARY.md](./MODERNIZATION_SUMMARY.md) - Detailed technical summary
 - [src/ReactMagnifier/ReactMagnifier.Interface.ts](./src/ReactMagnifier/ReactMagnifier.Interface.ts) - TypeScript interface definitions
 - [src/ReactMagnifier/ReactMagnifier.test.tsx](./src/ReactMagnifier/ReactMagnifier.test.tsx) - Test examples
 
 ### 👥 Contributors
+
 - Sandeep Vattapparambil - Modernization to React 19 and accessibility improvements
 
 ### 🙏 Acknowledgements
+
 Special thanks to the React community and the WCAG standards committee for accessibility guidelines.
 
 ---
@@ -314,6 +440,7 @@ Special thanks to the React community and the WCAG standards committee for acces
 ## [0.0.4] - 2020-XX-XX
 
 ### Original v0.0.4 Features
+
 - React 16 support
 - Basic image magnification functionality
 - Webpack 3 build system
@@ -326,6 +453,7 @@ Special thanks to the React community and the WCAG standards committee for acces
 
 ## Version History
 
+- **v1.3.0** (2026-07-29) - forwardRef, React 19 useId(), prop renames, keyboard bounds clamping, dev tooling (husky/lint-staged), TSDoc comments
 - **v1.2.0** (2026-07-27) - Production readiness fixes: bundle externalization, type declarations, dependency cleanup
 - **v1.1.1** (2026-07-25) - Bug fixes, documentation cleanup, test improvements
 - **v1.1.0** (2026-07-20) - CSS-in-JS migration via styled-components
@@ -336,4 +464,4 @@ Special thanks to the React community and the WCAG standards committee for acces
 ---
 
 **[Unreleased]**: Changes that will be included in the next release
-**[1.2.0]**: Current stable release
+**[1.3.0]**: Current stable release

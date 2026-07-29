@@ -2,7 +2,8 @@
 
 ![reactmagnifier-logo](logo/logo.png)
 
-# ReactMagnifier v1.2.0
+# ReactMagnifier v1.3.0
+
 ## A modern, accessible React 19 component for image magnification with TypeScript support, built with Vite and tested with Vitest.
 
 [![npm version](https://img.shields.io/npm/v/@sandeepv68/react-magnifier?style=flat-square&logo=npm&logoColor=white&label=version)](https://www.npmjs.com/package/@sandeepv68/react-magnifier)
@@ -19,19 +20,21 @@
 
 ## Features
 
-* **Modern Stack**: React 19 with hooks, TypeScript 5.3, Vite 5
-* **Styled Components**: CSS-in-JS via styled-components — no external stylesheet required
-* **Small Bundle**: 13.92 kB ESM (3.49 kB gzipped), 7.51 kB UMD (2.74 kB gzipped)
-* **Fully Typed**: TypeScript with strict mode enabled
-* **Accessible**: WCAG 2.1 Level AA - keyboard navigation, ARIA attributes, screen reader support
-* **Zero Runtime Dependencies**: React is a peer dependency only; styled-components is the sole runtime dependency
-* **Keyboard Navigation**: Arrow keys to move magnifier, Escape to close
-* **Touch Support**: Works on mobile devices and touch screens
-* **Custom Events**: Listen to magnifier state changes (initialized, moved, visible, invisible)
-* **Customizable Styling**: Full CSS customization support
-* **100% Backward Compatible**: Drop-in replacement for v0.x
-* **Fully Tested**: 49 comprehensive test cases covering all functionality
-* **Performance Optimized**: React.memo and useCallback for optimal rendering
+- **Modern Stack**: React 19 with hooks, TypeScript 5.3, Vite 5
+- **Styled Components**: CSS-in-JS via styled-components — no external stylesheet required
+- **Small Bundle**: 16.10 kB ESM (3.74 kB gzipped), 8.03 kB UMD (2.87 kB gzipped)
+- **Fully Typed**: TypeScript with strict mode enabled, `ReactMagnifierProps` type exported
+- **Accessible**: WCAG 2.1 Level AA - keyboard navigation, ARIA attributes, screen reader support, `useId()` for unique IDs
+- **Zero Runtime Dependencies**: React is a peer dependency only; styled-components is the sole runtime dependency
+- **Keyboard Navigation**: Arrow keys to move magnifier (clamped to image bounds), Escape to close
+- **Touch Support**: Works on mobile devices and touch screens
+- **Custom Events**: Listen to magnifier state changes (initialized, moved, visible, invisible)
+- **Customizable Styling**: Full CSS customization support via class names
+- **Forward Ref Support**: Access the container DOM node directly via `ref`
+- **100% Backward Compatible**: Drop-in replacement for v0.x
+- **Fully Tested**: 50 comprehensive test cases covering all functionality
+- **Performance Optimized**: React.memo and useCallback for optimal rendering
+- **Husky Pre-commit Hooks**: lint-staged runs on staged files
 
 ## Table of Contents
 
@@ -66,7 +69,7 @@ yarn add @sandeepv68/react-magnifier
 ## Quick Start
 
 ```jsx
-import ReactMagnifier from '@sandeepv68/react-magnifier'
+import ReactMagnifier from '@sandeepv68/react-magnifier';
 
 export default function App() {
   return (
@@ -77,7 +80,7 @@ export default function App() {
       magnifierHeight={200}
       magnifierWidth={200}
     />
-  )
+  );
 }
 ```
 
@@ -85,13 +88,13 @@ export default function App() {
 
 The magnifier supports full keyboard navigation for improved accessibility:
 
-| Key | Action |
-|-----|--------|
-| **Arrow Up** | Move magnifier 10px up |
-| **Arrow Down** | Move magnifier 10px down |
-| **Arrow Left** | Move magnifier 10px left |
+| Key             | Action                    |
+| --------------- | ------------------------- |
+| **Arrow Up**    | Move magnifier 10px up    |
+| **Arrow Down**  | Move magnifier 10px down  |
+| **Arrow Left**  | Move magnifier 10px left  |
 | **Arrow Right** | Move magnifier 10px right |
-| **Escape** | Close magnifier |
+| **Escape**      | Close magnifier           |
 
 **Note**: Keyboard navigation is active when the magnifier is visible (after hovering or focusing on the image).
 
@@ -115,7 +118,7 @@ ReactMagnifier is built with accessibility as a core feature, meeting **WCAG 2.1
   imageUrl="image.jpg"
   imageAltText="Product description for screen readers"
   getMagnifier={(container) => {
-    console.log('Magnifier container:', container)
+    console.log('Magnifier container:', container);
   }}
 />
 ```
@@ -124,56 +127,60 @@ ReactMagnifier is built with accessibility as a core feature, meeting **WCAG 2.1
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `imageUrl` | `string` | *required* | URL of the image to magnify |
-| `imageAltText` | `string` | `"react-magnifier-image"` | Alt text for the image (accessibility) |
-| `imageWidth` | `number \| string` | `"auto"` | Width of the image element |
-| `imageHeight` | `number \| string` | `"auto"` | Height of the image element |
-| `magnifierWidth` | `number` | `100` | Width of magnifier glass in pixels |
-| `magnifierHeight` | `number` | `100` | Height of magnifier glass in pixels |
-| `magnifierRadius` | `number` | `50` | Border radius of magnifier glass (0-100 %) |
-| `magnifierBorderColor` | `string` | `"#000"` | Border color of magnifier glass |
-| `magnifierBorderStyle` | `string` | `"solid"` | Border style (solid, dashed, dotted, etc.) |
-| `magnifierBorderWidth` | `number` | `3` | Border width in pixels |
-| `magnifierShadow` | `boolean` | `true` | Whether to show drop shadow |
-| `cursor` | `string` | `"none"` | CSS cursor style |
-| `zoomSize` | `number` | `2` | Magnification zoom level |
-| `getMagnifier` | `(container: HTMLDivElement \| null) => void` | `() => {}` | Callback when magnifier initializes |
-| `customImgStyles` | `string` | `""` | Custom CSS class for image |
-| `customContainerStyles` | `string` | `""` | Custom CSS class for container |
+| Prop                                 | Type                                          | Default                   | Description                                |
+| ------------------------------------ | --------------------------------------------- | ------------------------- | ------------------------------------------ |
+| `imageUrl`                           | `string`                                      | _required_                | URL of the image to magnify                |
+| `imageAltText`                       | `string`                                      | `"react-magnifier-image"` | Alt text for the image (accessibility)     |
+| `imageWidth`                         | `number \| string`                            | `"auto"`                  | Width of the image element                 |
+| `imageHeight`                        | `number \| string`                            | `"auto"`                  | Height of the image element                |
+| `magnifierWidth`                     | `number`                                      | `100`                     | Width of magnifier glass in pixels         |
+| `magnifierHeight`                    | `number`                                      | `100`                     | Height of magnifier glass in pixels        |
+| `magnifierRadius`                    | `number`                                      | `50`                      | Border radius of magnifier glass (0-100 %) |
+| `magnifierBorderColor`               | `string`                                      | `"#000"`                  | Border color of magnifier glass            |
+| `magnifierBorderStyle`               | `string`                                      | `"solid"`                 | Border style (solid, dashed, dotted, etc.) |
+| `magnifierBorderWidth`               | `number`                                      | `3`                       | Border width in pixels                     |
+| `magnifierShadow`                    | `boolean`                                     | `true`                    | Whether to show drop shadow                |
+| `cursor`                             | `string`                                      | `"none"`                  | CSS cursor style                           |
+| `zoomSize`                           | `number`                                      | `2`                       | Magnification zoom level                   |
+| `ref`                                | `React.Ref<HTMLDivElement>`                   | `undefined`               | Forwarded ref to the container div         |
+| `getMagnifier`                       | `(container: HTMLDivElement \| null) => void` | `() => {}`                | Callback when magnifier initializes        |
+| `customImgClass`                     | `string`                                      | `""`                      | Custom CSS class for image                 |
+| `customContainerClass`               | `string`                                      | `""`                      | Custom CSS class for container             |
+| `customImgStyles` (deprecated)       | `string`                                      | `""`                      | ⚠️ Renamed to `customImgClass`             |
+| `customContainerStyles` (deprecated) | `string`                                      | `""`                      | ⚠️ Renamed to `customContainerClass`       |
 
 ### Custom Events
 
 The component dispatches custom DOM events for magnifier state changes:
 
 ```jsx
-const containerRef = useRef(null)
+const containerRef = useRef(null);
 
 useEffect(() => {
-  const container = containerRef.current
-  if (!container) return
+  const container = containerRef.current;
+  if (!container) return;
 
-  const handleMagnifierInitialized = () => console.log('Magnifier initialized')
-  const handleMagnifierMoved = () => console.log('Magnifier moved')
-  const handleMagnifierVisible = () => console.log('Magnifier visible')
-  const handleMagnifierInvisible = () => console.log('Magnifier invisible')
+  const handleMagnifierInitialized = () => console.log('Magnifier initialized');
+  const handleMagnifierMoved = () => console.log('Magnifier moved');
+  const handleMagnifierVisible = () => console.log('Magnifier visible');
+  const handleMagnifierInvisible = () => console.log('Magnifier invisible');
 
-  container.addEventListener('magnifier-initialized', handleMagnifierInitialized)
-  container.addEventListener('magnifier-moved', handleMagnifierMoved)
-  container.addEventListener('magnifier-visible', handleMagnifierVisible)
-  container.addEventListener('magnifier-invisible', handleMagnifierInvisible)
+  container.addEventListener('magnifier-initialized', handleMagnifierInitialized);
+  container.addEventListener('magnifier-moved', handleMagnifierMoved);
+  container.addEventListener('magnifier-visible', handleMagnifierVisible);
+  container.addEventListener('magnifier-invisible', handleMagnifierInvisible);
 
   return () => {
-    container.removeEventListener('magnifier-initialized', handleMagnifierInitialized)
-    container.removeEventListener('magnifier-moved', handleMagnifierMoved)
-    container.removeEventListener('magnifier-visible', handleMagnifierVisible)
-    container.removeEventListener('magnifier-invisible', handleMagnifierInvisible)
-  }
-}, [])
+    container.removeEventListener('magnifier-initialized', handleMagnifierInitialized);
+    container.removeEventListener('magnifier-moved', handleMagnifierMoved);
+    container.removeEventListener('magnifier-visible', handleMagnifierVisible);
+    container.removeEventListener('magnifier-invisible', handleMagnifierInvisible);
+  };
+}, []);
 ```
 
 **Event Names:**
+
 - `magnifier-initialized` - Fired when magnifier is initialized
 - `magnifier-moved` - Fired when magnifier position changes
 - `magnifier-visible` - Fired when magnifier becomes visible
@@ -201,7 +208,7 @@ useEffect(() => {
   zoomSize={3}
   magnifierShadow={true}
   getMagnifier={(container) => {
-    console.log('Product magnifier loaded')
+    console.log('Product magnifier loaded');
   }}
 />
 ```
@@ -215,40 +222,37 @@ useEffect(() => {
   magnifierBorderWidth={2}
   magnifierBorderStyle="dashed"
   cursor="crosshair"
-  customContainerStyles="product-magnifier"
-  customImgStyles="product-image"
+  customContainerClass="product-magnifier"
+  customImgClass="product-image"
 />
 ```
 
 ### With Event Listeners
 
 ```jsx
-import { useRef, useEffect } from 'react'
-import ReactMagnifier from '@sandeepv68/react-magnifier'
+import { useRef, useEffect } from 'react';
+import ReactMagnifier from '@sandeepv68/react-magnifier';
 
 export default function ProductImage() {
-  const containerRef = useRef(null)
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
+    const container = containerRef.current;
+    if (!container) return;
 
     const handleMagnifierVisible = () => {
-      console.log('User started magnifying image')
-    }
+      console.log('User started magnifying image');
+    };
 
-    container.addEventListener('magnifier-visible', handleMagnifierVisible)
-    return () => container.removeEventListener('magnifier-visible', handleMagnifierVisible)
-  }, [])
+    container.addEventListener('magnifier-visible', handleMagnifierVisible);
+    return () => container.removeEventListener('magnifier-visible', handleMagnifierVisible);
+  }, []);
 
   return (
     <div ref={containerRef}>
-      <ReactMagnifier
-        imageUrl="product.jpg"
-        zoomSize={2.5}
-      />
+      <ReactMagnifier imageUrl="product.jpg" zoomSize={2.5} />
     </div>
-  )
+  );
 }
 ```
 
@@ -279,29 +283,30 @@ Your existing code will continue to work without any changes. To enable keyboard
 
 ## Project Summary
 
-ReactMagnifier v1.2.0 is a production-ready modernization that combines:
+ReactMagnifier v1.3.0 is a production-ready modernization that combines:
 
 - React 19 functional component architecture
 - Vite 5 build tooling with dual ESM and UMD bundles
 - TypeScript 5.3 strict typing and declaration generation (via `vite-plugin-dts`)
-- WCAG 2.1 Level AA accessibility with keyboard and screen reader support
+- WCAG 2.1 Level AA accessibility with keyboard and screen reader support and `useId()` for unique IDs
 - Vitest testing with a 100% coverage target
 - Zero runtime dependencies bundled — React, ReactDOM, and styled-components are all peer dependencies
 
 ### Release Highlights
 
 - React 19 ready with hooks and `React.memo`
-- Keyboard navigation: arrow keys + Escape
+- `React.forwardRef` support for container DOM access
+- Keyboard navigation: arrow keys (clamped to image bounds) + Escape
 - Custom DOM events for magnifier lifecycle states
 - Build output: `dist/react-magnifier.js` and `dist/react-magnifier.umd.cjs`
 - Source maps and `.d.ts` declarations included
 
 ### Performance Snapshot
 
-- ESM bundle: **13.92 kB** minified, **3.49 kB** gzipped
-- UMD bundle: **7.51 kB** minified, **2.74 kB** gzipped
+- ESM bundle: **16.10 kB** minified, **3.74 kB** gzipped
+- UMD bundle: **8.03 kB** minified, **2.87 kB** gzipped
 - Build time: **~4s** with Vite + vite-plugin-dts
-- 100% test coverage target with **49** test cases
+- 100% test coverage target with **50** test cases
 - Zero runtime dependencies (React, ReactDOM, styled-components are peer dependencies)
 
 ### Publication & Verification
@@ -348,9 +353,40 @@ MIT License - see LICENSE file for details
 - **Vite**: 5.0.8
 - **Vitest**: 1.1.0
 - **styled-components**: 6.4.4 (peer dependency)
-- **@testing-library/react**: 15.0.7
+- **@testing-library/react**: 16.3.2
 
 ## Changelog
+
+### v1.3.0 - 2026-07-29
+
+**🚀 New Features & Production Hardening**
+
+#### 🚀 New Features
+
+- **`React.forwardRef`** — container div ref forwarded for direct DOM access; `ReactMagnifierProps` type exported
+- **`React.useId()`** — unique `aria-describedby` IDs per instance (no duplicate ID violations)
+- **Prop renames**: `customImgStyles` → `customImgClass`, `customContainerStyles` → `customContainerClass` (old names deprecated with backward compatibility)
+
+#### 🐛 Bug Fixes
+
+- Keyboard bounds clamping — arrow keys stay within image boundaries
+- `getCursorPos` uses `clientX`/`clientY` (fixed double scroll compensation)
+- `PIXEL_PADDING` replaced with `magnifierBorderWidth` for accurate glass positioning
+
+#### 🧹 Cleanup
+
+- Removed redundant `useMemo` on props, empty `scripts/` directory, duplicate `build:lib` script, `.npmrc`
+- Updated `@testing-library/react` to `16.3.2`
+
+#### 🔧 Dev Tooling
+
+- Husky + lint-staged pre-commit hooks configured
+
+#### 📝 Documentation
+
+- Comprehensive TSDoc/JSDoc comments across all source files
+
+---
 
 ### v1.2.0 - 2026-07-27
 
@@ -359,15 +395,18 @@ MIT License - see LICENSE file for details
 #### 🐛 Critical Fixes
 
 **Bundle Externalization**
+
 - Externalized `styled-components` and `react/jsx-runtime` from the Vite build — consumers no longer get duplicate copies
 - ESM bundle reduced from 25.25 kB to 13.92 kB; UMD from 12.08 kB to 7.51 kB
 - UMD bundle no longer ships development-mode JSX runtime
 
 **Type Declarations**
+
 - Added `vite-plugin-dts` to generate `.d.ts` files in `dist/` during build
 - TypeScript consumers can now import the package without errors
 
 **Console Warning Fix**
+
 - Changed `console.log` to `console.warn` in `logMagnifierError()` — errors now use proper severity level
 
 #### 🧹 Cleanup & Fixes
@@ -401,11 +440,13 @@ MIT License - see LICENSE file for details
 #### 🐛 Bug Fixes
 
 **Keyboard Navigation Background Sync**
+
 - Fixed keyboard arrow key handlers (↑ ↓ ← →) to update `backgroundPosition` alongside glass position
 - Previously, moving the magnifier with keyboard would shift the glass but the zoomed content would not follow
 - Added `updateBackgroundPosition()` helper that derives logical coordinates from the glass element's DOM position
 
 **Event Name Consistency**
+
 - Fixed misspelled custom event names (`magnfier-*` → `magnifier-*`) across all consumer code
 - The component dispatches correctly-spelled events, but stories, tests, and documentation referenced misspelled versions, meaning event listeners would never fire
 - Fixed in: `ReactMagnifier.styled.ts`, `ReactMagnifier.stories.tsx`, `ReactMagnifier.memory.test.tsx`, `README.md`, `CHANGELOG.md`, `RELEASE_NOTES.md`, `TECHNICAL_DOCS.md`
@@ -438,6 +479,7 @@ MIT License - see LICENSE file for details
 #### ✨ What's New
 
 **styled-components Integration**
+
 - Component styles are now co-located with the component — no external stylesheet import required
 - New `ReactMagnifier.styled.ts` exports three styled primitives:
   - `ImageContainer` — styled `div` replacing `.react-magnifier-image-container`
@@ -463,38 +505,44 @@ All v1.0.0 props, events, and behaviors are fully supported. No breaking changes
 #### ✨ What's New
 
 **React 19 & Modern Architecture**
+
 - Complete migration from React 16 class components to React 19 functional components with hooks
 - React.memo, useCallback, useMemo, useRef, useEffect throughout
 
 **Keyboard Navigation** ⌨️
+
 - Arrow keys (↑ ↓ ← →) to move magnifier glass (10px per keypress)
 - Escape key to close/hide magnifier
 
 **Accessibility Enhancements** 🎯
+
 - WCAG 2.1 Level AA compliance
 - ARIA attributes: `role="group"`, `aria-label`, `aria-describedby`, `aria-live`
 - Screen reader support with dynamic status announcements
 - Visual focus indicators via `:focus-visible`
 
 **Custom Events System**
+
 - `magnifier-initialized`, `magnifier-moved`, `magnifier-visible`, `magnifier-invisible`
 
 **Build System**
+
 - Vite 5.0.8 replacing Webpack 3 — 10x faster builds (~589ms)
 - Dual ESM + UMD output with TypeScript declarations and source maps
 
 **Testing**
+
 - Vitest 1.1.0 with 49 tests across unit, performance, and memory-leak suites
 
-#### 🚀 Performance Metrics (v0.0.4 → v1.2.0)
+#### 🚀 Performance Metrics (v0.0.4 → v1.3.0)
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Bundle (gzipped) | ~18 KB | **3.49 KB** | **-81%** |
-| Build time | ~5000ms | **~4s** | **-92%** |
-| React version | 16.12 | **19.0** | Latest |
-| Accessibility | Basic | **WCAG AA** | Full compliance |
-| Runtime Dependencies | 0 | **0** (all peer) | Zero bundled |
+| Metric               | Before  | After                 | Improvement     |
+| -------------------- | ------- | --------------------- | --------------- |
+| Bundle (gzipped)     | ~18 KB  | **3.74 KB**           | **-79%**        |
+| Build time           | ~5000ms | **~4s**               | **-92%**        |
+| React version        | 16.12   | **19.0**              | Latest          |
+| Accessibility        | Basic   | **WCAG AA + useId()** | Full compliance |
+| Runtime Dependencies | 0       | **0** (all peer)      | Zero bundled    |
 
 #### ✅ Backward Compatibility
 
@@ -524,6 +572,7 @@ Made with ❤️ by Sandeep Vattapparambil and the React Community.
 All suggestions and pull requests are welcome! Please read the [CODE_OF_CONDUCT](https://github.com/SandeepVattapparambil/react-magnify/blob/master/CODE_OF_CONDUCT.md) and [CONTRIBUTING](https://github.com/SandeepVattapparambil/react-magnify/blob/master/CONTRIBUTING.md) files before contributing.
 
 Clone and contribute:
+
 ```bash
 git clone https://github.com/SandeepVattapparambil/react-magnify.git
 cd react-magnify
@@ -535,17 +584,20 @@ npm run build    # Build for production
 
 See [NPM_PUBLICATION_GUIDE.md](./NPM_PUBLICATION_GUIDE.md) for publishing instructions.
 
-* Create production build for react source
+- Create production build for react source
+
 ```sh
 npm run build
 ```
 
-* Run type checking
+- Run type checking
+
 ```sh
 npm run type-check
 ```
 
-* Run linting
+- Run linting
+
 ```sh
 npm run lint
 ```
@@ -555,9 +607,11 @@ You need to have `Nodejs` ,`npm` in your system as development dependency.
 ## Tests
 
 This project includes unit tests written in `Vitest` testing library. Tests can be run by the npm script
+
 ```sh
 npm run test
 ```
+
 ## Technologies Used
 
 ![technologies-used](https://i.ibb.co/3vf5Td1/tech-stack.png)
